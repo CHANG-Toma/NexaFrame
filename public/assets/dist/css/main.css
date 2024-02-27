@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+.dark-mode {
+  --text-color: #FFF;
+  --reverse-text-color: #000;
+  --website-bg-color: #121212;
+  --reverse-bg-color: #FFF;
+  --btn-bg-color: #000000;
+  --dropdown-bg-color: #ffffff;
+  --dropdown-link-hover-bg-color: #e6e6e6;
+  --icon-color: invert(100%);
+  --img-bg-color: #333333;
+}
+
+:root {
+  /*Color*/
+  --white: #FFF;
+  --black: #000;
+  --grey: #333;
+  --darkgrey: #666;
+  --text-color: #000;
+  --reverse-text-color: #FFF;
+  --bg-color:#FFF2D8;
+  --website-bg-color: #FFF;
+  --reverse-bg-color: #000;
+  --icon-color: invert(0);
+  --primary-color: #113946;
+  --secondary-color: #EAD7BB;
+  --btn-bg-color: #FFF;
+  --btn-bg-hover-color: #1a1a1a;
+  --img-bg-color: #e6e6e6;
+  --dropdown-bg-color: #FFF;
+  --dropdown-link-hover-bg-color: #1a1a1a;
+  --error-message: #ff0000;
+  /*Radius*/
+  --main-radius: 0.375rem;
+  /*Fonts*/
+  --main-font: Lato;
+  --title-font: Playfair Display;
+  --website-font-family: Roboto, sans-serif;
+  /*trans*/
+  --transition-duration:0.3s;
+  /*Font size*/
+  --main-size: 1.125rem;
+  --main-size-768: 0.5625rem;
+  --title-size: 2rem;
+  --title-size-768: 1rem;
+  --main-title-size: 5rem;
+  --subtitle-size: 1.5rem;
+  --subtitle-size-768: 0.75rem;
+  --heading-size: 3rem;
+  --heading-size-768: 1.875rem;
+  --line-height: 1.6875rem;
+  --h1-font-size: 3.5rem;
+  --h1-font-size-768: 1.75rem;
+  /*Letter spacing*/
+  --title-spacing: 0.3125rem;
+  /*padding & margins */
+  --pm-md: 1rem;
+  --pm-sm: 0.5rem;
+  --pm-lg: 1rem 2rem;
+  --pm-xlg: 2rem;
+  --pm-xxlg: 4rem;
+  /*margin*/
+  --centered: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding-top: 3.125rem;
+  background-color: var(--website-bg-color);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.icon {
+  filter: var(--icon-color);
+}
+
+.error {
+  color: var(--error-message);
+}
+
+/*# sourceMappingURL=main.css.map */
