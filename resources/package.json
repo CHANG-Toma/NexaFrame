@@ -1,0 +1,17 @@
+{
+    "name": "workspace",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+      "sass": "sass src/css/main.scss ../public/assets/css/main.css",
+      "watch-sass": "sass --watch src/css/main.scss ../public/assets/css/main.css",
+      "watch-sass-backoffice": "sass --watch src/css/backoffice.scss ../public/assets/css/backoffice.css"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+      "concurrently": "^8.2.2",
+      "sass": "^1.69.5"
+    }
+  }
