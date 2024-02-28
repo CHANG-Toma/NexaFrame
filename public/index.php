@@ -33,8 +33,8 @@ if (!empty($listOfRoutes[$uri])) {
             $controller = $listOfRoutes[$uri]["controller"];
             $action = $listOfRoutes[$uri]["action"];
 
-            if (file_exists("Controllers/" . $controller . ".php")) {
-                include "Controllers/" . $controller . ".php";
+            if (file_exists(__DIR__."/../app/Controllers/" . $controller . ".php")) {
+                include __DIR__."/../app/Controllers/" . $controller . ".php";
                 $controller = "App\\Controllers\\" . $controller;
                 if (class_exists($controller)) {
                     $object = new $controller();

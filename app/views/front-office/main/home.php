@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/dist/css/main.css" />
+    <link rel="stylesheet" href="/assets/dist/css/main.css" />
     <title>Home</title>   
 </head>
 <body>
@@ -23,8 +23,8 @@ $components = [
 ];
 
 foreach ($components as $component) {
-    include __DIR__ . '/partials/' . $component;
+    include $_SERVER['DOCUMENT_ROOT'] . '/../app/views/partials/' . $component;
 }
-?> 
+?>
 </body>
 </html>

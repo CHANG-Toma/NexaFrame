@@ -11,6 +11,6 @@ class Home
 
     public function index(): void
     {
-        include __DIR__ . '/../views/front-office/main/home.php';
+        include __DIR__ . '/../Views/front-office/main/home.php';
     }
 }
