@@ -4,3 +4,12 @@
 @import "partials/globals";
 @import "partials/mixin";
 @import "partials/media";
+
+@import "layout/navbar";
+@import "components/hero";
+@import "layout/content-layout";
+@import "layout/content-layout-project";
+@import "components/gallery";
+@import "layout/faq";
+@import "layout/contact-us";
+@import "layout/footer";

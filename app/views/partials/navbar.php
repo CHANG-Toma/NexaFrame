@@ -9,11 +9,8 @@
             <li>
                 <a href="/about">About Us</a>
             </li>
-            <li>
-                <a href="/projects">Project </a>
-            </li>
         </ul>
-        <a href="/contact" class="Button Primary">Contact</a>
+        <a href="/installater" class="Button Primary">Get Started!</a>
         <div class="theme-switcher" id="themeSwitcher">
           <img id="icon-sun" class="icon icon-sun" src="../../../assets/visual-assets/svg/icon/sun.svg" alt="Sun Icon"/>
           <img id="icon-moon" class="icon icon-moon" src="../../../assets/visual-assets/svg/icon/moon.svg" alt="Moon Icon"/>
