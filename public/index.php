@@ -3,7 +3,7 @@
 namespace App;
 
 spl_autoload_register("App\myAutoloader");
-require("vendor/autoload.php");
+require("../app/vendor/autoload.php");
 
 function myAutoloader($class): void
 {
@@ -19,7 +19,7 @@ $uri = strtolower($_SERVER["REQUEST_URI"]);
 $uri = strtok($uri, "?");
 if (strlen($uri) > 1) $uri = rtrim($uri, "/");
 
-$fileRoute = "routes.yaml";
+$fileRoute = __DIR__ . '/../app/config/routes.yml';
 if (file_exists($fileRoute)) {
     $listOfRoutes = yaml_parse_file($fileRoute);
 } else {
@@ -56,7 +56,7 @@ if (!empty($listOfRoutes[$uri])) {
         die("La route " . $uri . " ne possède pas de controller dans le ficher " . $fileRoute);
     }
 } else {
-    include "Controllers/Error.php";
+    include "../app/controllers/Error.php";
     $object = new Controllers\Error();
     $object->error404();
 }

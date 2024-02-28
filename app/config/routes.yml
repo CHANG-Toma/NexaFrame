@@ -1,0 +1,5 @@
+# User
+
+/home:
+  controller: home
+  action: index
