@@ -26,11 +26,6 @@
                 <div class="faq-answer" style="display: none;">Yes, we offer a 7-day free trial for new users to explore our platform.</div>
             </div>
         </div>
-        <div class="Content">
-            <h2 class="heading heading-centered">Still have questions?</h2>
-            <p class="text text-centered">Contact our support team for assistance.</p>
-            <a href="/contact#contact-us" class="btn btn-transparent">Contact Us</a>
-        </div>
     </div>
 </section>
 

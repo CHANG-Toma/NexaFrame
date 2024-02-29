@@ -14,11 +14,9 @@ $components = [
     'hero.php',
     'content-layout.php',
     'content-layout-project.php',
-    'gallery.php',
     'trust-us.php',
     'testimonial.php',
     'FAQ.php',
-    'contact-us.php',
     'footer.php',
 ];
 

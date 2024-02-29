@@ -2,18 +2,18 @@
     <div class="container">
         <div class="logo-container">
           <a href="/home">
-            <img class="icon logo" src="../../public/assets/visual-assets/svg/brand/simplify.svg">
+          <img class="icon logo" src="/assets/img/Nexaframe.png" alt="Brand Logo">
           </a>
         </div>
         <ul class="navbar-links">
             <li>
-                <a href="/about">About Us</a>
+                <a href="/home">NexaFrame</a>
             </li>
         </ul>
-        <a href="/installater" class="Button Primary">Get Started!</a>
+        <a href="/installater" class="Button Primary">Get Started</a>
         <div class="theme-switcher" id="themeSwitcher">
-          <img id="icon-sun" class="icon icon-sun" src="../../../assets/visual-assets/svg/icon/sun.svg" alt="Sun Icon"/>
-          <img id="icon-moon" class="icon icon-moon" src="../../../assets/visual-assets/svg/icon/moon.svg" alt="Moon Icon"/>
+        <img id="icon-sun" class="icon icon-sun" src="/assets/svg/icon/sun.svg" alt="Sun Icon"/>
+        <img id="icon-moon" class="icon icon-moon" src="/assets/svg/icon/moon.svg" alt="Moon Icon"/>
         </div>
     </div>
     <div class="line"></div>

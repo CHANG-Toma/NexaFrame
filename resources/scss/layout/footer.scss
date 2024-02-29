@@ -1,7 +1,6 @@
 .footer {
     width: 100%;
     height: auto;
-    padding: rem(80) rem(64);
     @include flexbox(column, nowrap, unset, center, rem(64));
   
     .content {
@@ -34,26 +33,7 @@
             width: rem(60);
             height: rem(65);
             position: relative;
-          }
-  
-          .social-links {
-            display: inline-flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            gap: rem(12);
-            text-decoration: none;
-  
-            a {
-              text-decoration: none;
-              font-size: var(--subtitle-size);
-              font-family: var(--website-font-family);
-  
-              img {
-                width: rem(24);
-                height: rem(24);
-                object-fit: cover;
-              }
-            }
+            object-fit: cover;
           }
         }
   
