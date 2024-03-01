@@ -1,0 +1,38 @@
+body {
+    padding: 0;
+}
+
+.installer-container {
+    max-width: rem(400);
+    margin: rem(50) auto;
+    padding: rem(20);
+    background: var(--website-bg-color);
+    border-radius: rem(6);
+    box-shadow: 0 rem(4) rem(8) rgba(0, 0, 0, 0.1);
+    
+    h2 {
+        margin-bottom: rem(20);
+    }
+    
+    .form-group {
+        margin-bottom: rem(15);
+        
+        label {
+            display: block;
+            margin-bottom: rem(5);
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: rem(10);
+            border: rem(1) solid var(--darkgrey);
+            border-radius: rem(4);
+            box-sizing: border-box;
+            appearance: none; 
+            background-color: #fff;
+            cursor: pointer;
+        }
+    }
+}

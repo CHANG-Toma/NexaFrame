@@ -957,4 +957,39 @@ img {
   color: var(--text-color);
 }
 
+body {
+  padding: 0;
+}
+
+.installer-container {
+  max-width: 25rem;
+  margin: 3.125rem auto;
+  padding: 1.25rem;
+  background: var(--website-bg-color);
+  border-radius: 0.375rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+.installer-container h2 {
+  margin-bottom: 1.25rem;
+}
+.installer-container .form-group {
+  margin-bottom: 0.9375rem;
+}
+.installer-container .form-group label {
+  display: block;
+  margin-bottom: 0.3125rem;
+}
+.installer-container .form-group input[type=text],
+.installer-container .form-group input[type=password],
+.installer-container .form-group select {
+  width: 100%;
+  padding: 0.625rem;
+  border: 0.0625rem solid var(--darkgrey);
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  appearance: none;
+  background-color: #fff;
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=main.css.map */

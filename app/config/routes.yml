@@ -3,3 +3,11 @@
 /home:
   controller: home
   action: index
+
+/installer:
+  controller: installer
+  action: index
+
+/installer/process:
+  controller: installer
+  action: processForm

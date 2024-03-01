@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class Home
+class home
 {
     public function __construct()
     {
