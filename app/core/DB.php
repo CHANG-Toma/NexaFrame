@@ -1,21 +1,26 @@
 <?php
-// Database.php
 
 namespace App\Core;
 
 use PDO;
 use PDOException;
 
+use App\Controllers\installer;
+
 class DB
 {
+    private ?object $pdo = null;
     private static $instance = null;
 
-    private function __construct() {
+    public function __construct()
+    {
+        $dsn = new installer();
+
         try {
-            self::$instance = new PDO(DB_TYPE . ":host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT, DB_USER, DB_PASSWORD);
-            self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo = new PDO($dsn->getDsnFromDbType(DB_TYPE), DB_USER, DB_PASSWORD);
         } catch (PDOException $e) {
-            die("Database Connection Failed: " . $e->getMessage());
+            echo "Erreur SQL : " . $e->getMessage();
+            die();
         }
     }
 }
