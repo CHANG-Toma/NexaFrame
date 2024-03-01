@@ -23,5 +23,16 @@ class DB
             die();
         }
     }
+
+    public function exec(string $query): bool
+    {
+        try {
+            $statement = $this->pdo->prepare($query);
+            return $statement->execute();
+        } catch (PDOException $e) {
+            echo "Erreur SQL : " . $e->getMessage();
+            return false;
+        }
+    }
 }
 
