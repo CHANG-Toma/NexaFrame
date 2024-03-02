@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Core\DB;
 
-Class Category extends DB
+class Category extends DB
 {
     private $id;
     private $label;

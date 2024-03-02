@@ -4,7 +4,7 @@ namespace App\Models;
 use App\Core\DB;
 use App\Models\users;
 
-Class pages extends DB
+Class Page extends DB
 {
 
     private ?int $id = null;

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Core\DB;
 
-Class Article extends DB
+class Article extends DB
 {
     private $id;
     private $title;

@@ -3,11 +3,11 @@
 namespace App\Controllers;
 
 use App\Core\DB;
-use App\Models\users;
-use App\Models\Settings;
-use App\Models\pages;
+use App\Models\Page;
+use App\Models\User;
+use App\Models\Setting;
 
-class installer
+class Installer
 {
     public function __construct()
     {
@@ -91,41 +91,33 @@ class installer
     public function createAdmin(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (
-                isset($_REQUEST["login"]) &&
-                isset($_REQUEST["email"]) &&
-                isset($_REQUEST["password"]) &&
-                isset($_REQUEST["password_confirm"])
-            ) {
-                print_r($_REQUEST);
-                if (filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
-                    if ($_REQUEST["password"] == $_REQUEST["password_confirm"]) {
-                        $admin = new users();
-                        $admin->setLogin($_REQUEST['login']);
-                        $admin->setEmail($_REQUEST['email']);
-                        $admin->setPassword(password_hash($_REQUEST['password'], PASSWORD_DEFAULT));
+            if ($_POST["login"] != "" && $_POST["email"] != "" && $_POST["password"] != "" && $_POST["password_confirm"] != "") {
+                if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                    if ($_POST["password"] == $_POST["password_confirm"]) {
+                        $admin = new User();
+                        $admin->setLogin($_POST['login']);
+                        $admin->setEmail($_POST['email']);
+                        $admin->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
                         $admin->setRole('admin');
                         $admin->save();
-                    }
-                    else {
+                    } else {
                         $message = "Les mots de passe ne correspondent pas";
                     }
                 } else {
                     $message = "L'adresse email n'est pas valide";
                 }
             } else {
-                $message = "Erreur lors de la création de l'administrateur";
+                $message = "Tous les champs sont obligatoires";
             }
             include __DIR__ . '/../Views/front-office/main/installer_configAdmin.php';
-        }
-        else {
+        } else {
             header('Location: /installer/processForm');
         }
     }
 
     private function InsertDefaultData(): void
     {
-        $page = new Pages();
+        $page = new Page();
         $page->setUrl("/");
         $page->setTitle("Accueil");
         $page->setContent('<div class="container editable sortable-element" data-sortable="true" style="height: 100vh;" draggable="false"><div class="container editable sortable-element align-horizontal-start align-vertical-center" data-sortable="true" style="padding-right: 0px;" draggable="false"><div class="row editable sortable-element" data-sortable="true" style="display: flex; justify-content: space-between; align-items: center; padding-left: 0px; padding-right: 0px;" draggable="false"><div class="col-sm-8 editable sortable-element" data-sortable="true" draggable="false" style="width: 50%;"><p class="editable editable-text" draggable="false" contenteditable="false" style="text-transform: uppercase; font-size: 14px; color: rgb(110, 112, 118); font-weight: 500; letter-spacing: 1.5px;">centre de ressource</p><div class="editable editable-text" draggable="false" contenteditable="false" style="font-size: 64px; font-weight: 800; color: rgb(38, 38, 58); text-transform: none;">WispBlog - CMF,&nbsp;<div>développement web et outils technologiques</div></div></div><div class="col-sm-4 editable sortable-element" data-sortable="true" draggable="false" style="width: 50%;"><div class="editable image-container" draggable="false" style="max-height: 100%; margin-left: auto; margin-right: 0px;"><img src="https://cdn.dribbble.com/users/3873964/screenshots/14092691/media/d825b72de91e141ce5a66875adbe006d.gif" alt="myimage" draggable="false"></div></div></div></div></div><div class="container editable sortable-element" data-sortable="true" draggable="false" style="padding: 0px;"></div><div class="container editable sortable-element" data-sortable="true" draggable="false" style="padding: 0px;"></div>');
@@ -136,34 +128,36 @@ class installer
 
     private function InsertDefaultSettings(): void
     {
-        $settingsCssPrimary = new Settings();
+        $settingsCssPrimary = new Setting();
         $settingsCssPrimary->setKey("css:primary");
         $settingsCssPrimary->setValue("#1c1c2b");
         $settingsCssPrimary->save();
 
-        $settingsCssSecondary = new Settings();
+        $settingsCssSecondary = new Setting();
         $settingsCssSecondary->setKey("css:secondary");
         $settingsCssSecondary->setValue("#26263a");
         $settingsCssSecondary->save();
 
-        $settingsCssTercery = new Settings();
+        $settingsCssTercery = new Setting();
         $settingsCssTercery->setKey("css:tercery");
         $settingsCssTercery->setValue("#7e37d8");
         $settingsCssTercery->save();
 
-        $settingsCssMainFont1 = new Settings();
+        $settingsCssMainFont1 = new Setting();
         $settingsCssMainFont1->setKey("css:main-font1");
         $settingsCssMainFont1->setValue("Plus Jakarta Sans");
         $settingsCssMainFont1->save();
 
-        $settingsCssMainRadius = new Settings();
+        $settingsCssMainRadius = new Setting();
         $settingsCssMainRadius->setKey("css:main-radius");
         $settingsCssMainRadius->setValue("6px");
         $settingsCssMainRadius->save();
 
-        $settingsCssTransitionDuration = new Settings();
+        $settingsCssTransitionDuration = new Setting();
         $settingsCssTransitionDuration->setKey("css:transition-duration");
         $settingsCssTransitionDuration->setValue("0.3s");
         $settingsCssTransitionDuration->save();
     }
+
+
 }

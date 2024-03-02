@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Core\DB;
 
-Class comments extends DB{
+class Comment extends DB{
     private $id;
     private $articleId;
     private $commentResponseId;

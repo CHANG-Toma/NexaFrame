@@ -39,7 +39,7 @@
             </div>
             <div class="form-group">
                 <label for="password_confirm">Repeat password:</label>
-                <input type="password" id="password_confirm-password" name="password_confirm-password" required>
+                <input type="password" id="password_confirm" name="password_confirm" required>
             </div>
             <button class="Button Primary" type="submit">Create Account</button>
         </form>

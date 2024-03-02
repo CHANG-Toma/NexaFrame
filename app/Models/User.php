@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Core\DB;
 
-class users extends DB
+class User extends DB
 {
     private int $id;
     private string $login;

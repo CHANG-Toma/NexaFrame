@@ -5,7 +5,7 @@ namespace App\Core;
 use PDO;
 use PDOException;
 
-use App\Controllers\installer;
+use App\Controllers\Installer;
 
 class DB
 {

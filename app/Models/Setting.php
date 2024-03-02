@@ -3,7 +3,7 @@ namespace App\Models;
 
 use App\Core\DB;
 
-Class Settings extends DB
+Class Setting extends DB
 {
     private ?int $id = null;
     protected string $key;
