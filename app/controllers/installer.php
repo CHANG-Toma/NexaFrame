@@ -7,8 +7,6 @@ use App\Models\users;
 use App\Models\Settings;
 use App\Models\pages;
 
-include __DIR__ . '/../core/DB.php';
-
 class installer
 {
     public function __construct()
