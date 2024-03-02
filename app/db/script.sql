@@ -93,20 +93,6 @@ CREATE TABLE pages (
     FOREIGN KEY (id_updator) REFERENCES users(id)
 );
 
--- Trigger pour mettre automatiquement à jours le champ updated_at lorsque l'entrée est modifié
-CREATE OR REPLACE FUNCTION update_timestamp()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER update_article_timestamp
-    BEFORE UPDATE ON articles
-    FOR EACH ROW
-    EXECUTE FUNCTION update_timestamp();
-
 -- Insérer des données dans la table "categories"
 INSERT INTO categories (label) VALUES
 ('Musique'),

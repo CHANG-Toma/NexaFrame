@@ -10,7 +10,6 @@ class installer
 {
     public function __construct()
     {
-        //define('BASE_DIR', __DIR__ . '/..');
     }
 
     public function index(): void
@@ -37,17 +36,20 @@ class installer
         file_put_contents('../app/config/config.php', $configContent);
 
         include '../app/config/config.php';
+        $db = new DB();
         // Teste la connexion
-        if (new DB()) {
-            $message = "Votre base de données a été enregistré avec succès.";
-            include __DIR__ . '/../Views/front-office/main/installer_configAdmin.php';
+        if ($db->testConnection()) {
+            if($this->migrateDatabase($db)){
+                $message = "Database is connected and migrate successfully.";
+                include __DIR__ . '/../Views/front-office/main/installer_configAdmin.php';
+            }
         } else {
             echo "Échec de la connexion à la base de données. Veuillez vérifier vos paramètres.";
         }
     }
 
 
-    // Configuration générale de l'installer
+    // Configuration de la BDD pour l'installeur
 
     public function getDsnFromDbType(string $db_type): string //pour la connexion
     {
@@ -69,18 +71,19 @@ class installer
         return $dsn;
     }
 
-    public function migrateDatabase(): void //pour la migration
+    public function migrateDatabase($db): bool
     {
         $sqlScript = file_get_contents(__DIR__ . '/../db/script.sql');
+        $queries = explode(';', $sqlScript);
 
-        // Execute the SQL script
-        $db = new DB();
-
-        if ($db->exec($sqlScript)) {
-            echo "Database migration completed successfully.";
-        } else {
-            echo "Database migration failed.";
+        foreach ($queries as $query) {
+            if (trim($query) != '') {
+                if (!$db->exec($query)) {
+                    echo "Database migration failed.";
+                    return false;
+                }
+            }
         }
+        return true;
     }
-
 }

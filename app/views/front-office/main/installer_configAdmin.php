@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="form-container">
+        <?= $message ?>
         <h1>Create Admin Account</h1>
         <form action="/admin/create" method="POST">
             <div class="form-group">

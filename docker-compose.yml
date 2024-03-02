@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   php:
@@ -24,7 +24,6 @@ services:
     networks:
       - internal
 
-
   postgres:
     image: postgres:latest
     restart: always
@@ -35,28 +34,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./app/DB/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
       - postgres_data:/var/lib/postgresql/data
     networks:
       - internal
-
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
-    ports:
-      - "5050:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      - postgres
-    networks:
-      - internal
-
 volumes:
   postgres_data:
-  pgadmin_data:
 
 networks:
   internal:
