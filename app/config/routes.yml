@@ -10,4 +10,8 @@
 
 /installer/process:
   controller: installer
-  action: processForm
+  action: configDatabase
+
+/installer/account:
+  controller: installer
+  action: createAdmin
