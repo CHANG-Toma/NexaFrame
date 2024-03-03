@@ -11,7 +11,7 @@ class DB
 {
     private ?object $pdo = null;
     private array $tableMapping = [
-    // 'class_name' => 'table_name'
+        // 'class_name' => 'table_name'
         'User' => 'users',
         'Page' => 'pages',
         'Setting' => 'settings',
@@ -23,6 +23,7 @@ class DB
         $dsn = new Installer();
 
         try {
+            include '../app/config/config.php'; //on inclut le fichier de configuration
             $this->pdo = new PDO($dsn->getDsnFromDbType(DB_TYPE), DB_USER, DB_PASSWORD);
         } catch (PDOException $e) {
             echo "Erreur SQL : " . $e->getMessage();
@@ -30,30 +31,15 @@ class DB
         }
     }
 
-    public function exec(string $query): bool
+    public static function getInstance(): self
     {
-        if ($this->pdo) {
-            try {
-                $statement = $this->pdo->prepare($query);
-                return $statement->execute();
-            } catch (PDOException $e) {
-                echo "Erreur SQL : " . $e->getMessage();
-                return false;
-            }
+        if (self::$instance === null) { //si l'instance n'existe pas
+            self::$instance = new self();
         }
-        else {
-            $db = $this->getInstance();
-            try {
-                $statement = $db->pdo->prepare($query);
-                return $statement->execute();
-            } catch (PDOException $e) {
-                echo "Erreur SQL : " . $e->getMessage();
-                return false;
-            }
-        }
+        return self::$instance;
     }
 
-    public function save() : void
+    public function save(): void
     {
         $data = $this->getDataObject();
 
@@ -68,29 +54,53 @@ class DB
 
         if (empty($tableName)) {
             throw new \Exception('Table name is not defined');
-        } 
-        else {
+        } else {
+            $params = [];
             if (empty($this->getId())) {
                 $sql = 'INSERT INTO ' . "" . $tableName . ' (' . implode(',', array_keys($data)) . ') VALUES (:' . implode(',:', array_keys($data)) . ');';
+                foreach ($data as $key => $value) {
+                    $params[":$key"] = $value;
+                }
             } else {
                 $sql = "UPDATE " . "" . $tableName . " SET ";
                 foreach ($data as $column => $value) {
                     $sql .= $column . "=:" . $column . ",";
+                    $params[":$column"] = $value;
                 }
                 $sql = substr($sql, 0, -1);
                 $sql .= " WHERE id = " . $this->getId() . ";";
             }
-            $this->exec($sql);
+            $this->exec($sql, $params);
         }
     }
 
-    public static function getInstance(): self  
+    public function exec(string $query, array $params = []): bool
     {
-        if (self::$instance === null) { //si l'instance n'existe pas
-            include '../app/config/config.php'; //on inclut le fichier de configuration
-            self::$instance = new self();
+        if ($this->pdo) {
+            try {
+                $statement = $this->pdo->prepare($query);
+                foreach ($params as $param => $value) {
+                    $statement->bindValue($param, $value);
+                }
+                return $statement->execute();
+            } catch (PDOException $e) {
+                echo "Erreur SQL : " . $e->getMessage();
+                return false;
+            }
+        } 
+        else {
+            $db = $this->getInstance();
+            try {
+                $statement = $db->pdo->prepare($query);
+                foreach ($params as $param => $value) {
+                    $statement->bindValue($param, $value);
+                }
+                return $statement->execute();
+            } catch (PDOException $e) {
+                echo "Erreur SQL : " . $e->getMessage();
+                return false;
+            }
         }
-        return self::$instance;
     }
 
 
@@ -112,7 +122,7 @@ class DB
         }
     }
 
-    private function getDataObject()
+    private function getDataObject(): array
     {
         $data = get_object_vars($this);
         unset($data['pdo']);
