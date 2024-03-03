@@ -44,13 +44,9 @@ class Installer
             $message = "Database connection failed.";
             include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
         } else {
-            if ($this->isDatabaseMigrated($db)) {
-                $user = new User();
-                if ($user->getOneBy(["role" => "admin"])) {
-                    include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
-                } else {
-                    include __DIR__ . '/../Views/back-office/installer/installer_registerAdmin.php';
-                }
+            $user = new User();
+            if (!empty($user->getOneBy(["role" => "admin"]))) {
+                include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
             } else {
                 if ($this->migrateDatabase($db)) {
                     include __DIR__ . '/../Views/back-office/installer/installer_registerAdmin.php';
@@ -59,6 +55,7 @@ class Installer
                     include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
                 }
             }
+            
         }
     }
 
@@ -77,7 +74,9 @@ class Installer
                         $adminAcc->setRole('admin');
                         $adminAcc->save();
 
-                        include __DIR__ . '/../Views/back-office/dashboard/dashboard.php';
+                        if (!empty($adminAcc->getOneBy(["role" => "admin"]))) {
+                            include __DIR__ . '/../Views/back-office/dashboard/dashboard.php';
+                        }
                     } else {
                         $message = "Les mots de passe ne correspondent pas";
                     }
@@ -87,7 +86,6 @@ class Installer
             } else {
                 $message = "Tous les champs sont obligatoires";
             }
-            include __DIR__ . '/../Views/front-office/main/installer_registerAdmin.php';
         } else {
             header('Location: /installer/processForm');
         }
@@ -198,7 +196,6 @@ class Installer
                 $exists = $result[0]['exists'] === '1';
                 break;
         }
-
         return !empty($exists);
     }
 

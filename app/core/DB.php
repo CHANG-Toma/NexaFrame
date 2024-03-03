@@ -44,6 +44,7 @@ class DB
     {
         $data = $this->getDataObject();
 
+        unset($data['tableName']);
         foreach ($data as $key => $value) {
             if (is_bool($value)) {
                 $data[$key] = $value ? 'true' : 'false';    //si c'est un booléen, on le transforme en string
@@ -134,8 +135,6 @@ class DB
             return false;
         }
     }
-
-
 
     // ---------------------------------------------------------------
 
