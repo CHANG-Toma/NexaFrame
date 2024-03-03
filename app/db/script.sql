@@ -89,9 +89,3 @@ INSERT INTO categories (label) VALUES
 ('Musique'),
 ('Sport'),
 ('Art');
-
-INSERT INTO users (login, email, password) VALUES
-('admin', 'admin@nexaframe.com', '$$Azerty123!');
-
-INSERT INTO pages (url, title, content, meta_description, id_creator) VALUES
-('/', 'Accueil', 'Votre contenu HTML ici', 'Meta description de la page d''accueil', 1);

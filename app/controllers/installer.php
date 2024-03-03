@@ -17,9 +17,10 @@ class Installer
     {
         include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
     }
-    
+
     public function configDatabase(): void
     {
+        //sécurité à faire ici pour éviter les injections SQL (htmlspecialchars, strip_tags, etc.)
         $dbConfig = [
             'DB_NAME' => $_POST['db_name'],
             'DB_USER' => $_POST['db_user'],
@@ -38,54 +39,27 @@ class Installer
 
         $db = DB::getInstance();
         // Teste la connexion
-        if ($db->testConnection() && /* un user admin existe deja */) {
-            include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+
+        if (!$db->testConnection()) {
+            $message = "Database connection failed.";
+            include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
         } else {
-            if ($this->migrateDatabase($db)) {
-                $message = "Database is connected and migrate successfully.";
-                include __DIR__ . '/../Views/back-office/installer/installer_configAdmin.php';
+            if ($this->isDatabaseMigrated($db)) {
+                $user = new User();
+                if ($user->getOneBy(["role" => "admin"])) {
+                    include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+                } else {
+                    include __DIR__ . '/../Views/back-office/installer/installer_registerAdmin.php';
+                }
             } else {
-                $message = "Database is connected but migration failed.";
-                include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
-            }
-        }
-    }
-
-    // Configuration de la BDD pour l'installeur
-    public function getDsnFromDbType(string $db_type): string //pour la connexion
-    {
-        $dsn = "";
-        switch ($db_type) {
-            case "mysql":
-                $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
-                break;
-            case "pgsql":
-                $dsn = "pgsql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT;
-                break;
-            case "oci":
-                $dsn = "oci:dbname=//" . DB_HOST . ":" . DB_PORT . "/" . DB_NAME;
-                break;
-            case "sqlsrv":
-                $dsn = "sqlsrv:Server=" . DB_HOST . ";Database=" . DB_NAME;
-                break;
-        }
-        return $dsn;
-    }
-
-    public function migrateDatabase($db): bool
-    {
-        $sqlScript = file_get_contents(__DIR__ . '/../db/script.sql');
-        $queries = explode(';', $sqlScript);
-
-        foreach ($queries as $query) {
-            if (trim($query) != '') {
-                if (!$db->exec($query)) {
-                    echo "Database migration failed.";
-                    return false;
+                if ($this->migrateDatabase($db)) {
+                    include __DIR__ . '/../Views/back-office/installer/installer_registerAdmin.php';
+                } else {
+                    $message = "Database migration failed.";
+                    include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
                 }
             }
         }
-        return true;
     }
 
     // Gestion de l'administrateur pour l'installeur
@@ -103,9 +77,8 @@ class Installer
                         $adminAcc->setRole('admin');
                         $adminAcc->save();
 
-                        header('Location: /dashboard');
-                    } 
-                    else {
+                        include __DIR__ . '/../Views/back-office/dashboard/dashboard.php';
+                    } else {
                         $message = "Les mots de passe ne correspondent pas";
                     }
                 } else {
@@ -114,31 +87,7 @@ class Installer
             } else {
                 $message = "Tous les champs sont obligatoires";
             }
-            include __DIR__ . '/../Views/front-office/main/installer_configAdmin.php';
-        } else {
-            header('Location: /installer/processForm');
-        }
-    }
-
-    public function loginAsAdmin(): void
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $login = $_POST["login"];
-            $password = $_POST["password"];
-
-            $user = User::findByLogin($login);
-
-            if ($user && password_verify($password, $user->getPassword()) && $user->getRole() === 'admin') {
-
-                $_SESSION['admin_id'] = $user->getId();
-                $_SESSION['admin_login'] = $user->getLogin();
-                $_SESSION['admin_email'] = $user->getEmail();
-
-                header('Location: /dashboard');
-            } else {
-                $message = "Invalid login credentials";
-                include __DIR__ . '/../Views/front-office/main/installer_configAdmin.php';
-            }
+            include __DIR__ . '/../Views/front-office/main/installer_registerAdmin.php';
         } else {
             header('Location: /installer/processForm');
         }
@@ -154,7 +103,6 @@ class Installer
         $page->setIdCreator(1);
         $page->save();
     }
-
     private function InsertDefaultSettings(): void
     {
         $settingsCssPrimary = new Setting();
@@ -186,6 +134,72 @@ class Installer
         $settingsCssTransitionDuration->setKey("css:transition-duration");
         $settingsCssTransitionDuration->setValue("0.3s");
         $settingsCssTransitionDuration->save();
+    }
+
+    // Configuration de la BDD pour l'installeur
+    public function getDsnFromDbType(string $db_type): string //pour la connexion
+    {
+        $dsn = "";
+        switch ($db_type) {
+            case "mysql":
+                $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
+                break;
+            case "pgsql":
+                $dsn = "pgsql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT;
+                break;
+            case "oci":
+                $dsn = "oci:dbname=//" . DB_HOST . ":" . DB_PORT . "/" . DB_NAME;
+                break;
+            case "sqlsrv":
+                $dsn = "sqlsrv:Server=" . DB_HOST . ";Database=" . DB_NAME;
+                break;
+        }
+        return $dsn;
+    }
+
+    public function migrateDatabase($db): bool
+    {
+        $sqlScript = file_get_contents(__DIR__ . '/../db/script.sql');
+        $queries = array_filter(explode(';', $sqlScript), 'trim'); // Split by ';' and remove empty queries
+
+        foreach ($queries as $query) {
+            $result = $db->exec($query); // Use the provided exec function
+            if ($result === false) {
+                echo "Database migration failed.";
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function isDatabaseMigrated($db): bool
+    {
+        $exists = false;
+
+        switch (DB_TYPE) {
+            case "mysql":
+                $query = "SHOW TABLES LIKE 'users'";
+                $result = $db->exec($query);
+                $exists = count($result) > 0;
+                break;
+            case "pgsql":
+                $query = "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'users')";
+                $result = $db->exec($query);
+                $exists = $result[0]['exists'] === 't';
+                break;
+            case "oci":
+                $query = "SELECT COUNT(*) AS cnt FROM user_tables WHERE table_name = 'USERS'";
+                $result = $db->exec($query);
+                $exists = $result[0]['cnt'] > 0;
+                break;
+            case "sqlsrv":
+                $query = "SELECT CASE WHEN EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[users]') AND type in (N'U')) THEN 1 ELSE 0 END AS exists";
+                $result = $db->exec($query);
+                $exists = $result[0]['exists'] === '1';
+                break;
+        }
+
+        return !empty($exists);
     }
 
 

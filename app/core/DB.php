@@ -16,6 +16,7 @@ class DB
         'Page' => 'pages',
         'Setting' => 'settings',
     ];
+    private string $tableName = '';
     private static ?self $instance = null;
 
     public function __construct()
@@ -74,34 +75,66 @@ class DB
         }
     }
 
-    public function exec(string $query, array $params = []): bool
+    public function getOneBy(array $conditions, string $return = "array")
     {
-        if ($this->pdo) {
-            try {
-                $statement = $this->pdo->prepare($query);
-                foreach ($params as $param => $value) {
-                    $statement->bindValue($param, $value);
+        $className = basename(str_replace('\\', '/', get_class($this)));
+        $tableName = $this->getTableNameByClassName($className);
+
+        $sql = "SELECT * FROM $tableName WHERE ";
+        $params = [];
+
+        foreach ($conditions as $column => $value) {
+            $sql .= "$column = :$column AND ";
+            $params[":$column"] = $value;
+        }
+        $sql = rtrim($sql, 'AND ');
+
+        $data = $this->exec($sql, $params);
+
+        if ($data) {
+            if ($return === "object") { //si on veut un objet au lieu d'un tableau
+                $model = new self();
+                foreach ($data as $key => $value) {
+                    $model->$key = $value; //on remplit l'objet avec les données
                 }
-                return $statement->execute();
-            } catch (PDOException $e) {
-                echo "Erreur SQL : " . $e->getMessage();
-                return false;
-            }
-        } 
-        else {
-            $db = $this->getInstance();
-            try {
-                $statement = $db->pdo->prepare($query);
-                foreach ($params as $param => $value) {
-                    $statement->bindValue($param, $value);
-                }
-                return $statement->execute();
-            } catch (PDOException $e) {
-                echo "Erreur SQL : " . $e->getMessage();
-                return false;
+                return $model;
+            } else {
+                return $data;
             }
         }
+        return null;
     }
+
+    public function exec(string $query, array $params = [], string $returnType = "array")
+    {
+        if ($this->pdo) {
+            $statement = $this->pdo->prepare($query);
+
+            foreach ($params as $param => $value) {
+                $statement->bindValue($param, $value);
+            }
+
+        } else {
+            $db = $this->getInstance();
+
+            $statement = $db->pdo->prepare($query);
+            foreach ($params as $param => $value) {
+                $statement->bindValue($param, $value);
+            }
+
+        }
+        try {
+            $statement->execute();
+            if ($returnType === "array") {
+                return $statement->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return true;
+        } catch (PDOException $e) {
+            echo "Erreur SQL : " . $e->getMessage();
+            return false;
+        }
+    }
+
 
 
     // ---------------------------------------------------------------
