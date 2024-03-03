@@ -14,3 +14,7 @@
 /installer/account:
   controller: Installer
   action: createAdmin
+
+/dashboard:
+  controller: Dashboard
+  action: index

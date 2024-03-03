@@ -15,7 +15,7 @@ class Installer
 
     public function index(): void
     {
-        include __DIR__ . '/../Views/front-office/main/installer_configBDD.php';
+        include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
     }
     
     public function configDatabase(): void
@@ -38,13 +38,16 @@ class Installer
 
         $db = DB::getInstance();
         // Teste la connexion
-        if ($db->testConnection()) {
+        if ($db->testConnection() && /* un user admin existe deja */) {
+            include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+        } else {
             if ($this->migrateDatabase($db)) {
                 $message = "Database is connected and migrate successfully.";
-                include __DIR__ . '/../Views/front-office/main/installer_configAdmin.php';
+                include __DIR__ . '/../Views/back-office/installer/installer_configAdmin.php';
+            } else {
+                $message = "Database is connected but migration failed.";
+                include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
             }
-        } else {
-            header('Location: /installer/process');
         }
     }
 
@@ -100,14 +103,9 @@ class Installer
                         $adminAcc->setRole('admin');
                         $adminAcc->save();
 
-                        //$domainNameSetting = new Setting();
-                        //$domainNameSetting->setKey("site:name");
-                        //$domainNameSetting->setValue(htmlspecialchars($_POST["domain-name"]));
-                        //$domainNameSetting->save();
-
-                        // quand cela fonctionnera, il faut mettre en place 
-                        // une meilleure sécurité (pas forcément avec phpMailer)
-                    } else {
+                        header('Location: /dashboard');
+                    } 
+                    else {
                         $message = "Les mots de passe ne correspondent pas";
                     }
                 } else {
@@ -117,6 +115,30 @@ class Installer
                 $message = "Tous les champs sont obligatoires";
             }
             include __DIR__ . '/../Views/front-office/main/installer_configAdmin.php';
+        } else {
+            header('Location: /installer/processForm');
+        }
+    }
+
+    public function loginAsAdmin(): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $login = $_POST["login"];
+            $password = $_POST["password"];
+
+            $user = User::findByLogin($login);
+
+            if ($user && password_verify($password, $user->getPassword()) && $user->getRole() === 'admin') {
+
+                $_SESSION['admin_id'] = $user->getId();
+                $_SESSION['admin_login'] = $user->getLogin();
+                $_SESSION['admin_email'] = $user->getEmail();
+
+                header('Location: /dashboard');
+            } else {
+                $message = "Invalid login credentials";
+                include __DIR__ . '/../Views/front-office/main/installer_configAdmin.php';
+            }
         } else {
             header('Location: /installer/processForm');
         }
