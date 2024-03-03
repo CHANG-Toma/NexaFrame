@@ -17,7 +17,7 @@ class Installer
     {
         include __DIR__ . '/../Views/front-office/main/installer_configBDD.php';
     }
-
+    
     public function configDatabase(): void
     {
         $dbConfig = [
@@ -36,8 +36,7 @@ class Installer
 
         file_put_contents('../app/config/config.php', $configContent);
 
-        include '../app/config/config.php';
-        $db = new DB();
+        $db = DB::getInstance();
         // Teste la connexion
         if ($db->testConnection()) {
             if ($this->migrateDatabase($db)) {
@@ -50,14 +49,10 @@ class Installer
     }
 
     // Configuration de la BDD pour l'installeur
-
     public function getDsnFromDbType(string $db_type): string //pour la connexion
     {
-        $dsn = null;
+        $dsn = "";
         switch ($db_type) {
-            case "sqlsrv":
-                $dsn = "sqlsrv:Server=" . DB_HOST . ";Database=" . DB_NAME;
-                break;
             case "mysql":
                 $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
                 break;
@@ -66,6 +61,9 @@ class Installer
                 break;
             case "oci":
                 $dsn = "oci:dbname=//" . DB_HOST . ":" . DB_PORT . "/" . DB_NAME;
+                break;
+            case "sqlsrv":
+                $dsn = "sqlsrv:Server=" . DB_HOST . ";Database=" . DB_NAME;
                 break;
         }
         return $dsn;
@@ -94,12 +92,21 @@ class Installer
             if ($_POST["login"] != "" && $_POST["email"] != "" && $_POST["password"] != "" && $_POST["password_confirm"] != "") {
                 if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                     if ($_POST["password"] == $_POST["password_confirm"]) {
-                        $admin = new User();
-                        $admin->setLogin($_POST['login']);
-                        $admin->setEmail($_POST['email']);
-                        $admin->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
-                        $admin->setRole('admin');
-                        $admin->save();
+
+                        $adminAcc = new User();
+                        $adminAcc->setLogin($_POST['login']);
+                        $adminAcc->setEmail($_POST['email']);
+                        $adminAcc->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
+                        $adminAcc->setRole('admin');
+                        $adminAcc->save();
+
+                        //$domainNameSetting = new Setting();
+                        //$domainNameSetting->setKey("site:name");
+                        //$domainNameSetting->setValue(htmlspecialchars($_POST["domain-name"]));
+                        //$domainNameSetting->save();
+
+                        // quand cela fonctionnera, il faut mettre en place 
+                        // une meilleure sécurité (pas forcément avec phpMailer)
                     } else {
                         $message = "Les mots de passe ne correspondent pas";
                     }

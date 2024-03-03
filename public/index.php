@@ -10,8 +10,11 @@ function myAutoloader($class): void
     $file = str_replace("App\\", "", $class);
     $file = str_replace("\\", "/", $file);
     $file .= ".php";
-    if (file_exists($file)) {
-        include $file;
+    if (file_exists("../app/".$file)) {
+        include "../app/".$file;
+    }
+    else {
+        print("Le fichier " . $file . " n'existe pas". "<br>");
     }
 }
 

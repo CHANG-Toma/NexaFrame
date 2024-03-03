@@ -6,27 +6,32 @@ use App\Core\DB;
 
 class User extends DB
 {
-    private int $id;
-    private string $login;
-    private string $email;
-    private string $password;
-    private string $role;
-    private \DateTime $createdAt;
-    private bool $isValidated;
-    private \DateTime $updated_at;
-    private bool $isDeleted;
-    private string $activationToken;
+    private ?int $id = null;
+    protected string $login;
+    protected string $email;
+    protected string $password;
+    protected string $role;
+    protected $updated_at;
+    protected $status;
+    protected $validate;
+    protected $validation_token;
 
-    public function __construct() {}
+    public function __construct()
+    {
+        $this->id = 0;
+        $this->login = '';
+        $this->email = '';
+        $this->password = '';
+        $this->role = '';
+        $this->updated_at = null;
+        $this->status = 0;
+        $this->validate = false;
+        $this->validation_token = null;
+    }
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     public function getLogin(): string
@@ -69,53 +74,43 @@ class User extends DB
         $this->role = $role;
     }
 
-    public function isValidated(): bool
+    public function getUpdatedAt(): ?string
     {
-        return $this->isValidated;
+        return $this->updatedAt;
     }
 
-    public function setIsValidated(bool $isValidated): void
+    public function setUpdatedAt(?string $updatedAt): void
     {
-        $this->isValidated = $isValidated;
+        $this->updatedAt = $updatedAt;
     }
 
-    public function getUpdatedAt(): \DateTime
+    public function getStatus(): int
     {
-        return $this->updated_at;
+        return $this->status;
     }
 
-    public function setUpdatedAt(\DateTime $updated_at): void
+    public function setStatus(int $status): void
     {
-        $this->updated_at = $updated_at;
+        $this->status = $status;
     }
 
-    public function isDeleted(): bool
+    public function isValidate(): bool
     {
-        return $this->isDeleted;
+        return $this->validate;
     }
 
-    public function setIsDeleted(bool $isDeleted): void
+    public function setValidate(bool $validate): void
     {
-        $this->isDeleted = $isDeleted;
+        $this->validate = $validate;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getValidationToken(): ?string
     {
-        return $this->createdAt;
+        return $this->validationToken;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setValidationToken(?string $validationToken): void
     {
-        $this->createdAt = $createdAt;
-    }
-
-    public function getActivation_token(): string
-    {
-        return $this->activationToken;
-    }
-
-    public function setActivation_token(string $token): void
-    {
-        $this->activationToken = $token;
+        $this->validationToken = $validationToken;
     }
 }
