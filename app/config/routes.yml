@@ -15,6 +15,10 @@
   controller: Installer
   action: createAdmin
 
+/installer/login:
+  controller: Installer
+  action: login
+
 /dashboard:
   controller: Dashboard
   action: index

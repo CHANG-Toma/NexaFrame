@@ -10,9 +10,9 @@
         <p><?php echo $error; ?></p>
     <?php } ?>
 
-    <form method="POST" action="">
-        <label for="username">Nom d'utilisateur:</label>
-        <input type="text" name="username" id="username" required><br>
+    <form method="POST" action="/installer/login">
+        <label for="login">Nom d'utilisateur:</label>
+        <input type="text" name="login" id="login" required><br>
 
         <label for="password">Mot de passe:</label>
         <input type="password" name="password" id="password" required><br>

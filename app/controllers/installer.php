@@ -91,6 +91,26 @@ class Installer
         }
     }
 
+    public function login(): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $login = $_POST["login"];
+            $password = $_POST["password"];
+
+            $user = new User();
+            $loggedInUser = $user->getOneBy(["login" => $login]);
+
+            if ($loggedInUser && password_verify($password, $loggedInUser[0]["password"])) {
+                header('Location: /dashboard');
+            } else {
+                $message = "Invalid login credentials";
+                include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+            }
+        } else {
+            header('Location: /installer/processForm');
+        }
+    }
+
     private function InsertDefaultData(): void
     {
         $page = new Page();
@@ -169,35 +189,5 @@ class Installer
         }
         return true;
     }
-
-    public function isDatabaseMigrated($db): bool
-    {
-        $exists = false;
-
-        switch (DB_TYPE) {
-            case "mysql":
-                $query = "SHOW TABLES LIKE 'users'";
-                $result = $db->exec($query);
-                $exists = count($result) > 0;
-                break;
-            case "pgsql":
-                $query = "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'users')";
-                $result = $db->exec($query);
-                $exists = $result[0]['exists'] === 't';
-                break;
-            case "oci":
-                $query = "SELECT COUNT(*) AS cnt FROM user_tables WHERE table_name = 'USERS'";
-                $result = $db->exec($query);
-                $exists = $result[0]['cnt'] > 0;
-                break;
-            case "sqlsrv":
-                $query = "SELECT CASE WHEN EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[users]') AND type in (N'U')) THEN 1 ELSE 0 END AS exists";
-                $result = $db->exec($query);
-                $exists = $result[0]['exists'] === '1';
-                break;
-        }
-        return !empty($exists);
-    }
-
 
 }
