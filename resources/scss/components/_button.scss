@@ -47,10 +47,11 @@
     @include flexbox(unset, nowrap, center, center, rem(8));
     border: rem(1) solid var(--reverse-bg-color);
     text-decoration: none;
+    border-radius: var(--main-radius);
+    cursor: pointer;
 
     &.Primary {
         background: var(--reverse-bg-color);
-        text-decoration: none;
         color: var(--website-bg-color);
 
         &:hover {
@@ -61,7 +62,6 @@
     }
 
     &.Secondary {
-        text-decoration: none;
         color: var(--reverse-bg-color);
 
         &:hover {

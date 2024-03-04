@@ -9,18 +9,24 @@
 </head>
 
 <body>
-    <div class="installer-container">
+    <section class="form-container">
         <h2>Create Admin Account</h2>
-        <div class="error-message <?php echo isset($message) ? '' : 'hidden'; ?>">
+        <div class="error-message <?php echo isset($error) ? '' : 'hidden'; ?>">
             <?php
-            if (isset($message)) {
-                echo $message;
-                unset($message);
+            if (isset($error)) {
+                echo $error;
+                unset($error);
             }
             ?>
             <br>
         </div>
         <form action="/installer/account" method="post">
+            <?php if (isset($error)) { ?>
+                <p class="error">
+                    <?= $error ?>
+                </p>
+            <?php } ?>
+
             <div class="form-group">
                 <label for="domainName">Nom de domaine :</label>
                 <input type="text" id="domainName" name="domain-name" required>
@@ -41,9 +47,9 @@
                 <label for="password_confirm">Repeat password:</label>
                 <input type="password" id="password_confirm" name="password_confirm" required>
             </div>
-            <button class="Button Primary" type="submit">Create Account</button>
+            <button class="Button Primary" type="submit">S'enregistrer</button>
         </form>
-    </div>
+    </section>
 </body>
 
 </html>

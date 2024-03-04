@@ -7,8 +7,13 @@
     <title>Installer - BDD</title>   
 </head>
 <body>
-    <div class="installer-container">
+    <section class="form-container">
         <form id="dbTestForm" action="/installer/process" method="post">
+        <?php if (isset($error)) { ?>
+            <p class="error">
+                <?= $error ?>
+            </p>
+        <?php } ?>
             <h2>Configuration de votre base de données</h2>
             <div class="form-group">
                 <label for="dbHost">Hôte :</label>
@@ -41,6 +46,6 @@
             </div>
             <button class="Button Primary" type="submit">Vérifier la connexion</button>
         </form>
-    </div>
+    </section>
 </body>
 </html>

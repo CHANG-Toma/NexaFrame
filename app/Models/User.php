@@ -74,14 +74,14 @@ class User extends DB
         $this->role = $role;
     }
 
-    public function getUpdatedAt(): ?string
+    public function getUpdated_at(): ?string
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
-    public function setUpdatedAt(?string $updatedAt): void
+    public function setUpdated_at(?string $updatedAt): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updatedAt;
     }
 
     public function getStatus(): int
@@ -104,13 +104,13 @@ class User extends DB
         $this->validate = $validate;
     }
 
-    public function getValidationToken(): ?string
+    public function getValidation_token(): ?string
     {
-        return $this->validationToken;
+        return $this->validation_token;
     }
 
-    public function setValidationToken(?string $validationToken): void
+    public function setValidation_token(?string $validationToken): void
     {
-        $this->validationToken = $validationToken;
+        $this->validation_token = $validationToken;
     }
 }

@@ -24,7 +24,7 @@ class DB
         $dsn = new Installer();
 
         try {
-            include '../app/config/config.php'; //on inclut le fichier de configuration
+            include_once '../app/config/config.php'; //on inclut le fichier de configuration
             $this->pdo = new PDO($dsn->getDsnFromDbType(DB_TYPE), DB_USER, DB_PASSWORD);
         } catch (PDOException $e) {
             echo "Erreur SQL : " . $e->getMessage();
@@ -44,7 +44,6 @@ class DB
     {
         $data = $this->getDataObject();
 
-        unset($data['tableName']);
         foreach ($data as $key => $value) {
             if (is_bool($value)) {
                 $data[$key] = $value ? 'true' : 'false';    //si c'est un booléen, on le transforme en string
@@ -76,7 +75,7 @@ class DB
         }
     }
 
-    public function getOneBy(array $conditions, string $return = "array")
+    public function getOneBy(array $conditions)
     {
         $className = basename(str_replace('\\', '/', get_class($this)));
         $tableName = $this->getTableNameByClassName($className);
@@ -93,18 +92,24 @@ class DB
         $data = $this->exec($sql, $params);
 
         if ($data) {
-            if ($return === "object") { //si on veut un objet au lieu d'un tableau
-                $model = new self();
-                foreach ($data as $key => $value) {
-                    $model->$key = $value; //on remplit l'objet avec les données
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function populate(array $data): void
+    {
+        for ($i = 0; $i < count($data); $i++) {
+            foreach ($data[$i] as $key => $value) {
+                $methodName = "set" . ucfirst($key); 
+                if (method_exists($this, $methodName)) {
+                    $this->$methodName($value);
                 }
-                return $model;
-            } else {
-                return $data;
             }
         }
-        return null;
     }
+
 
     public function exec(string $query, array $params = [], string $returnType = "array")
     {
@@ -160,6 +165,7 @@ class DB
         unset($data['pdo']);
         unset($data['table']);
         unset($data['tableMapping']);
+        unset($data['tableName']);
         return $data;
     }
 }

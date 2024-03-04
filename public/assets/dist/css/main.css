@@ -31,6 +31,7 @@
   --img-bg-color: #e6e6e6;
   --dropdown-bg-color: #FFF;
   --dropdown-link-hover-bg-color: #1a1a1a;
+  --success-message: #08c108;
   --error-message: #ff0000;
   /*Radius*/
   --main-radius: 0.375rem;
@@ -85,6 +86,10 @@ img {
 
 .error {
   color: var(--error-message);
+}
+
+.success {
+  color: var(--success-message);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -483,10 +488,11 @@ img {
   gap: 0.5rem;
   border: 0.0625rem solid var(--reverse-bg-color);
   text-decoration: none;
+  border-radius: var(--main-radius);
+  cursor: pointer;
 }
 .Button.Primary {
   background: var(--reverse-bg-color);
-  text-decoration: none;
   color: var(--website-bg-color);
 }
 .Button.Primary:hover {
@@ -495,7 +501,6 @@ img {
   transition: 0.3s ease-in-out;
 }
 .Button.Secondary {
-  text-decoration: none;
   color: var(--reverse-bg-color);
 }
 .Button.Secondary:hover {
@@ -633,6 +638,65 @@ img {
 .trust-us .logo-relume {
   height: 3.5rem;
   position: relative;
+}
+
+body {
+  padding: 0;
+}
+
+.form-container {
+  max-width: 25rem;
+  margin: 3.125rem auto;
+  padding: 1.25rem;
+  background: var(--website-bg-color);
+  border-radius: 0.375rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+.form-container h1 {
+  display: flex;
+  flex-direction: unset;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: unset;
+  margin-bottom: 1.25rem;
+}
+.form-container h2 {
+  margin-bottom: 1.25rem;
+}
+.form-container .form-group {
+  margin-bottom: 0.9375rem;
+}
+.form-container .form-group label {
+  display: block;
+  margin-bottom: 0.3125rem;
+}
+.form-container .form-group input[type=text],
+.form-container .form-group input[type=password],
+.form-container .form-group input[type=email] select {
+  width: 100%;
+  padding: 0.625rem;
+  border: 0.0625rem solid var(--darkgrey);
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  appearance: none;
+  background-color: #fff;
+  cursor: pointer;
+}
+.form-container .links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.9375rem;
+}
+.form-container .link {
+  color: var(--black);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color var(--transition-duration);
+}
+.form-container .link:hover {
+  color: var(--btn-bg-hover-color);
+  text-decoration: underline;
 }
 
 .navbar {
@@ -955,41 +1019,6 @@ img {
 }
 .address.footer-link a, .contact.footer-link a, .link.footer-link a, .footer-link.footer-link a, .phone.footer-link a, .email.footer-link a, .copyright.footer-link a, .address-detail.footer-link a {
   color: var(--text-color);
-}
-
-body {
-  padding: 0;
-}
-
-.installer-container {
-  max-width: 25rem;
-  margin: 3.125rem auto;
-  padding: 1.25rem;
-  background: var(--website-bg-color);
-  border-radius: 0.375rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-}
-.installer-container h2 {
-  margin-bottom: 1.25rem;
-}
-.installer-container .form-group {
-  margin-bottom: 0.9375rem;
-}
-.installer-container .form-group label {
-  display: block;
-  margin-bottom: 0.3125rem;
-}
-.installer-container .form-group input[type=text],
-.installer-container .form-group input[type=password],
-.installer-container .form-group input[type=email] select {
-  width: 100%;
-  padding: 0.625rem;
-  border: 0.0625rem solid var(--darkgrey);
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  appearance: none;
-  background-color: #fff;
-  cursor: pointer;
 }
 
 /*# sourceMappingURL=main.css.map */

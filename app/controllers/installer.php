@@ -41,7 +41,7 @@ class Installer
         // Teste la connexion
 
         if (!$db->testConnection()) {
-            $message = "Database connection failed.";
+            $error = "Database connection failed.";
             include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
         } else {
             $user = new User();
@@ -51,11 +51,11 @@ class Installer
                 if ($this->migrateDatabase($db)) {
                     include __DIR__ . '/../Views/back-office/installer/installer_registerAdmin.php';
                 } else {
-                    $message = "Database migration failed.";
+                    $error = "Database migration failed.";
                     include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
                 }
             }
-            
+
         }
     }
 
@@ -99,16 +99,43 @@ class Installer
 
             $user = new User();
             $loggedInUser = $user->getOneBy(["login" => $login]);
+            $user->populate($loggedInUser);
 
-            if ($loggedInUser && password_verify($password, $loggedInUser[0]["password"])) {
+            if ($loggedInUser && password_verify($password, $user->getPassword())) {
                 header('Location: /dashboard');
             } else {
-                $message = "Invalid login credentials";
+                $error = "Nom d'utilisateur ou mot de passe incorrect";
                 include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
             }
         } else {
-            header('Location: /installer/processForm');
+            include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
         }
+    }
+
+    public function forgotPassword(): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $email = $_POST["email"];
+
+            $user = new User();
+            $loggedInUser = $user->getOneBy(["email" => $email]); 
+            $user->populate($loggedInUser);
+            
+            if ($loggedInUser) {
+
+                $NewRandomHashedPwd = password_hash(bin2hex(random_bytes(16)), PASSWORD_DEFAULT);
+                $user->setPassword($NewRandomHashedPwd);
+                $user->save();
+
+                //sendPasswordResetEmail($email, $newPassword);
+
+                $success = "Un nouveau mot de passe a été envoyé à votre adresse e-mail.";
+            } else {
+                $error = "Aucun utilisateur trouvé avec cette adresse e-mail.";
+                include __DIR__ . '/../Views/back-office/installer/installer_ForgotPwdAdmin.php';
+            }
+        }
+        include __DIR__ . '/../Views/back-office/installer/installer_ForgotPwdAdmin.php';
     }
 
     private function InsertDefaultData(): void
