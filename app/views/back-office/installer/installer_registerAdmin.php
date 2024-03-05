@@ -28,7 +28,7 @@
             <?php } ?>
 
             <div class="form-group">
-                <label for="domainName">Nom de domaine :</label>
+                <label for="domainName">Nom du site :</label>
                 <input type="text" id="domainName" name="domain-name" required>
             </div>
             <div class="form-group">
@@ -37,7 +37,7 @@
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="text" id="email" name="email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>

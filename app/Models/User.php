@@ -34,6 +34,12 @@ class User extends DB
         return $this->id;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function getLogin(): string
     {
         return $this->login;

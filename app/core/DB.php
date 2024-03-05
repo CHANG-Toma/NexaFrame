@@ -136,7 +136,6 @@ class DB
             }
             return true;
         } catch (PDOException $e) {
-            echo "Erreur SQL : " . $e->getMessage();
             return false;
         }
     }

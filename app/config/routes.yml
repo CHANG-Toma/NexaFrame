@@ -15,9 +15,13 @@
   controller: Installer
   action: createAdmin
 
+/installer/validate:
+  controller: Installer
+  action: validateAdmin
+
 /installer/login:
   controller: Installer
-  action: login
+  action: loginAdmin
 
 /installer/forgot-password:
   controller: Installer

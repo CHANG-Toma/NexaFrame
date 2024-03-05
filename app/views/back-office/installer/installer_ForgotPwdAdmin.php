@@ -27,7 +27,7 @@
         <form method="post" action="/installer/forgot-password">
             <div class="form-group">
                 <label for="email">Adresse e-mail :</label>
-                <input type="email" name="email" id="email" required>
+                <input type="text" name="email" id="email" required>
             </div>
             <button class="Button Primary" type="submit">Envoyer</button>
             <div class="links">

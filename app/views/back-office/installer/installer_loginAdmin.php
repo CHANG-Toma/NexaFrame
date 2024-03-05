@@ -18,6 +18,11 @@
                 <?= $error ?>
             </p>
         <?php } ?>
+        <?php if (isset($success)) { ?>
+            <p class="success">
+                <?= $success ?>
+            </p>
+        <?php } ?>
 
         <form method="POST" action="/installer/login">
             <div class="form-group">

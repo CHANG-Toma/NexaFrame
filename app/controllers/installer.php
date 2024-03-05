@@ -13,9 +13,7 @@ use PHPMailer\PHPMailer\SMTP;
 
 class Installer
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function index(): void
     {
@@ -69,19 +67,53 @@ class Installer
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($_POST["login"] != "" && $_POST["email"] != "" && $_POST["password"] != "" && $_POST["password_confirm"] != "") {
                 if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                    $email = $_POST['email'];
                     if ($_POST["password"] == $_POST["password_confirm"]) {
 
                         $adminAcc = new User();
                         $adminAcc->setLogin($_POST['login']);
-                        $adminAcc->setEmail($_POST['email']);
+                        $adminAcc->setEmail($email);
                         $adminAcc->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
                         $adminAcc->setRole('admin');
+
+                        $adminAcc->setValidation_token(md5(uniqid()));
 
                         $adminAcc->save();
 
                         if (!empty($adminAcc->getOneBy(["role" => "admin"]))) {
-                            include __DIR__ . '/../Views/back-office/dashboard/dashboard.php';
+                            try {
+
+                                $mailConfig = include __DIR__ . "/../config/MailConfig.php";
+                                $mail = new PHPMailer(true);
+
+                                $mail->isSMTP();
+                                $mail->Host = $mailConfig['host'];
+                                $mail->SMTPAuth = true;
+                                $mail->Username = $mailConfig['username'];
+                                $mail->Password = $mailConfig['password'];
+                                $mail->SMTPSecure = $mailConfig['encryption'];
+                                $mail->Port = $mailConfig['port'];
+
+                                // Sender and recipient settings
+                                $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
+                                $mail->addAddress($email);
+
+                                // Email content
+                                $mail->isHTML(true);
+                                $mail->Subject = 'Account Confirmation';
+                                $mail->Body = 'Veuillez cliquer sur le lien suivant pour confirmer votre compte : 
+                                <a href="http://localhost/installer/validate?token=' . $adminAcc->getValidation_token() . '">
+                                Confirmer le compte</a>';
+
+                                $mail->send();
+
+                            } catch (Exception $e) {
+                                $message = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+                            }
+                        } else {
+                            $message = "Erreur lors de la création de l'administrateur";
                         }
+                        include __DIR__ ."/../Views/back-office/installer/installer_loginAdmin.php";
                     } else {
                         $message = "Les mots de passe ne correspondent pas";
                     }
@@ -93,10 +125,11 @@ class Installer
             }
         } else {
             header('Location: /installer/processForm');
+            exit();
         }
     }
 
-    public function login(): void
+    public function loginAdmin(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $login = $_POST["login"];
@@ -243,6 +276,32 @@ class Installer
             }
         }
         return true;
+    }
+
+    public function validateAdmin(): void
+    {
+        $token = $_GET['token'];
+        $user = new User();
+        $userData = $user->getOneBy(["validation_token" => $token]);
+
+        if ($userData !== false) {
+            if ($user->populate($userData)) {
+                if ($user->getId() > 0) {
+                    $user->setValidate(true);
+                    $user->setValidation_token(null); //on vide le token pour ne pas le réutiliser pour une autre validation
+                    $user->save();
+                    $success = "Votre compte a été validé avec succès.";
+                } else {
+                    $error = 'Token invalide ou expiré. Veuillez réessayer.';
+                }
+            } else {
+                $error = 'Erreur lors de la récupération des données utilisateur.';
+            }
+        } else {
+            $error = 'Token invalide ou expiré. Veuillez réessayer.';
+        }
+
+        include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
     }
 
 }
