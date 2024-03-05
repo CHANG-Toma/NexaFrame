@@ -13,7 +13,9 @@ use PHPMailer\PHPMailer\SMTP;
 
 class Installer
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function index(): void
     {
@@ -113,7 +115,7 @@ class Installer
                         } else {
                             $message = "Erreur lors de la création de l'administrateur";
                         }
-                        include __DIR__ ."/../Views/back-office/installer/installer_loginAdmin.php";
+                        include __DIR__ . "/../Views/back-office/installer/installer_loginAdmin.php";
                     } else {
                         $message = "Les mots de passe ne correspondent pas";
                     }
@@ -132,15 +134,27 @@ class Installer
     public function loginAdmin(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $login = $_POST["login"];
-            $password = $_POST["password"];
+
+            $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
+            $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            
+            if (empty($login) || empty($password)) {
+                $error = "Nom d'utilisateur ou mot de passe incorrect";
+                include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+            }
 
             $user = new User();
             $loggedInUser = $user->getOneBy(["login" => $login]);
             $user->populate($loggedInUser);
 
             if ($loggedInUser && password_verify($password, $user->getPassword())) {
-                header('Location: /dashboard');
+                if($user->getRole() == "admin" && $user->isValidate() == true) {
+                    $_SESSION['user'] = $user;
+                    header('Location: /dashboard');
+                } else {
+                    $error = "Compte non validé, veuillez vérifier votre boîte mail pour valider votre compte.";
+                    include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+                }    
             } else {
                 $error = "Nom d'utilisateur ou mot de passe incorrect";
                 include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
@@ -153,35 +167,38 @@ class Installer
     public function forgotPassword(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
             $email = $_POST["email"];
 
-            $user = new User();
-            $loggedInUser = $user->getOneBy(["email" => $email]);
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-            if ($loggedInUser) {
-                $user->populate($loggedInUser);
+                $user = new User();
+                $loggedInUser = $user->getOneBy(["email" => $email]);
 
-                $newPwd = bin2hex(random_bytes(16));
-                $NewRandomHashedPwd = password_hash($newPwd, PASSWORD_DEFAULT);
-                $user->setPassword($NewRandomHashedPwd);
-                $user->save();
+                if ($loggedInUser) {
+                    $user->populate($loggedInUser);
 
-                $mailConfig = include __DIR__ . "/../config/MailConfig.php";
+                    $newPwd = bin2hex(random_bytes(16));
+                    $NewRandomHashedPwd = password_hash($newPwd, PASSWORD_DEFAULT);
+                    $user->setPassword($NewRandomHashedPwd);
+                    $user->save();
 
-                $mail = new PHPMailer(true);
-                $mail->isSMTP();
-                $mail->Host = $mailConfig['host'];
-                $mail->SMTPAuth = true;
-                $mail->Username = $mailConfig['username'];
-                $mail->Password = $mailConfig['password'];
-                $mail->SMTPSecure = $mailConfig['encryption'];
-                $mail->Port = $mailConfig['port'];
+                    $mailConfig = include __DIR__ . "/../config/MailConfig.php";
 
-                $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
-                $mail->addAddress($email);
-                $mail->Subject = "Nouveau mot de passe pour votre compte Nexaframe";
-                $mail->isHTML(true);
-                $mail->Body = "Bonjour,
+                    $mail = new PHPMailer(true);
+                    $mail->isSMTP();
+                    $mail->Host = $mailConfig['host'];
+                    $mail->SMTPAuth = true;
+                    $mail->Username = $mailConfig['username'];
+                    $mail->Password = $mailConfig['password'];
+                    $mail->SMTPSecure = $mailConfig['encryption'];
+                    $mail->Port = $mailConfig['port'];
+
+                    $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
+                    $mail->addAddress($email);
+                    $mail->Subject = "Nouveau mot de passe pour votre compte Nexaframe";
+                    $mail->isHTML(true);
+                    $mail->Body = "Bonjour,
                 <br>Un nouveau mot de passe a été généré pour votre compte.<br>
                 <br>Votre nouveau mot de passe est : <strong>" . $newPwd . "</strong>
                 <br>Vous pouvez le changer une fois connecté à votre compte.
@@ -189,11 +206,15 @@ class Installer
                 <br>Vous pouvez vous connecter à votre compte en cliquant sur le lien suivant : <a href='http://localhost/installer/login'>Se connecter</a>
                 <br><br>Cordialement,
                 <br>L'équipe Nexaframe.";
-                $mail->send();
+                    $mail->send();
 
-                $success = "Un nouveau mot de passe a été envoyé à votre adresse e-mail.";
-            } else {
-                $error = "Aucun utilisateur trouvé avec cette adresse e-mail.";
+                    $success = "Un nouveau mot de passe a été envoyé à votre adresse e-mail.";
+                } else {
+                    $error = "Aucun utilisateur trouvé avec cette adresse e-mail.";
+                }
+            }
+            else {
+                $error = "Bien tenté :)";
             }
         }
         include __DIR__ . '/../Views/back-office/installer/installer_ForgotPwdAdmin.php';
@@ -266,10 +287,10 @@ class Installer
     public function migrateDatabase($db): bool
     {
         $sqlScript = file_get_contents(__DIR__ . '/../db/script.sql');
-        $queries = array_filter(explode(';', $sqlScript), 'trim'); // Split by ';' and remove empty queries
+        $queries = array_filter(explode(';', $sqlScript), 'trim');
 
         foreach ($queries as $query) {
-            $result = $db->exec($query); // Use the provided exec function
+            $result = $db->exec($query);
             if ($result === false) {
                 echo "Database migration failed.";
                 return false;
@@ -280,22 +301,19 @@ class Installer
 
     public function validateAdmin(): void
     {
-        $token = $_GET['token'];
         $user = new User();
+        $token = $_GET['token'];
         $userData = $user->getOneBy(["validation_token" => $token]);
 
         if ($userData !== false) {
-            if ($user->populate($userData)) {
-                if ($user->getId() > 0) {
-                    $user->setValidate(true);
-                    $user->setValidation_token(null); //on vide le token pour ne pas le réutiliser pour une autre validation
-                    $user->save();
-                    $success = "Votre compte a été validé avec succès.";
-                } else {
-                    $error = 'Token invalide ou expiré. Veuillez réessayer.';
-                }
+            $user->populate($userData);
+            if ($user->getId() > 0) {
+                $user->setValidate(true);
+                $user->setValidation_token(null); //on vide le token pour ne pas le réutiliser pour une autre validation
+                $user->save();
+                $success = "Votre compte a été validé avec succès.";
             } else {
-                $error = 'Erreur lors de la récupération des données utilisateur.';
+                $error = 'Token invalide ou expiré. Veuillez réessayer.';
             }
         } else {
             $error = 'Token invalide ou expiré. Veuillez réessayer.';
@@ -303,5 +321,4 @@ class Installer
 
         include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
     }
-
 }

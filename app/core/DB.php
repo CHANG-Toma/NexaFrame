@@ -110,7 +110,6 @@ class DB
         }
     }
 
-
     public function exec(string $query, array $params = [], string $returnType = "array")
     {
         if ($this->pdo) {
