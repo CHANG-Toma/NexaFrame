@@ -154,7 +154,6 @@ class DB
             $this->pdo->getAttribute(PDO::ATTR_CONNECTION_STATUS);
             return true;
         } catch (PDOException $e) {
-            echo "Erreur SQL : " . $e->getMessage();
             return false;
         }
     }

@@ -17,23 +17,23 @@
             <h2>Configuration de votre base de données</h2>
             <div class="form-group">
                 <label for="dbHost">Hôte :</label>
-                <input type="text" id="dbHost" name="db_host" placeholder="ex : localhost" required>
+                <input type="text" id="dbHost" name="db_host" placeholder="ex : postgres" required>
             </div>
             <div class="form-group">
                 <label for="dbPort">Port :</label>
-                <input type="text" id="dbPort" name="db_port" placeholder="ex : 80" required>
+                <input type="text" id="dbPort" name="db_port" placeholder="ex : 5432" required>
             </div>
             <div class="form-group">
                 <label for="dbName">Nom de la Base de Données :</label>
-                <input type="text" id="dbName" name="db_name" placeholder="Database name" required>
+                <input type="text" id="dbName" name="db_name" placeholder="ex : db_name" required>
             </div>
             <div class="form-group">
                 <label for="dbUser">Utilisateur :</label>
-                <input type="text" id="dbUser" name="db_user" placeholder="db username" required>
+                <input type="text" id="dbUser" name="db_user" placeholder="ex : root" required>
             </div>
             <div class="form-group">
                 <label for="dbPassword">Mot de Passe :</label>
-                <input type="password" id="dbPassword" name="db_password" placeholder="12345678" required>
+                <input type="password" id="dbPassword" name="db_password" placeholder="ex : root" required>
             </div>
             <div class="form-group">
                 <label for="dbType">Type de Base de Données :</label>
