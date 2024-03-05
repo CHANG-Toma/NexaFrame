@@ -1,4 +1,3 @@
--- Supprimer les tables avec CASCADE
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS articles CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
@@ -7,19 +6,16 @@ DROP TABLE IF EXISTS likes_users_articles CASCADE;
 DROP TABLE IF EXISTS pages CASCADE;
 DROP TABLE IF EXISTS settings CASCADE;
 
--- Créer la table "categories"
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
     label VARCHAR(50)
 );
 
--- Créer la table "settings"
 CREATE TABLE settings (
     key VARCHAR(50) PRIMARY KEY,
     value TEXT NOT NULL
 );
 
--- Créer la table "users"
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     login VARCHAR(50) NOT NULL,
@@ -33,7 +29,6 @@ CREATE TABLE users (
     validation_token VARCHAR(32)
 );
 
--- Créer la table "articles"
 CREATE TABLE articles (
     id SERIAL PRIMARY KEY,
     title VARCHAR(170) NOT NULL,
@@ -51,7 +46,6 @@ CREATE TABLE articles (
     FOREIGN KEY (id_updator) REFERENCES users(id)
 );
 
--- Créer la table "likes_users_articles"
 CREATE TABLE likes_users_articles (
    id_article INT NOT NULL,
    id_user INT NOT NULL,
@@ -60,7 +54,6 @@ CREATE TABLE likes_users_articles (
    FOREIGN KEY (id_user) REFERENCES users(id)
 );
 
--- Créer la table "comments"
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     id_article INT,
@@ -78,7 +71,6 @@ CREATE TABLE comments (
     FOREIGN KEY (id_validator) REFERENCES users(id)
 );
 
--- Créer la table "pages"
 CREATE TABLE pages (
     id SERIAL PRIMARY KEY,
     url VARCHAR(50) NOT NULL,
@@ -93,32 +85,7 @@ CREATE TABLE pages (
     FOREIGN KEY (id_updator) REFERENCES users(id)
 );
 
--- Trigger pour mettre automatiquement à jours le champ updated_at lorsque l'entrée est modifié
-CREATE OR REPLACE FUNCTION update_timestamp()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER update_article_timestamp
-    BEFORE UPDATE ON articles
-    FOR EACH ROW
-    EXECUTE FUNCTION update_timestamp();
-
--- Insérer des données dans la table "categories"
 INSERT INTO categories (label) VALUES
 ('Musique'),
 ('Sport'),
 ('Art');
-
--- Insérer des données dans la table "users"
--- Note: Assurez-vous de remplacer le mot de passe par un hash sécurisé avant l'insertion
-INSERT INTO users (login, email, password) VALUES
-('admin', 'admin@nexaframe.com', '$$Azerty123!');
-
--- Insérer des données dans la table "pages"
--- Note : Cette insertion contient du contenu HTML comme exemple. Assurez-vous que le contenu inséré est sécurisé et nettoyé pour éviter les vulnérabilités XSS.
-INSERT INTO pages (url, title, content, meta_description, id_creator) VALUES
-('/', 'Accueil', 'Votre contenu HTML ici', 'Meta description de la page d''accueil', 1);

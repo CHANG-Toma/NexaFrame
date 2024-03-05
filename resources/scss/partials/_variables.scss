@@ -5,6 +5,7 @@ $bg-color : #FFF2D8;
 $primary-color : #113946;
 $secondary-color : #EAD7BB;
 $error : #ff0000;
+$success : #08c108;
 $grey: #333;
 $darkgrey: #666;
 $centered : auto;
@@ -41,7 +42,10 @@ $centered : auto;
     --img-bg-color: #{darken($white, 10%)};
     --dropdown-bg-color : #{$white};
     --dropdown-link-hover-bg-color : #{lighten($black, 10%)};
+
+    --success-message : #{$success};
     --error-message : #{$error};
+
 
     /*Radius*/
 

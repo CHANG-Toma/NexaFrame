@@ -1,5 +1,34 @@
-# User
 
 /home:
   controller: home
+  action: index
+
+/installer:
+  controller: Installer
+  action: index
+
+/installer/process:
+  controller: Installer
+  action: configDatabase
+
+/installer/account:
+  controller: Installer
+  action: createAdmin
+
+/installer/validate:
+  controller: Installer
+  action: validateAdmin
+
+/installer/login:
+  controller: Installer
+  action: loginAdmin
+
+/installer/forgot-password:
+  controller: User
+  action: forgotPassword
+
+
+
+/dashboard:
+  controller: Dashboard
   action: index
