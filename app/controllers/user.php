@@ -3,10 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User as UserModel;
-use App\Core\DB;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
 
 
 class User

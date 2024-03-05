@@ -27,6 +27,8 @@
   controller: User
   action: forgotPassword
 
+
+
 /dashboard:
   controller: Dashboard
   action: index
