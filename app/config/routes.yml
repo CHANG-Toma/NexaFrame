@@ -24,7 +24,7 @@
   action: loginAdmin
 
 /installer/forgot-password:
-  controller: Installer
+  controller: User
   action: forgotPassword
 
 /dashboard:

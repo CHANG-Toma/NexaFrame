@@ -131,6 +131,107 @@ class Installer
         }
     }
 
+    public function validateAdmin(): void
+    {
+        $user = new User();
+        $token = $_GET['token'];
+        $userData = $user->getOneBy(["validation_token" => $token]);
+
+        if ($userData !== false) {
+            $user->populate($userData);
+            if ($user->getId() > 0) {
+                $user->setValidate(true);
+                $user->setValidation_token(null); //on vide le token pour ne pas le réutiliser pour une autre validation
+                $user->save();
+                $success = "Votre compte a été validé avec succès.";
+            } else {
+                $error = 'Token invalide ou expiré. Veuillez réessayer.';
+            }
+        } else {
+            $error = 'Token invalide ou expiré. Veuillez réessayer.';
+        }
+
+        include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+    }
+
+    public function getDsnFromDbType(string $db_type): string //pour la connexion
+    {
+        $dsn = "";
+        switch ($db_type) {
+            case "mysql":
+                $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
+                break;
+            case "pgsql":
+                $dsn = "pgsql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT;
+                break;
+            case "oci":
+                $dsn = "oci:dbname=//" . DB_HOST . ":" . DB_PORT . "/" . DB_NAME;
+                break;
+            case "sqlsrv":
+                $dsn = "sqlsrv:Server=" . DB_HOST . ";Database=" . DB_NAME;
+                break;
+        }
+        return $dsn;
+    }
+
+    public function migrateDatabase($db): bool
+    {
+        $sqlScript = file_get_contents(__DIR__ . '/../db/script.sql');
+        $queries = array_filter(explode(';', $sqlScript), 'trim');
+
+        foreach ($queries as $query) {
+            $result = $db->exec($query);
+            if ($result === false) {
+                echo "Database migration failed.";
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function InsertDefaultData(): void
+    {
+        $page = new Page();
+        $page->setUrl("/");
+        $page->setTitle("Accueil");
+        $page->setContent('<div class="container editable sortable-element" data-sortable="true" style="height: 100vh;" draggable="false"><div class="container editable sortable-element align-horizontal-start align-vertical-center" data-sortable="true" style="padding-right: 0px;" draggable="false"><div class="row editable sortable-element" data-sortable="true" style="display: flex; justify-content: space-between; align-items: center; padding-left: 0px; padding-right: 0px;" draggable="false"><div class="col-sm-8 editable sortable-element" data-sortable="true" draggable="false" style="width: 50%;"><p class="editable editable-text" draggable="false" contenteditable="false" style="text-transform: uppercase; font-size: 14px; color: rgb(110, 112, 118); font-weight: 500; letter-spacing: 1.5px;">centre de ressource</p><div class="editable editable-text" draggable="false" contenteditable="false" style="font-size: 64px; font-weight: 800; color: rgb(38, 38, 58); text-transform: none;">Nexaframe - CMF,&nbsp;<div>développement web et outils technologiques</div></div></div><div class="col-sm-4 editable sortable-element" data-sortable="true" draggable="false" style="width: 50%;"><div class="editable image-container" draggable="false" style="max-height: 100%; margin-left: auto; margin-right: 0px;"><img src="https://cdn.dribbble.com/users/3873964/screenshots/14092691/media/d825b72de91e141ce5a66875adbe006d.gif" alt="myimage" draggable="false"></div></div></div></div></div><div class="container editable sortable-element" data-sortable="true" draggable="false" style="padding: 0px;"></div><div class="container editable sortable-element" data-sortable="true" draggable="false" style="padding: 0px;"></div>');
+        $page->setMetaDescription("Meta description");
+        $page->setIdCreator(1);
+        $page->save();
+    }
+    private function InsertDefaultSettings(): void
+    {
+        $settingsCssPrimary = new Setting();
+        $settingsCssPrimary->setKey("css:primary");
+        $settingsCssPrimary->setValue("#1c1c2b");
+        $settingsCssPrimary->save();
+
+        $settingsCssSecondary = new Setting();
+        $settingsCssSecondary->setKey("css:secondary");
+        $settingsCssSecondary->setValue("#26263a");
+        $settingsCssSecondary->save();
+
+        $settingsCssTercery = new Setting();
+        $settingsCssTercery->setKey("css:tercery");
+        $settingsCssTercery->setValue("#7e37d8");
+        $settingsCssTercery->save();
+
+        $settingsCssMainFont1 = new Setting();
+        $settingsCssMainFont1->setKey("css:main-font1");
+        $settingsCssMainFont1->setValue("Plus Jakarta Sans");
+        $settingsCssMainFont1->save();
+
+        $settingsCssMainRadius = new Setting();
+        $settingsCssMainRadius->setKey("css:main-radius");
+        $settingsCssMainRadius->setValue("6px");
+        $settingsCssMainRadius->save();
+
+        $settingsCssTransitionDuration = new Setting();
+        $settingsCssTransitionDuration->setKey("css:transition-duration");
+        $settingsCssTransitionDuration->setValue("0.3s");
+        $settingsCssTransitionDuration->save();
+    }
+
     public function loginAdmin(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -218,107 +319,5 @@ class Installer
             }
         }
         include __DIR__ . '/../Views/back-office/installer/installer_ForgotPwdAdmin.php';
-    }
-
-    private function InsertDefaultData(): void
-    {
-        $page = new Page();
-        $page->setUrl("/");
-        $page->setTitle("Accueil");
-        $page->setContent('<div class="container editable sortable-element" data-sortable="true" style="height: 100vh;" draggable="false"><div class="container editable sortable-element align-horizontal-start align-vertical-center" data-sortable="true" style="padding-right: 0px;" draggable="false"><div class="row editable sortable-element" data-sortable="true" style="display: flex; justify-content: space-between; align-items: center; padding-left: 0px; padding-right: 0px;" draggable="false"><div class="col-sm-8 editable sortable-element" data-sortable="true" draggable="false" style="width: 50%;"><p class="editable editable-text" draggable="false" contenteditable="false" style="text-transform: uppercase; font-size: 14px; color: rgb(110, 112, 118); font-weight: 500; letter-spacing: 1.5px;">centre de ressource</p><div class="editable editable-text" draggable="false" contenteditable="false" style="font-size: 64px; font-weight: 800; color: rgb(38, 38, 58); text-transform: none;">Nexaframe - CMF,&nbsp;<div>développement web et outils technologiques</div></div></div><div class="col-sm-4 editable sortable-element" data-sortable="true" draggable="false" style="width: 50%;"><div class="editable image-container" draggable="false" style="max-height: 100%; margin-left: auto; margin-right: 0px;"><img src="https://cdn.dribbble.com/users/3873964/screenshots/14092691/media/d825b72de91e141ce5a66875adbe006d.gif" alt="myimage" draggable="false"></div></div></div></div></div><div class="container editable sortable-element" data-sortable="true" draggable="false" style="padding: 0px;"></div><div class="container editable sortable-element" data-sortable="true" draggable="false" style="padding: 0px;"></div>');
-        $page->setMetaDescription("Meta description");
-        $page->setIdCreator(1);
-        $page->save();
-    }
-    private function InsertDefaultSettings(): void
-    {
-        $settingsCssPrimary = new Setting();
-        $settingsCssPrimary->setKey("css:primary");
-        $settingsCssPrimary->setValue("#1c1c2b");
-        $settingsCssPrimary->save();
-
-        $settingsCssSecondary = new Setting();
-        $settingsCssSecondary->setKey("css:secondary");
-        $settingsCssSecondary->setValue("#26263a");
-        $settingsCssSecondary->save();
-
-        $settingsCssTercery = new Setting();
-        $settingsCssTercery->setKey("css:tercery");
-        $settingsCssTercery->setValue("#7e37d8");
-        $settingsCssTercery->save();
-
-        $settingsCssMainFont1 = new Setting();
-        $settingsCssMainFont1->setKey("css:main-font1");
-        $settingsCssMainFont1->setValue("Plus Jakarta Sans");
-        $settingsCssMainFont1->save();
-
-        $settingsCssMainRadius = new Setting();
-        $settingsCssMainRadius->setKey("css:main-radius");
-        $settingsCssMainRadius->setValue("6px");
-        $settingsCssMainRadius->save();
-
-        $settingsCssTransitionDuration = new Setting();
-        $settingsCssTransitionDuration->setKey("css:transition-duration");
-        $settingsCssTransitionDuration->setValue("0.3s");
-        $settingsCssTransitionDuration->save();
-    }
-
-    // Configuration de la BDD pour l'installeur
-    public function getDsnFromDbType(string $db_type): string //pour la connexion
-    {
-        $dsn = "";
-        switch ($db_type) {
-            case "mysql":
-                $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
-                break;
-            case "pgsql":
-                $dsn = "pgsql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT;
-                break;
-            case "oci":
-                $dsn = "oci:dbname=//" . DB_HOST . ":" . DB_PORT . "/" . DB_NAME;
-                break;
-            case "sqlsrv":
-                $dsn = "sqlsrv:Server=" . DB_HOST . ";Database=" . DB_NAME;
-                break;
-        }
-        return $dsn;
-    }
-
-    public function migrateDatabase($db): bool
-    {
-        $sqlScript = file_get_contents(__DIR__ . '/../db/script.sql');
-        $queries = array_filter(explode(';', $sqlScript), 'trim');
-
-        foreach ($queries as $query) {
-            $result = $db->exec($query);
-            if ($result === false) {
-                echo "Database migration failed.";
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public function validateAdmin(): void
-    {
-        $user = new User();
-        $token = $_GET['token'];
-        $userData = $user->getOneBy(["validation_token" => $token]);
-
-        if ($userData !== false) {
-            $user->populate($userData);
-            if ($user->getId() > 0) {
-                $user->setValidate(true);
-                $user->setValidation_token(null); //on vide le token pour ne pas le réutiliser pour une autre validation
-                $user->save();
-                $success = "Votre compte a été validé avec succès.";
-            } else {
-                $error = 'Token invalide ou expiré. Veuillez réessayer.';
-            }
-        } else {
-            $error = 'Token invalide ou expiré. Veuillez réessayer.';
-        }
-
-        include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
     }
 }
