@@ -46,14 +46,14 @@ class Installer
 
         if (!$db->testConnection()) {
             $error = "Database connection failed.";
-            include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
+            header('Location: /installer');
         } else {
             $user = new User();
             if (!empty($user->getOneBy(["role" => "admin"]))) {
-                include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+                header('Location: /installer/loginAdmin');
             } else {
                 if ($this->migrateDatabase($db)) {
-                    include __DIR__ . '/../Views/back-office/installer/installer_registerAdmin.php';
+                    header('Location: /installer/account');
                 } else {
                     $error = "Database migration failed.";
                     include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
@@ -115,7 +115,7 @@ class Installer
                         } else {
                             $message = "Erreur lors de la création de l'administrateur";
                         }
-                        include __DIR__ . "/../Views/back-office/installer/installer_loginAdmin.php";
+                        header('Location: /installer/login');
                     } else {
                         $message = "Les mots de passe ne correspondent pas";
                     }
@@ -126,8 +126,7 @@ class Installer
                 $message = "Tous les champs sont obligatoires";
             }
         } else {
-            header('Location: /installer/processForm');
-            exit();
+            include __DIR__ . "/../Views/back-office/installer/installer_registerAdmin.php";
         }
     }
 
@@ -150,8 +149,7 @@ class Installer
         } else {
             $error = 'Token invalide ou expiré. Veuillez réessayer.';
         }
-
-        include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+        include __DIR__ . "/../Views/back-office/installer/installer_loginAdmin.php";
     }
 
     public function getDsnFromDbType(string $db_type): string //pour la connexion
@@ -236,32 +234,32 @@ class Installer
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
+            $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            
+
             if (empty($login) || empty($password)) {
-                $error = "Nom d'utilisateur ou mot de passe incorrect";
-                include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+                $error = "Champs vides. Veuillez remplir tous les champs.";
             }
 
             $user = new User();
             $loggedInUser = $user->getOneBy(["login" => $login]);
-            $user->populate($loggedInUser);
 
-            if ($loggedInUser && password_verify($password, $user->getPassword())) {
-                if($user->getRole() == "admin" && $user->isValidate() == true) {
-                    $_SESSION['user'] = $user;
-                    header('Location: /dashboard');
-                } else {
-                    $error = "Compte non validé, veuillez vérifier votre boîte mail pour valider votre compte.";
-                    include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
-                }    
-            } else {
+            if (empty($loggedInUser)) {
                 $error = "Nom d'utilisateur ou mot de passe incorrect";
-                include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+            } else {
+                if ($loggedInUser && password_verify($password, $loggedInUser[0]['password'])) {
+                    $user->populate($loggedInUser);
+                    if ($user->getRole() == "admin" && $user->isValidate() == true) {
+                        $_SESSION['user'] = $user;
+                        header('Location: /dashboard');
+                    } else {
+                        $error = "Compte non validé, veuillez vérifier votre boîte mail pour valider votre compte.";
+                    }
+                } else {
+                    $error = "Nom d'utilisateur ou mot de passe incorrect";
+                }
             }
-        } else {
-            include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
         }
+        include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
     }
 }
