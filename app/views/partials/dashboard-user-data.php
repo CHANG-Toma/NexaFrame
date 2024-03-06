@@ -2,7 +2,7 @@
     <div class="user-info-container">
         <h2>Gestion de Mes Informations</h2>
         <div class="user-info-form">
-            <form action="/dashboard/updateUser" method="POST">
+            <form action="/dashboard/update-user" method="POST">
                 <div class="form-group">
                     <label for="firstname">Prénom:</label>
                     <input type="text" id="firstname" name="firstname" value="<?= $firstname = "" ?>">
@@ -26,7 +26,7 @@
         <div class="password-update-form">
             <form action="/dashboard/update-password" method="POST">
 
-                <div class="error-message <?php echo isset($_SESSION["error_message"]) ? '' : 'hidden'; ?>">
+                <div class="error <?php echo isset($_SESSION["error_message"]) ? '' : 'hidden'; ?>">
                     <?php
                     if (isset($_SESSION['error_message'])) {
                         echo $_SESSION['error_message'];
@@ -34,7 +34,7 @@
                     }
                     ?>
                 </div>
-                <div class="success-message <?php echo isset($_SESSION["success_message"]) ? '' : 'hidden'; ?>">
+                <div class="success <?php echo isset($_SESSION["success_message"]) ? '' : 'hidden'; ?>">
                     <?php
                     if (isset($_SESSION['success_message'])) {
                         echo $_SESSION['success_message'];
@@ -45,15 +45,15 @@
 
                 <div class="form-group">
                     <label for="currentPassword">Mot de Passe Actuel:</label>
-                    <input type="password" id="currentPassword" name="currentPassword" >
+                    <input type="password" id="currentPassword" name="currentPassword" required>
                 </div>
                 <div class="form-group">
                     <label for="newPassword">Nouveau Mot de Passe:</label>
-                    <input type="password" id="newPassword" name="newPassword" >
+                    <input type="password" id="newPassword" name="newPassword" required>
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirmer Nouveau Mot de Passe:</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" >
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
                 </div>
                 <button type="submit" class="btn-update">Mettre à Jour</button>
             </form>

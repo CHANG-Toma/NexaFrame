@@ -50,7 +50,7 @@ class Installer
         } else {
             $user = new User();
             if (!empty($user->getOneBy(["role" => "admin"]))) {
-                header('Location: /installer/loginAdmin');
+                header('Location: /installer/login');
             } else {
                 if ($this->migrateDatabase($db)) {
                     header('Location: /installer/account');
@@ -129,28 +129,6 @@ class Installer
         }
     }
 
-    public function validateAdmin(): void
-    {
-        $user = new User();
-        $token = $_GET['token'];
-        $userData = $user->getOneBy(["validation_token" => $token]);
-
-        if ($userData !== false) {
-            $user->populate($userData);
-            if ($user->getId() > 0) {
-                $user->setValidate(true);
-                $user->setValidation_token(null); //on vide le token pour ne pas le réutiliser pour une autre validation
-                $user->save();
-                $success = "Votre compte a été validé avec succès.";
-            } else {
-                $error = 'Token invalide ou expiré. Veuillez réessayer.';
-            }
-        } else {
-            $error = 'Token invalide ou expiré. Veuillez réessayer.';
-        }
-        include __DIR__ . "/../Views/back-office/installer/installer_loginAdmin.php";
-    }
-
     public function getDsnFromDbType(string $db_type): string //pour la connexion
     {
         $dsn = "";
@@ -227,39 +205,5 @@ class Installer
         $settingsCssTransitionDuration->setKey("css:transition-duration");
         $settingsCssTransitionDuration->setValue("0.3s");
         $settingsCssTransitionDuration->save();
-    }
-
-    public function loginAdmin(): void
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-            $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            if (empty($login) || empty($password)) {
-                $error = "Champs vides. Veuillez remplir tous les champs.";
-            }
-
-            $user = new User();
-            $loggedInUser = $user->getOneBy(["login" => $login]);
-
-            if (empty($loggedInUser)) {
-                $error = "Nom d'utilisateur ou mot de passe incorrect";
-            } else {
-                if ($loggedInUser && password_verify($password, $loggedInUser[0]['password'])) {
-                    $user->populate($loggedInUser);
-                    if ($user->getRole() == "admin" && $user->isValidate() == true) {
-                        session_start();
-                        $_SESSION['user'] = $user;
-                        header('Location: /dashboard');
-                    } else {
-                        $error = "Compte non validé, veuillez vérifier votre boîte mail pour valider votre compte.";
-                    }
-                } else {
-                    $error = "Nom d'utilisateur ou mot de passe incorrect";
-                }
-            }
-        }
-        include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
     }
 }

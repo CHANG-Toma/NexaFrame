@@ -40,8 +40,4 @@ class Dashboard
             include __DIR__ . '/../Views/back-office/dashboard/index.php';
         }
     }
-
-    
-
-
 }
