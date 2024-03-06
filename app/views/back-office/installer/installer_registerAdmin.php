@@ -11,22 +11,16 @@
 <body>
     <section class="form-container">
         <h2>Create Admin Account</h2>
-        <div class="error-message <?php echo isset($error) ? '' : 'hidden'; ?>">
+        <div class="error <?php echo isset($message) ? '' : 'hidden'; ?>">
             <?php
-            if (isset($error)) {
-                echo $error;
-                unset($error);
+            if (isset($message)) {
+                echo $message;
+                unset($message);
             }
             ?>
             <br>
         </div>
         <form action="/installer/account" method="post">
-            <?php if (isset($error)) { ?>
-                <p class="error">
-                    <?= $error ?>
-                </p>
-            <?php } ?>
-
             <div class="form-group">
                 <label for="domainName">Nom du site :</label>
                 <input type="text" id="domainName" name="domain-name" required>

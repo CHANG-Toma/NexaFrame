@@ -26,12 +26,12 @@ class Installer
     {
         //sécurité à faire ici pour éviter les injections SQL (htmlspecialchars, strip_tags, etc.)
         $dbConfig = [
-            'DB_NAME' => $_POST['db_name'],
-            'DB_USER' => $_POST['db_user'],
-            'DB_PASSWORD' => $_POST['db_password'],
-            'DB_HOST' => $_POST['db_host'],
-            'DB_PORT' => $_POST['db_port'],
-            'DB_TYPE' => $_POST['db_type'],
+            'DB_NAME' => htmlspecialchars(strip_tags($_POST['db_name'])),
+            'DB_USER' => htmlspecialchars(strip_tags($_POST['db_user'])),
+            'DB_PASSWORD' => htmlspecialchars(strip_tags($_POST['db_password'])),
+            'DB_HOST' => htmlspecialchars(strip_tags($_POST['db_host'])),
+            'DB_PORT' => filter_input(INPUT_POST, 'db_port', FILTER_SANITIZE_NUMBER_INT),
+            'DB_TYPE' => htmlspecialchars(strip_tags($_POST['db_type'])),
         ];
 
         $configContent = "<?php\n";
@@ -66,55 +66,60 @@ class Installer
     public function createAdmin(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if ($_POST["login"] != "" && $_POST["email"] != "" && $_POST["password"] != "" && $_POST["password_confirm"] != "") {
-                if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                    $email = $_POST['email'];
-                    if ($_POST["password"] == $_POST["password_confirm"]) {
+            $login = trim(htmlspecialchars($_POST['login']));
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            $password = trim($_POST['password']);
+            $confirmPassword = trim($_POST['password_confirm']);
 
-                        $adminAcc = new User();
-                        $adminAcc->setLogin($_POST['login']);
-                        $adminAcc->setEmail($email);
-                        $adminAcc->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
-                        $adminAcc->setRole('admin');
+            if ($login && $email && $password && $confirmPassword) {
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    if ($password == $confirmPassword) {
+                        if (strlen($password) >= 8) {
+                            $adminAcc = new User();
+                            $adminAcc->setLogin($login);
+                            $adminAcc->setEmail($email);
+                            $adminAcc->setPassword(password_hash($password, PASSWORD_DEFAULT));
+                            $adminAcc->setRole('admin');
+                            $adminAcc->setValidation_token(md5(uniqid()));
 
-                        $adminAcc->setValidation_token(md5(uniqid()));
+                            $adminAcc->save();
 
-                        $adminAcc->save();
+                            if (!empty($adminAcc->getOneBy(["role" => "admin"]))) {
+                                try {
+                                    $mailConfig = include __DIR__ . "/../config/MailConfig.php";
+                                    $mail = new PHPMailer(true);
 
-                        if (!empty($adminAcc->getOneBy(["role" => "admin"]))) {
-                            try {
+                                    $mail->isSMTP();
+                                    $mail->Host = $mailConfig['host'];
+                                    $mail->SMTPAuth = true;
+                                    $mail->Username = $mailConfig['username'];
+                                    $mail->Password = $mailConfig['password'];
+                                    $mail->SMTPSecure = $mailConfig['encryption'];
+                                    $mail->Port = $mailConfig['port'];
 
-                                $mailConfig = include __DIR__ . "/../config/MailConfig.php";
-                                $mail = new PHPMailer(true);
+                                    // Sender and recipient settings
+                                    $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
+                                    $mail->addAddress($email);
 
-                                $mail->isSMTP();
-                                $mail->Host = $mailConfig['host'];
-                                $mail->SMTPAuth = true;
-                                $mail->Username = $mailConfig['username'];
-                                $mail->Password = $mailConfig['password'];
-                                $mail->SMTPSecure = $mailConfig['encryption'];
-                                $mail->Port = $mailConfig['port'];
+                                    // Email content
+                                    $mail->isHTML(true);
+                                    $mail->Subject = 'Account Confirmation';
+                                    $mail->Body = 'Veuillez cliquer sur le lien suivant pour confirmer votre compte : 
+                                    <a href="http://localhost/installer/validate?token=' . $adminAcc->getValidation_token() . '">
+                                    Confirmer le compte</a>';
 
-                                // Sender and recipient settings
-                                $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
-                                $mail->addAddress($email);
+                                    $mail->send();
 
-                                // Email content
-                                $mail->isHTML(true);
-                                $mail->Subject = 'Account Confirmation';
-                                $mail->Body = 'Veuillez cliquer sur le lien suivant pour confirmer votre compte : 
-                                <a href="http://localhost/installer/validate?token=' . $adminAcc->getValidation_token() . '">
-                                Confirmer le compte</a>';
-
-                                $mail->send();
-
-                            } catch (Exception $e) {
-                                $message = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+                                } catch (Exception $e) {
+                                    $message = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+                                }
+                            } else {
+                                $message = "Erreur lors de la création de l'administrateur";
                             }
+                            header('Location: /installer/login');
                         } else {
-                            $message = "Erreur lors de la création de l'administrateur";
+                            $message = "Le mot de passe doit contenir au moins 8 caractères";
                         }
-                        header('Location: /installer/login');
                     } else {
                         $message = "Les mots de passe ne correspondent pas";
                     }
@@ -124,9 +129,8 @@ class Installer
             } else {
                 $message = "Tous les champs sont obligatoires";
             }
-        } else {
-            include __DIR__ . "/../Views/back-office/installer/installer_registerAdmin.php";
         }
+        include __DIR__ . "/../Views/back-office/installer/installer_registerAdmin.php";
     }
 
     public function getDsnFromDbType(string $db_type): string //pour la connexion
