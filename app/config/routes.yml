@@ -3,6 +3,7 @@
   controller: home
   action: index
 
+
 /installer:
   controller: Installer
   action: index
@@ -32,3 +33,20 @@
 /dashboard:
   controller: Dashboard
   action: index
+
+/dashboard/page-builder:
+  controller: Dashboard
+  action: index
+
+/dashboard/template:
+  controller: Dashboard
+  action: index
+
+/dashboard/comment :
+  controller: Dashboard
+  action: index
+
+/dashboard/user:
+  controller: Dashboard
+  action: index
+

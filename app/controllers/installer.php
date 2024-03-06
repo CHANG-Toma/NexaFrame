@@ -63,7 +63,6 @@ class Installer
         }
     }
 
-    // Gestion de l'administrateur pour l'installeur
     public function createAdmin(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
