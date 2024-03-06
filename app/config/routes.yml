@@ -1,7 +1,11 @@
 
+# Home route
+
 /home:
   controller: home
   action: index
+
+# Installer routes
 
 /installer:
   controller: Installer
@@ -16,19 +20,47 @@
   action: createAdmin
 
 /installer/validate:
-  controller: Installer
-  action: validateAdmin
+  controller: Security
+  action: validate
 
 /installer/login:
-  controller: Installer
-  action: loginAdmin
+  controller: Security
+  action: login
 
 /installer/forgot-password:
-  controller: User
+  controller: Security
   action: forgotPassword
 
-
+# dashboard routes
 
 /dashboard:
   controller: Dashboard
   action: index
+
+/dashboard/page-builder:
+  controller: Dashboard
+  action: index
+
+/dashboard/template:
+  controller: Dashboard
+  action: index
+
+/dashboard/comment :
+  controller: Dashboard
+  action: index
+
+/dashboard/user:
+  controller: Dashboard
+  action: index
+
+/dashboard/logout:
+  controller: Security
+  action: logout
+
+/dashboard/update-password:
+  controller: User
+  action: changePassword
+
+/dashboard/update-user:
+  controller: User
+  action: editUser

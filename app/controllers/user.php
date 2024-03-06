@@ -12,59 +12,83 @@ class User
     {
     }
 
-    public function forgotPassword(): void
+    public function changePassword(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $currentPassword = filter_input(INPUT_POST, "currentPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $newPassword = filter_input(INPUT_POST, "newPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $confirmPassword = filter_input(INPUT_POST, "confirmPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $email = $_POST["email"];
+            session_start();
 
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+                $_SESSION['error_message2'] = "Veuillez remplir tous les champs";
+                header('Location: /dashboard/user');
+            }
 
-                $user = new UserModel();
-                $loggedInUser = $user->getOneBy(["email" => $email]);
+            if (password_verify($currentPassword, $_SESSION['user']['password'])) {
+                if ($newPassword === $confirmPassword && strlen($newPassword) >= 8) {
+                    $user = new UserModel();
+                    $userdata = $user->getOneBy(["email" => $_SESSION['user']['email']]);
+                    if (empty($userdata)) {
+                        $_SESSION['error_message2'] = "Utilisateur introuvable";
+                        header('Location: /dashboard/user');
+                    } else {
+                        $user->populate($userdata);
+                        $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+                        $user->save();
 
-                if ($loggedInUser) {
-                    $user->populate($loggedInUser);
-
-                    $newPwd = bin2hex(random_bytes(16));
-                    $NewRandomHashedPwd = password_hash($newPwd, PASSWORD_DEFAULT);
-                    $user->setPassword($NewRandomHashedPwd);
-                    $user->save();
-
-                    $mailConfig = include __DIR__ . "/../config/MailConfig.php";
-
-                    $mail = new PHPMailer(true);
-                    $mail->isSMTP();
-                    $mail->Host = $mailConfig['host'];
-                    $mail->SMTPAuth = true;
-                    $mail->Username = $mailConfig['username'];
-                    $mail->Password = $mailConfig['password'];
-                    $mail->SMTPSecure = $mailConfig['encryption'];
-                    $mail->Port = $mailConfig['port'];
-
-                    $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
-                    $mail->addAddress($email);
-                    $mail->Subject = "Nouveau mot de passe pour votre compte Nexaframe";
-                    $mail->isHTML(true);
-                    $mail->Body = "Bonjour,
-                <br>Un nouveau mot de passe a été généré pour votre compte.<br>
-                <br>Votre nouveau mot de passe est : <strong>" . $newPwd . "</strong>
-                <br>Vous pouvez le changer une fois connecté à votre compte.
-                <br>
-                <br>Vous pouvez vous connecter à votre compte en cliquant sur le lien suivant : <a href='http://localhost/installer/login'>Se connecter</a>
-                <br><br>Cordialement,
-                <br>L'équipe Nexaframe.";
-                    $mail->send();
-
-                    $success = "Un nouveau mot de passe a été envoyé à votre adresse e-mail.";
+                        $_SESSION['success_message2'] = "Mot de passe modifié avec succès";
+                    }
                 } else {
-                    $error = "Aucun utilisateur trouvé avec cette adresse e-mail.";
+                    $_SESSION['error_message2'] = "Les mots de passe ne correspondent pas ou sont inférieurs à 8 caractères";
                 }
+            } else {
+                $_SESSION['error_message2'] = "Mot de passe actuel incorrect";
             }
-            else {
-                $error = "Bien tenté :)";
-            }
+            header('Location: /dashboard/user');
         }
-        include __DIR__ . '/../Views/back-office/installer/installer_ForgotPwdAdmin.php';
+    }
+
+    public function showUser(): void
+    {
+        // Code to retrieve and display user information
+    }
+
+    public function editUser(): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+
+            session_start();
+
+            $user = new UserModel();
+            $userdata = $user->getOneBy(["email" => $_SESSION['user']['email']]);
+            if (empty($userdata)) {
+                $_SESSION['error_message'] = "Utilisateur introuvable";
+                header('Location: /dashboard/user');
+            } else {
+                $user->populate($userdata);
+                if(!empty($login)){
+                    $user->setLogin($login);
+                }
+                else{
+                    $user->setEmail($email);
+                }
+                $user->save();
+                $_SESSION['success_message'] = "Vos informations ont été mises à jour avec succès";
+            }
+            header('Location: /dashboard/user');
+        }
+    }
+
+    public function deleteUser(): void
+    {
+        // Code to delete user
+    }
+    public function listUser(): void
+    {
+        // Code to list all users
     }
 }
