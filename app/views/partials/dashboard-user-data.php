@@ -3,13 +3,26 @@
         <h2>Gestion de Mes Informations</h2>
         <div class="user-info-form">
             <form action="/dashboard/update-user" method="POST">
-                <div class="form-group">
-                    <label for="firstname">Prénom:</label>
-                    <input type="text" id="firstname" name="firstname" value="<?= $firstname = "" ?>">
+
+                <div class="error <?php echo isset($_SESSION["error_message"]) ? '' : 'hidden'; ?>">
+                    <?php
+                    if (isset($_SESSION['error_message'])) {
+                        echo $_SESSION['error_message'];
+                        unset($_SESSION['error_message']);
+                    }
+                    ?>
+                </div>
+                <div class="success <?php echo isset($_SESSION["success_message"]) ? '' : 'hidden'; ?>">
+                    <?php
+                    if (isset($_SESSION['success_message'])) {
+                        echo $_SESSION['success_message'];
+                        unset($_SESSION['success_message']);
+                    }
+                    ?>
                 </div>
                 <div class="form-group">
-                    <label for="lastname">Nom:</label>
-                    <input type="text" id="lastname" name="lastname" value="<?= $lastname = "" ?>">
+                    <label for="login">Login:</label>
+                    <input type="text" id="login" name="login" value="<?= $firstname = "" ?>">
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
@@ -28,17 +41,17 @@
 
                 <div class="error <?php echo isset($_SESSION["error_message"]) ? '' : 'hidden'; ?>">
                     <?php
-                    if (isset($_SESSION['error_message'])) {
-                        echo $_SESSION['error_message'];
-                        unset($_SESSION['error_message']);
+                    if (isset($_SESSION['error_message2'])) {
+                        echo $_SESSION['error_message2'];
+                        unset($_SESSION['error_message2']);
                     }
                     ?>
                 </div>
                 <div class="success <?php echo isset($_SESSION["success_message"]) ? '' : 'hidden'; ?>">
                     <?php
-                    if (isset($_SESSION['success_message'])) {
-                        echo $_SESSION['success_message'];
-                        unset($_SESSION['success_message']);
+                    if (isset($_SESSION['success_message2'])) {
+                        echo $_SESSION['success_message2'];
+                        unset($_SESSION['success_message2']);
                     }
                     ?>
                 </div>

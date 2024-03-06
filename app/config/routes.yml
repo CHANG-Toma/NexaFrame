@@ -60,3 +60,7 @@
 /dashboard/update-password:
   controller: User
   action: changePassword
+
+/dashboard/update-user:
+  controller: User
+  action: editUser
