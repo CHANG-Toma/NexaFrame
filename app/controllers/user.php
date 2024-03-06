@@ -12,6 +12,35 @@ class User
     {
     }
 
+    public function login(): void // à modifier
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $email = $_POST["email"];
+            $password = $_POST["password"];
+
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $user = new UserModel();
+                $loggedInUser = $user->getOneBy(["email" => $email]);
+
+                if ($loggedInUser) {
+                    $user->populate($loggedInUser);
+
+                    if (password_verify($password, $user->getPassword())) {
+                        $_SESSION["user"] = $user;
+                        header("Location: /dashboard");
+                    } else {
+                        $error = "Mot de passe incorrect";
+                    }
+                } else {
+                    $error = "Aucun utilisateur trouvé avec cette adresse e-mail.";
+                }
+            } else {
+                $error = "Adresse e-mail invalide";
+            }
+        }
+        include __DIR__ . '/../Views/back-office/installer/installer_Login.php';
+    }
+
     public function forgotPassword(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,5 +95,18 @@ class User
             }
         }
         include __DIR__ . '/../Views/back-office/installer/installer_ForgotPwdAdmin.php';
+    }
+
+    public function logout(): void
+    {
+        session_start();
+        unset($_SESSION["user"]);
+        session_destroy();
+        if($_SERVER['REQUEST_URI'] === '/dashboard/logout'){
+            header("Location: /installer/login");
+        }
+        else {
+            header("Location: /login");
+        }
     }
 }

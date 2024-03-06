@@ -33,7 +33,7 @@
 
     <div class="logout-section side-item">
         <hr>
-        <a href="/logout" class="side-link">
+        <a href="/dashboard/logout" class="side-link">
             <span class="side-icon">&#128244;</span>
             <span class="side-text">Se déconnecter</span>
         </a>

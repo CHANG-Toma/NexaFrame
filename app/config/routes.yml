@@ -50,3 +50,7 @@
   controller: Dashboard
   action: index
 
+/dashboard/logout:
+  controller: user
+  action: logout
+

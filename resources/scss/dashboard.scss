@@ -4,11 +4,10 @@
 @import "partials/globals";
 @import "partials/mixin";
 @import "partials/media";
-@import "partials/heading";
 @import "partials/text";
-@import "partials/placeholder-image";
 @import "partials/row";
 
-
 @import "layout/sidebar";
-@import "layout/user-data";
+@import "layout/dashboard-user-data";
+@import "layout/dashboard-comment";
+@import "layout/dashboard-template";

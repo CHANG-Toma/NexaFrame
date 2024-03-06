@@ -249,6 +249,7 @@ class Installer
                 if ($loggedInUser && password_verify($password, $loggedInUser[0]['password'])) {
                     $user->populate($loggedInUser);
                     if ($user->getRole() == "admin" && $user->isValidate() == true) {
+                        session_start();
                         $_SESSION['user'] = $user;
                         header('Location: /dashboard');
                     } else {
