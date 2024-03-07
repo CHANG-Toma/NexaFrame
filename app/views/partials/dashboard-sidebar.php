@@ -10,7 +10,7 @@
         <div class="side-item">
             <a href="/dashboard/page-builder" class="side-link">
                 <span class="side-icon">&#128221;</span>
-                <span class="side-text">Page Builder</span>
+                <span class="side-text">Mes pages</span>
             </a>
         </div>
 
@@ -24,14 +24,14 @@
         <div class="side-item">
             <a href="/dashboard/comment" class="side-link">
                 <span class="side-icon">&#128203;</span>
-                <span class="side-text">Commentaire</span>
+                <span class="side-text">Commentaires</span>
             </a>
         </div>
 
         <div class="side-item">
             <a href="/dashboard/user" class="side-link">
                 <span class="side-icon">&#128209;</span>
-                <span class="side-text">Mes Informations</span>
+                <span class="side-text">Mes informations</span>
             </a>
         </div>
 

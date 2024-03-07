@@ -375,6 +375,88 @@ img {
   gap: 1.5rem;
 }
 
+.action {
+  display: flex;
+  flex-direction: unset;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.btn {
+  padding: var(--pm-md);
+  text-decoration: none;
+  color: var(--white);
+  background-color: var(--btn-bg-color);
+  font-family: "Lato";
+  font-size: var(--main-size);
+  line-height: 1.125rem;
+  text-align: center;
+  align-items: center;
+}
+.btn-lg {
+  padding: var(--pm-lg);
+}
+.btn-sm {
+  padding: var(--pm-sm);
+}
+.btn-primary {
+  background-color: var(--primary-color);
+}
+.btn-secondary {
+  background-color: var(--secondary-color);
+}
+.btn-danger {
+  background-color: var(--btn-bg-color);
+}
+.btn-transparent {
+  background-color: transparent;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+}
+.btn-transparent:hover {
+  background-color: var(--reverse-bg-color);
+  color: var(--website-bg-color);
+  transition: var(--transition-duration) ease-in-out;
+}
+
+.Button {
+  padding: 0.75rem 1.5rem;
+  font-size: var(--main-size);
+  font-family: var(--website-font-family);
+  font-weight: 400;
+  line-height: var(--line-height);
+  display: flex;
+  flex-direction: unset;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0.0625rem solid var(--reverse-bg-color);
+  text-decoration: none;
+  border-radius: var(--main-radius);
+  cursor: pointer;
+}
+.Button.Primary {
+  background: var(--reverse-bg-color);
+  color: var(--website-bg-color);
+}
+.Button.Primary:hover {
+  background-color: var(--website-bg-color);
+  color: var(--reverse-bg-color);
+  transition: 0.3s ease-in-out;
+}
+.Button.Secondary {
+  color: var(--reverse-bg-color);
+}
+.Button.Secondary:hover {
+  color: var(--website-bg-color);
+  background-color: var(--reverse-bg-color);
+  transition: 0.3s ease-in-out;
+}
+
 *, ::before, ::after {
   box-sizing: border-box;
 }
@@ -472,6 +554,81 @@ img {
 .sidebar.sidebar-active {
   margin-left: -12.5rem;
   transition: 0.5s;
+}
+
+.page-list-container {
+  padding: 1rem;
+  background-color: #f5f5f5;
+  font-family: var(--website-font-family);
+}
+.page-list-container .page-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.page-list-container .page-list-header h1 {
+  color: #333;
+}
+.page-list-container .page-list-header .btn-create-page {
+  padding: 0.5rem 1rem;
+  background-color: #37be4e;
+  border: none;
+  border-radius: 0.25rem;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.page-list-container .page-list-header .btn-create-page:hover {
+  background-color: #31aa46;
+  transition: background-color 0.2s ease-in-out;
+}
+.page-list-container .page-list-search {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.page-list-container .page-list-search input {
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  flex-grow: 1;
+}
+.page-list-container .page-list-search button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  border: none;
+  border-radius: 0.25rem;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.page-list-container .page-list-search button:hover {
+  background-color: #0056b3;
+  transition: background-color 0.2s ease-in-out;
+}
+.page-list-container .page-list-table {
+  background-color: #fff;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+.page-list-container .page-list-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.page-list-container .page-list-table table th {
+  background-color: #007bff;
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+}
+.page-list-container .page-list-table table td {
+  padding: 0.75rem;
+  border-top: 1px solid #dee2e6;
+}
+.page-list-container .page-list-table table td:last-child {
+  text-align: right;
 }
 
 .container-flex {

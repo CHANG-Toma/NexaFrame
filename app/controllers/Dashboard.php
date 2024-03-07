@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Controllers\PageBuilder;
+
 class Dashboard
 {
 
@@ -17,6 +19,8 @@ class Dashboard
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
                 $components[] = 'dashboard-page-builder.php';
+                $data = new PageBuilder();
+                $data->pageList();
                 break;
             case '/dashboard/template':
                 $components[] = 'dashboard-template.php';

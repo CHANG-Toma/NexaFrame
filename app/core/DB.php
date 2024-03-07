@@ -110,6 +110,23 @@ class DB
         }
     }
 
+    public function getAll(): array
+    {
+        $className = basename(str_replace('\\', '/', get_class($this)));
+        $tableName = $this->getTableNameByClassName($className);
+        return $this->exec("SELECT * FROM $tableName;");
+    }
+
+    public function getAllBy(array $conditions): array
+    {
+        $data = $this->getOneBy($conditions);
+        if(is_array(!empty($data))) {
+            return $data;
+        } else {
+            return [];
+        }
+    }
+
     public function exec(string $query, array $params = [], string $returnType = "array")
     {
         if ($this->pdo) {

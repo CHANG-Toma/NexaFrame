@@ -89,3 +89,11 @@ INSERT INTO categories (label) VALUES
 ('Musique'),
 ('Sport'),
 ('Art');
+
+
+// $2y$10$ = bcrypt
+INSERT INTO users (login, email, password, role, created_at, status, validate, validation_token) VALUES
+('admin', 'toma11chang@gmail.com', '$2y$10$', 'admin', '2020-01-01 00:00:00', 1, TRUE, '');
+
+INSERT INTO pages (url, title, content, meta_description, id_creator) VALUES
+('/exemple', 'Page Exemple', 'Contenu de la page exemple.', 'Description de la page exemple pour le SEO.', 1);
