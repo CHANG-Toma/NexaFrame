@@ -73,55 +73,63 @@ class Installer
 
             if ($login && $email && $password && $confirmPassword) {
                 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    if ($password == $confirmPassword) {
-                        if (strlen($password) >= 8) {
-                            $adminAcc = new User();
-                            $adminAcc->setLogin($login);
-                            $adminAcc->setEmail($email);
-                            $adminAcc->setPassword(password_hash($password, PASSWORD_DEFAULT));
-                            $adminAcc->setRole('admin');
-                            $adminAcc->setValidation_token(md5(uniqid()));
 
-                            $adminAcc->save();
-
-                            if (!empty($adminAcc->getOneBy(["role" => "admin"]))) {
-                                try {
-                                    $mailConfig = include __DIR__ . "/../config/MailConfig.php";
-                                    $mail = new PHPMailer(true);
-
-                                    $mail->isSMTP();
-                                    $mail->Host = $mailConfig['host'];
-                                    $mail->SMTPAuth = true;
-                                    $mail->Username = $mailConfig['username'];
-                                    $mail->Password = $mailConfig['password'];
-                                    $mail->SMTPSecure = $mailConfig['encryption'];
-                                    $mail->Port = $mailConfig['port'];
-
-                                    // Sender and recipient settings
-                                    $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
-                                    $mail->addAddress($email);
-
-                                    // Email content
-                                    $mail->isHTML(true);
-                                    $mail->Subject = 'Account Confirmation';
-                                    $mail->Body = 'Veuillez cliquer sur le lien suivant pour confirmer votre compte : 
-                                    <a href="http://localhost/installer/validate?token=' . $adminAcc->getValidation_token() . '">
-                                    Confirmer le compte</a>';
-
-                                    $mail->send();
-
-                                } catch (Exception $e) {
-                                    $message = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+                    $user = new User();
+                    $dataEmail = $user->getOneBy(["email" => $email]);
+                    if(!empty($dataEmail)) {
+                        $message = "L'adresse email est déjà utilisée";
+                    }
+                    else {
+                        if ($password == $confirmPassword) {
+                            if (strlen($password) >= 8) {
+                                $adminAcc = new User();
+                                $adminAcc->setLogin($login);
+                                $adminAcc->setEmail($email);
+                                $adminAcc->setPassword(password_hash($password, PASSWORD_DEFAULT));
+                                $adminAcc->setRole('admin');
+                                $adminAcc->setValidation_token(md5(uniqid()));
+    
+                                $adminAcc->save();
+    
+                                if (!empty($adminAcc->getOneBy(["role" => "admin"]))) {
+                                    try {
+                                        $mailConfig = include __DIR__ . "/../config/MailConfig.php";
+                                        $mail = new PHPMailer(true);
+    
+                                        $mail->isSMTP();
+                                        $mail->Host = $mailConfig['host'];
+                                        $mail->SMTPAuth = true;
+                                        $mail->Username = $mailConfig['username'];
+                                        $mail->Password = $mailConfig['password'];
+                                        $mail->SMTPSecure = $mailConfig['encryption'];
+                                        $mail->Port = $mailConfig['port'];
+    
+                                        // Sender and recipient settings
+                                        $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
+                                        $mail->addAddress($email);
+    
+                                        // Email content
+                                        $mail->isHTML(true);
+                                        $mail->Subject = 'Account Confirmation';
+                                        $mail->Body = 'Veuillez cliquer sur le lien suivant pour confirmer votre compte : 
+                                        <a href="http://localhost/installer/validate?token=' . $adminAcc->getValidation_token() . '">
+                                        Confirmer le compte</a>';
+    
+                                        $mail->send();
+    
+                                    } catch (Exception $e) {
+                                        $message = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+                                    }
+                                } else {
+                                    $message = "Erreur lors de la création de l'administrateur";
                                 }
+                                header('Location: /installer/login');
                             } else {
-                                $message = "Erreur lors de la création de l'administrateur";
+                                $message = "Le mot de passe doit contenir au moins 8 caractères";
                             }
-                            header('Location: /installer/login');
                         } else {
-                            $message = "Le mot de passe doit contenir au moins 8 caractères";
+                            $message = "Les mots de passe ne correspondent pas";
                         }
-                    } else {
-                        $message = "Les mots de passe ne correspondent pas";
                     }
                 } else {
                     $message = "L'adresse email n'est pas valide";

@@ -90,8 +90,6 @@ INSERT INTO categories (label) VALUES
 ('Sport'),
 ('Art');
 
-
-// $2y$10$ = bcrypt
 INSERT INTO users (login, email, password, role, created_at, status, validate, validation_token) VALUES
 ('admin', 'toma11chang@gmail.com', '$2y$10$', 'admin', '2020-01-01 00:00:00', 1, TRUE, '');
 
