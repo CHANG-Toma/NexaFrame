@@ -16,17 +16,8 @@ class PageBuilder
 
     public function pageList(): array
     {
-        
-        if (!isset($_SESSION['user']['id'])) {
-            return [];
-        }
-
-        $userId = $_SESSION['user']['id'];
-        $conditions = ['id_creator' => $userId];
-
-        $Page = new Page();
-
-        return $Page->getAllBy($conditions);
+        $page  = new Page();
+        return $page->getAllBy(['id_creator' => $_SESSION['user']['id']]);;
     }
 
     public function savePage($route): void
@@ -48,11 +39,23 @@ class PageBuilder
 
     public function displayPage(int $idPage): void
     {
-
+        
     }
 
     public function lastArticles($route): void
     {
+    }
 
+    public function deletePage(): void
+    {
+        $id = $_POST["id-page"];
+        $Page = new Page();
+        $Page->delete($id);
+        if($Page->getOneBy(["id" => $id])){
+            $_SESSION['error'] = "La page n'a pas été supprimée";
+        } else {
+            $_SESSION['success'] = "La page a été supprimée";
+        }
+        header('Location: /dashboard/page-builder');
     }
 }

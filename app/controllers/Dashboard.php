@@ -11,6 +11,7 @@ class Dashboard
 
     public function index()
     {
+        session_start(); 
 
         $components = [
             'dashboard-sidebar.php',
@@ -19,8 +20,8 @@ class Dashboard
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
                 $components[] = 'dashboard-page-builder.php';
-                $data = new PageBuilder();
-                $data->pageList();
+                $pageBuilder = new PageBuilder();
+                $data = $pageBuilder->pageList();
                 break;
             case '/dashboard/template':
                 $components[] = 'dashboard-template.php';
@@ -34,8 +35,7 @@ class Dashboard
             default:
                 $components[] = 'dashboard-page-builder.php';
                 break;
-        }
-        session_start();  
+        } 
         if (!isset($_SESSION['user'])) {
             header('Location: /installer/login');
             exit;

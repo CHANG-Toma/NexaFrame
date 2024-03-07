@@ -120,7 +120,7 @@ class DB
     public function getAllBy(array $conditions): array
     {
         $data = $this->getOneBy($conditions);
-        if(is_array(!empty($data))) {
+        if(!empty($data)) {
             return $data;
         } else {
             return [];
@@ -154,6 +154,13 @@ class DB
         } catch (PDOException $e) {
             return false;
         }
+    }
+
+    public function delete (int $id): void
+    {
+        $className = basename(str_replace('\\', '/', get_class($this)));
+        $tableName = $this->getTableNameByClassName($className);
+        $this->exec("DELETE FROM $tableName WHERE id = $id;");
     }
 
     // ---------------------------------------------------------------

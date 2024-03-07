@@ -33,13 +33,13 @@
 
 # dashboard routes
 
-/dashboard:
-  controller: Dashboard
-  action: index
-
 /dashboard/page-builder:
   controller: Dashboard
   action: index
+
+/dashboard/page-builder/delete-page:
+  controller: PageBuilder
+  action: deletePage
 
 /dashboard/template:
   controller: Dashboard

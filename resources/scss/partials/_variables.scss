@@ -9,6 +9,7 @@ $success : #08c108;
 $grey: #333;
 $darkgrey: #666;
 $centered : auto;
+$back-office : #008CBA;
 
 
 .dark-mode {
@@ -33,6 +34,8 @@ $centered : auto;
     --reverse-text-color: #{$white};
     --bg-color:#{$bg-color};
     --website-bg-color : #{$white};
+    --back-office : #{$back-office};
+    --back-office-hover : darken(#{$back-office}, 10%);
     --reverse-bg-color : #{$black};
     --icon-color :  invert(0);
     --primary-color : #{$primary-color};
