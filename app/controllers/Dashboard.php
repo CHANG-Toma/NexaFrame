@@ -23,6 +23,9 @@ class Dashboard
                 $pageBuilder = new PageBuilder();
                 $data = $pageBuilder->pageList();
                 break;
+            case '/dashboard/page-builder/create-page':
+                $components[] = 'dashboard-page.php';
+                break;
             case '/dashboard/template':
                 $components[] = 'dashboard-template.php';
                 break;

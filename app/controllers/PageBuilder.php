@@ -10,14 +10,25 @@ use App\Models\Setting;
 class PageBuilder
 {
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function pageList(): array
     {
         $page  = new Page();
         return $page->getAllBy(['id_creator' => $_SESSION['user']['id']]);;
+    }
+
+    public function createPage(): void
+    {
+        $title = $_POST["title"];
+        $url = $_POST["url"];
+        $content = $_POST["content"];
+        
+
+        $Page = new Page();
+        $Page->setTitle(htmlspecialchars($title));
+        $Page->setUrl('/' . $url);
+        $Page->setContent($content);
     }
 
     public function savePage($route): void
@@ -51,10 +62,11 @@ class PageBuilder
         $id = $_POST["id-page"];
         $Page = new Page();
         $Page->delete($id);
-        if($Page->getOneBy(["id" => $id])){
-            $_SESSION['error'] = "La page n'a pas été supprimée";
+        session_start();
+        if(!empty($Page->getOneBy(["id" => $id]))){
+            $_SESSION['error_message'] = "La page n'a pas été supprimée";
         } else {
-            $_SESSION['success'] = "La page a été supprimée";
+            $_SESSION['success_message'] = "La page a été supprimée";
         }
         header('Location: /dashboard/page-builder');
     }

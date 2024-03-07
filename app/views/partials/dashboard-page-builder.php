@@ -1,7 +1,8 @@
 <section class="page-list-container">
     <div class="page-list-header">
         <h1>Mes pages</h1>
-        <div class="error <?php echo isset($_SESSION["error_message"]) ? '' : 'hidden'; ?>">
+        <div class="error <?php session_start();
+        echo isset($_SESSION["error_message"]) ? '' : 'hidden'; ?>">
             <?php
             if (isset($_SESSION['error_message'])) {
                 echo $_SESSION['error_message'];
@@ -9,7 +10,8 @@
             }
             ?>
         </div>
-        <div class="success <?php echo isset($_SESSION["success_message"]) ? '' : 'hidden'; ?>">
+        <div class="success <?php session_start();
+        echo isset($_SESSION["success_message"]) ? '' : 'hidden'; ?>">
             <?php
             if (isset($_SESSION['success_message'])) {
                 echo $_SESSION['success_message'];
@@ -17,27 +19,28 @@
             }
             ?>
         </div>
-        <button class="btn-create-page">Create page</button>
+        <form method="POST" Action="/dashboard/page-builder/create-page">
+            <button class="btn-create-page" type="submit">Create page</button>
+        </form>
     </div>
 
     <div class="page-list-search">
         <input type="text" placeholder="Page name">
-        <button>Rechercher</button>
+        <button type="submit">Rechercher</button>
     </div>
-    
+
     <div class="page-list-table">
         <table>
             <thead>
                 <tr>
                     <th>Nom</th>
                     <th>Lien</th>
-                    <th>Status</th>
+                    <th>Description</th>
                     <th>Créer le</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Faire une boucle pour chaque page -->
                 <?php
                 for ($i = 0; $i < count($data); $i++) { ?>
                     <tr>
@@ -53,11 +56,14 @@
                         <td>
                             <?php echo $data[$i]['created_at']; ?>
                         </td>
-                        <td>
+                        <td class="container">
+                            <form method="POST" Action="/dashboard/page-builder/update-page">
+                                <input type="hidden" name="id-page" value="<?php echo $data[$i]['id']; ?>">
+                                <button class="Button-sm update" type="submit">Modifier</button>
+                            </form>
                             <form method="POST" Action="/dashboard/page-builder/delete-page">
                                 <input type="hidden" name="id-page" value="<?php echo $data[$i]['id']; ?>">
-                                <button type="submit">Modifier</button>
-                                <button type="submit">Supprimer</button>
+                                <button class="Button-sm delete" type="submit">Supprimer</button>
                             </form>
                         </td>
                     </tr>
