@@ -1,4 +1,3 @@
 <div id="gjs">
-  <!-- Le PageBuilder sera injecté ici -->
-  <h1>Page Builder</h1>
+  <h1>Hello World Component!</h1>
 </div>
