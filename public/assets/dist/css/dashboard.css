@@ -35,6 +35,11 @@
   --dropdown-link-hover-bg-color: #1a1a1a;
   --success-message: #08c108;
   --error-message: #ff0000;
+  /* GrapesJS */
+  --gjs-primary-color: #78366a;
+  --gjs-secondary-color: rgba(255, 255, 255, 0.7);
+  --gjs-tertiary-color: #ec5896;
+  --gjs-quaternary-color: #ec5896;
   /*Radius*/
   --main-radius: 0.375rem;
   /*Fonts*/
@@ -797,6 +802,9 @@ img {
   position: initial;
 }
 .panel__top .panel__switcher {
+  position: initial;
+}
+.panel__top .panel__devices {
   position: initial;
 }
 
