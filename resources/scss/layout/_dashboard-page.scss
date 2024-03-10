@@ -1,47 +1,39 @@
 #gjs {
-  border: rem(3) solid #444;
+  border: rem(3) solid rgb(28, 27, 59);
+  background-color: rgb(28, 27, 59);
 }
 
-.gjs-cv-canvas {
-    top: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.panel__top {
-  padding: 0;
-  width: 100%;
+#gjs-editor-container {
   display: flex;
-  justify-content: center;
-  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+  background-color: rgb(28, 27, 59); /* Couleur de fond du conteneur de l'éditeur */
+} 
 
-  .panel__basic-actions {
-    position: initial;
-  }
-
-  .panel__switcher {
-    position: initial;
-  }
-
-  .panel__devices {
-    position: initial;
-  }
+.gjs-one-bg {
+  background-color: rgb(28, 27, 59); /* Couleur de fond de l'éditeur */
 }
 
-.editor-row {
-  display: flex;
-  justify-content: flex-start;
-  align-items: stretch;
-  flex-wrap: nowrap;
-  height: 300px;
-
-  .editor-canvas {
-    flex-grow: 1;
-  }
-
-  .panel__right {
-    flex-basis: 230px;
-    position: relative;
-    overflow-y: auto;
-  }
+/* custom-style.css */
+.gjs-pn-panels {
+  background-color: #da1c1c !important; /* Assurez-vous d'utiliser !important pour surcharger */
 }
+
+.gjs-pn-buttons .gjs-pn-btn {
+  background-color: #555 !important;
+  color: #fff !important;
+}
+
+.gjs-block-category .gjs-block-category-title {
+  background-color: #222 !important;
+  color: #fff !important;
+}
+
+.gjs-block {
+  background-color: #4A4A4A !important;
+  border-color: #616161 !important;
+  color: #fff !important;
+}
+
+/* Et ainsi de suite pour les autres éléments... */
+

@@ -782,46 +782,42 @@ img {
 }
 
 #gjs {
-  border: 0.1875rem solid #444;
+  border: 0.1875rem solid rgb(28, 27, 59);
+  background-color: rgb(28, 27, 59);
 }
 
-.gjs-cv-canvas {
-  top: 0;
-  width: 100%;
+#gjs-editor-container {
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  background-color: rgb(28, 27, 59); /* Couleur de fond du conteneur de l'éditeur */
 }
 
-.panel__top {
-  padding: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  justify-content: space-between;
-}
-.panel__top .panel__basic-actions {
-  position: initial;
-}
-.panel__top .panel__switcher {
-  position: initial;
-}
-.panel__top .panel__devices {
-  position: initial;
+.gjs-one-bg {
+  background-color: rgb(28, 27, 59); /* Couleur de fond de l'éditeur */
 }
 
-.editor-row {
-  display: flex;
-  justify-content: flex-start;
-  align-items: stretch;
-  flex-wrap: nowrap;
-  height: 300px;
+/* custom-style.css */
+.gjs-pn-panels {
+  background-color: #da1c1c !important; /* Assurez-vous d'utiliser !important pour surcharger */
 }
-.editor-row .editor-canvas {
-  flex-grow: 1;
+
+.gjs-pn-buttons .gjs-pn-btn {
+  background-color: #555 !important;
+  color: #fff !important;
 }
-.editor-row .panel__right {
-  flex-basis: 230px;
-  position: relative;
-  overflow-y: auto;
+
+.gjs-block-category .gjs-block-category-title {
+  background-color: #222 !important;
+  color: #fff !important;
 }
+
+.gjs-block {
+  background-color: #4A4A4A !important;
+  border-color: #616161 !important;
+  color: #fff !important;
+}
+
+/* Et ainsi de suite pour les autres éléments... */
 
 /*# sourceMappingURL=dashboard.css.map */
