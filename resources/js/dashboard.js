@@ -3,6 +3,14 @@ import grapesjs from "grapesjs";
 import "grapesjs/dist/css/grapes.min.css";
 import gjsPresetWebpage from "grapesjs-preset-webpage";
 
+import template1 from '../../app/Views/front-office/templates/template1.json';
+import template2 from '../../app/Views/front-office/templates/template2.json';
+
+const templates = {
+  'template1': template1,
+  'template2': template2,
+};
+
 const editor = grapesjs.init({
   container: "#gjs",
   fromElement: true,
@@ -15,13 +23,21 @@ const editor = grapesjs.init({
   },
 });
 
-// Ajouter un bouton de sauvegarde au panneau
+
 editor.Panels.addButton("options", [
   {
     id: "save-db",
     className: "fa fa-floppy-o", // classe d'icône grapesJs (PageBuilder)
     command: "save-db", // Commande à exécuter
     attributes: { title: "Save DB" },
+  },
+]);
+editor.Panels.addButton("options", [
+  {
+    id: "load-project",
+    className: "fa fa-download",
+    command: "load-project",
+    attributes: { title: "Load Project" },
   },
 ]);
 
@@ -36,8 +52,12 @@ editor.Blocks.add("image", {
   },
   category: "Image",
 });
+editor.on("load", () => {
+  const panelEl = editor.Panels.getPanel("views-container").el;
+  panelEl.style.backgroundColor = "#fff";
+});
 
-// Définir la commande à exécuter lorsque le bouton de sauvegarde est cliqué
+
 editor.Commands.add("save-db", {
   run: function (editor, sender) {
     sender && sender.set("active", false); // Désactiver le bouton après l'avoir cliqué
@@ -63,11 +83,40 @@ editor.Commands.add("save-db", {
       });
   },
 });
-
-editor.on("load", () => {
-  const panelEl = editor.Panels.getPanel("views-container").el;
-  panelEl.style.backgroundColor = "#fff";
+editor.Commands.add('load-project', {
+  run: function(editor) {
+    editor.runCommand('open-templates');
+  }
 });
+editor.Commands.add('open-templates', {
+  run: function(editor) {
+    const modal = editor.Modal;
+    const container = document.createElement('div');
+
+    for (const templateName in templates) {
+      const template = templates[templateName];
+      const btn = document.createElement('button');
+      btn.innerHTML = templateName;
+      btn.addEventListener('click', () => loadTemplate(editor, template));
+      container.appendChild(btn);
+    }
+
+    modal.setTitle('Select a Template');
+    modal.setContent(container);
+    modal.open();
+  }
+});
+
+
+function loadTemplate(editor, template) {
+  editor.setComponents(template.html);
+  editor.setStyle(template.css);
+  editor.Modal.close();
+}
+
+
+
+
 
 /* Fonction Js */
 
@@ -93,14 +142,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Écouter les entrées dans le champ de recherche
   searchInput.addEventListener("keyup", filterRows);
 });
-
 /* Sidebar */
-document.addEventListener('DOMContentLoaded', function () {
-  var sidebarToggle = document.querySelector('.sidebar_toggle');
-  var body = document.querySelector('body');
+document.addEventListener("DOMContentLoaded", function () {
+  var sidebarToggle = document.querySelector(".sidebar_toggle");
+  var body = document.querySelector("body");
 
-  sidebarToggle.addEventListener('click', function () {
-      document.querySelector('.l-sidebar').classList.toggle('active');
-      body.classList.toggle('sidebar-active');
+  sidebarToggle.addEventListener("click", function () {
+    document.querySelector(".l-sidebar").classList.toggle("active");
+    body.classList.toggle("sidebar-active");
   });
 });
