@@ -25,7 +25,7 @@ class PageBuilder
     {
         session_start();
 
-        if (isset($_POST["url"], $_POST["title"], $_POST["html"], $_POST["css"], $_POST["meta_description"])) {
+        if (!empty($_POST["url"]) && !empty($_POST["title"]) && !empty($_POST["html"]) && !empty($_POST["css"]) && !empty($_POST["meta_description"])){
 
             $url = $_POST["url"];
             $title = $_POST["title"];

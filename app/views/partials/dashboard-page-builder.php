@@ -20,7 +20,7 @@
             ?>
         </div>
         <form method="POST" Action="/dashboard/page-builder/create-page">
-            <button class="btn-create-page" type="submit">Create page</button>
+            <button class="Button-back-office btn-create-page" type="submit">Create page</button>
         </form>
     </div>
 

@@ -215,6 +215,29 @@ img {
   transition: 0.3s ease-in-out;
 }
 
+.Button-back-office {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--main-radius);
+  color: var(--white);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.Button-back-office.btn-create-page {
+  background-color: var(--create-button);
+}
+.Button-back-office.btn-create-page:hover {
+  background-color: var(--create-button-hover);
+  transition: background-color 0.2s ease-in-out;
+}
+.Button-back-office.main-btn {
+  background-color: var(--back-office);
+}
+.Button-back-office.main-btn:hover {
+  background-color: var(--back-office-hover);
+  transition: background-color 0.2s ease-in-out;
+}
+
 *, ::before, ::after {
   box-sizing: border-box;
 }
@@ -328,19 +351,6 @@ img {
 .page-list-container .page-list-header h1 {
   color: var(--text-color);
 }
-.page-list-container .page-list-header .btn-create-page {
-  padding: 0.5rem 1rem;
-  background-color: var(--create-button);
-  border: none;
-  border-radius: var(--main-radius);
-  color: var(--white);
-  font-size: 1rem;
-  cursor: pointer;
-}
-.page-list-container .page-list-header .btn-create-page:hover {
-  background-color: var(--create-button-hover);
-  transition: background-color 0.2s ease-in-out;
-}
 .page-list-container .page-list-search {
   display: flex;
   gap: 0.5rem;
@@ -352,19 +362,6 @@ img {
   border-radius: 0.25rem;
   font-size: 1rem;
   flex-grow: 1;
-}
-.page-list-container .page-list-search button {
-  padding: 0.5rem 1rem;
-  background-color: var(--back-office-primary);
-  border: none;
-  border-radius: 0.25rem;
-  color: var(--white);
-  font-size: 1rem;
-  cursor: pointer;
-}
-.page-list-container .page-list-search button:hover {
-  background-color: var(--back-office-primary-hover);
-  transition: background-color 0.2s ease-in-out;
 }
 .page-list-container .page-list-table {
   background-color: var(--white);

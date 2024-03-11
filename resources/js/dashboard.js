@@ -59,35 +59,63 @@ editor.on("load", () => {
 editor.Commands.add("save-db", {
   run: function (editor, sender) {
     sender && sender.set("active", false); // Désactiver le bouton après l'avoir cliqué
-    
-    const url = "/leuia"; // TODO: Get this value from your UI    
-    const title = "Leuia page"; // TODO: Get this value from your UI
-    const html = editor.getHtml();
-    const css = editor.getCss();
-    const meta_description = "euurre mahore"; // TODO: Get this value from your UI
 
-    // Create a FormData with the editor data
-    const formData = new FormData();
-    formData.append("url", url);
-    formData.append("title", title);
-    formData.append("html", html);
-    formData.append("css", css);
-    formData.append("meta_description", meta_description);
+    // Ouvrir une modale pour demander les informations supplémentaires
+    const modalContent = `
+  <div style="margin-bottom: 15px;">
+    <label for="page-url" style="display: block; margin-bottom: 5px;">URL de la page :</label>
+    <input required type="text" id="page-url" name="url" style="width: 100%;" required/>
+  </div>
+  <div style="margin-bottom: 15px;">
+    <label for="page-title" style="display: block; margin-bottom: 5px;">Titre de la page :</label>
+    <input required type="text" id="page-title" name="title" style="width: 100%;" />
+  </div>
+  <div style="margin-bottom: 15px;">
+    <label for="page-description" style="display: block; margin-bottom: 5px;">Description de la page :</label>
+    <textarea required id="page-description" name="meta_description" style="width: 100%; height: 100px;"></textarea>
+  </div>
+  <button id="save-page-info" class="Button-back-office main-btn">Sauvegarder la page</button>
+`;
 
-    fetch("/dashboard/page-builder/create-page/save", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Sauvegarde réussie", data);
-      })
-      .catch((err) => {
-        console.error("Erreur lors de la sauvegarde", err);
+    const modal = editor.Modal;
+    modal.setTitle("Informations de la page");
+    modal.setContent(modalContent);
+    modal.open();
+
+    // Ajouter un gestionnaire d'événement pour le bouton de sauvegarde
+    document
+      .getElementById("save-page-info")
+      .addEventListener("click", function () {
+        const url = document.getElementById("page-url").value;
+        const title = document.getElementById("page-title").value;
+        const meta_description =
+          document.getElementById("page-description").value;
+        const html = editor.getHtml();
+        const css = editor.getCss();
+
+        const formData = new FormData();
+        formData.append("url", url);
+        formData.append("title", title);
+        formData.append("html", html);
+        formData.append("css", css);
+        formData.append("meta_description", meta_description);
+
+        // Envoie des données au serveur
+        fetch("/dashboard/page-builder/create-page/save", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Sauvegarde réussie", data);
+            modal.close(); // Fermer la modale après la sauvegarde
+          })
+          .catch((err) => {
+            console.error("Erreur lors de la sauvegarde", err);
+          });
       });
   },
 });
-
 editor.Commands.add("load-project", {
   run: function (editor) {
     editor.runCommand("open-templates");
