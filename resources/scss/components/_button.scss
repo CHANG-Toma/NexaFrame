@@ -42,24 +42,22 @@
 
     &.update {
         background: var(--reverse-bg-color);
-        background-color: orange;
+        background-color: var(--update-button);
         color: white;
 
         &:hover {
-            background-color: var(--website-bg-color);
-            color: var(--reverse-bg-color);
+            background-color: var(--update-button-hover);
             transition: 0.3s ease-in-out;
         }
     }
 
     &.delete {
         background: var(--reverse-bg-color);
-        background-color: red;
+        background-color: var(--delete);
         color: white;
 
         &:hover {
-            background-color: var(--website-bg-color);
-            color: var(--reverse-bg-color);
+            background-color: var(--delete-hover);
             transition: 0.3s ease-in-out;
         }
     }

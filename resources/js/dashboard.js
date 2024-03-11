@@ -66,6 +66,4 @@ editor.Commands.add("save-db", {
 editor.on('load', () => {
   const panelEl = editor.Panels.getPanel('views-container').el;
   panelEl.style.backgroundColor = '#fff';
-
-  // Appliquez d'autres styles de la même manière
 });

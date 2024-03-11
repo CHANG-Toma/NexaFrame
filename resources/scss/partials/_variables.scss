@@ -1,101 +1,109 @@
-$black : #000;
-$white : #FFF;
-$img-bg-color : #F4F4F4;
-$bg-color : #FFF2D8;
-$primary-color : #113946;
-$secondary-color : #EAD7BB;
-$error : #ff0000;
-$success : #08c108;
+$black: #000;
+$white: #fff;
+$img-bg-color: #f4f4f4;
+$bg-color: #f5f5f5;
+$error: #ff0000;
+$success: #08c108;
 $grey: #333;
 $darkgrey: #666;
-$centered : auto;
-$back-office : #008CBA;
-
+$back-office-primary: rgb(47, 46, 96);
+$back-office: #008cba;
+$update-button: #ffa600af;
+$approved: #4caf50;
+$delete: #f44336;
+$create-button: #37be4e;
 
 .dark-mode {
   --text-color: #{$white};
   --reverse-text-color: #{$black};
   --website-bg-color: #121212;
-  --reverse-bg-color : #{$white};
+  --reverse-bg-color: #{$white};
   --btn-bg-color: #000000;
   --dropdown-bg-color: #ffffff;
-  --dropdown-link-hover-bg-color : #{darken($white, 10%)};
-  --icon-color : invert(100%);
+  --dropdown-link-hover-bg-color: #{darken($white, 10%)};
+  --icon-color: invert(100%);
   --img-bg-color: #{lighten($black, 20%)};
 }
 
-:root{
-    /*Color*/
-    --white: #{$white};
-    --black: #{$black};
-    --grey: #{$grey};
-    --darkgrey: #{$darkgrey};
-    --text-color: #{$black};
-    --reverse-text-color: #{$white};
-    --bg-color:#{$bg-color};
-    --website-bg-color : #{$white};
-    --back-office : #{$back-office};
-    --back-office-hover : darken(#{$back-office}, 10%);
-    --reverse-bg-color : #{$black};
-    --icon-color :  invert(0);
-    --primary-color : #{$primary-color};
-    --secondary-color : #{$secondary-color};
-    --btn-bg-color: #{$white};
-    --btn-bg-hover-color: #{lighten($black, 10%)};
-    --img-bg-color: #{darken($white, 10%)};
-    --dropdown-bg-color : #{$white};
-    --dropdown-link-hover-bg-color : #{lighten($black, 10%)};
+:root {
+  /*Colors*/
+  --white: #{$white};
+  --black: #{$black};
+  --grey: #{$grey};
+  --darkgrey: #{$darkgrey};
 
-    --success-message : #{$success};
-    --error-message : #{$error};
+  --text-color: #{$black};
+  --reverse-text-color: #{$white};
 
-    /* GrapesJS */
-    --gjs-primary-color: #78366a;
-    --gjs-secondary-color: rgba(255, 255, 255, 0.7);
-    --gjs-tertiary-color: #ec5896;
-    --gjs-quaternary-color: #ec5896;
+  --bg-color: #{$bg-color};
+  --website-bg-color: #{$white};
+  --reverse-bg-color: #{$black};
+  --icon-color: invert(0);
 
-    /*Radius*/
+  --btn-bg-color: #{$white};
+  --img-bg-color: #{darken($white, 10%)};
 
-    --main-radius: #{rem(6)};
+  --dropdown-bg-color: #{$white};
 
-    /*Fonts*/
+  --back-office: #{$back-office};
+  --back-office-primary: #{$back-office-primary};
 
-    --main-font: #{$text-font};
-    --title-font: #{$title-font};
-    --website-font-family: #{$website-font-family};
+  --success-message: #{$success};
+  --error-message: #{$error};
 
-    /*trans*/
+  --approved: #{$approved};
+  --delete: #{$delete};
+  --update-button: #{$update-button};
+  --create-button: #{$create-button};
 
-    --transition-duration:0.3s;
+  /*Hover Colors*/
+  --btn-bg-hover-color: #{lighten($black, 10%)};
+  --dropdown-link-hover-bg-color: #{lighten($black, 10%)};
 
-    /*Font size*/
-    --main-size : #{rem(18)};
-    --main-size-768: #{rem(9)};
-    --title-size : #{rem(32)};
-    --title-size-768 : #{rem(16)};
-    --main-title-size : #{rem(80)};
-    --subtitle-size : #{rem(24)};
-    --subtitle-size-768 : #{rem(12)};
-    --heading-size : #{rem(48)};
-    --heading-size-768 : #{rem(30)};
-    --line-height : #{rem(27)};
-    --h1-font-size : #{rem(56)};
-    --h1-font-size-768 : #{rem(28)};
+  --back-office-hover: #{darken($back-office, 10%)};
+  --back-office-primary-hover: #{darken($back-office-primary, 10%)};
 
-    /*Letter spacing*/
+  --delete-hover: #{darken($delete, 10%)};
+  --update-button-hover: #{darken($update-button, 10%)};
+  --create-button-hover: #{darken($create-button, 10%)};
 
-    --title-spacing : #{rem(5)};
-   
-    /*padding & margins */
+  /*Radius*/
 
-    --pm-md : #{rem(16)};
-    --pm-sm : #{rem(8)};
-    --pm-lg : #{rem(16) rem(32)};
-    --pm-xlg : #{rem(32)};
-    --pm-xxlg : #{rem(64)};
-    
-    /*margin*/
+  --main-radius: #{rem(6)};
 
-    --centered : #{$centered};
+  /*Fonts*/
+
+  --main-font: #{$text-font};
+  --title-font: #{$title-font};
+  --website-font-family: #{$website-font-family};
+
+  /*transition*/
+
+  --transition-duration: 0.3s;
+
+  /*Font size*/
+  --main-size: #{rem(18)};
+  --main-size-768: #{rem(9)};
+  --title-size: #{rem(32)};
+  --title-size-768: #{rem(16)};
+  --main-title-size: #{rem(80)};
+  --subtitle-size: #{rem(24)};
+  --subtitle-size-768: #{rem(12)};
+  --heading-size: #{rem(48)};
+  --heading-size-768: #{rem(30)};
+  --line-height: #{rem(27)};
+  --h1-font-size: #{rem(56)};
+  --h1-font-size-768: #{rem(28)};
+
+  /*Letter spacing*/
+
+  --title-spacing: #{rem(5)};
+
+  /*padding & margins */
+
+  --pm-md: #{rem(16)};
+  --pm-sm: #{rem(8)};
+  --pm-lg: #{rem(16) rem(32)};
+  --pm-xlg: #{rem(32)};
+  --pm-xxlg: #{rem(64)};
 }

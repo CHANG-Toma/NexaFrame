@@ -22,7 +22,7 @@
       }
   
       th {
-        background-color: rgb(47, 46, 96);
+        background-color: var(--back-office-primary);
         color: white;
       }
   
@@ -34,12 +34,12 @@
         padding: rem(5) rem(10);
         border-radius: rem(4);
         border: none;
-        background-color: rgb(65, 64, 134);
+        background-color: var(--back-office-primary);
         color: white;
         cursor: pointer;
   
         &:hover {
-          background-color: darken(rgb(65, 64, 134), 15%);
+          background-color: var(--back-office-primary-hover);
         }
       }
     }
