@@ -75,7 +75,8 @@ CREATE TABLE pages (
     id SERIAL PRIMARY KEY,
     url VARCHAR(50) NOT NULL,
     title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
+    html TEXT NOT NULL,
+    css TEXT NOT NULL,
     meta_description TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_creator INT NOT NULL,
@@ -93,5 +94,5 @@ INSERT INTO categories (label) VALUES
 INSERT INTO users (login, email, password, role, created_at, status, validate, validation_token) VALUES
 ('admin', 'toma11chang@gmail.com', '$2y$10$', 'admin', '2020-01-01 00:00:00', 1, TRUE, '');
 
-INSERT INTO pages (url, title, content, meta_description, id_creator) VALUES
-('/exemple', 'Page Exemple', 'Contenu de la page exemple.', 'Description de la page exemple pour le SEO.', 1);
+INSERT INTO pages (url, title, html, css, meta_description, id_creator) VALUES
+('/exemple', 'Page Exemple', '<h1> Page exemple </h1>', 'h1{color : orange;}','Description de la page exemple pour le SEO.', 1);

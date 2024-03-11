@@ -10,7 +10,8 @@ Class Page extends DB
     private ?int $id = null;
     protected string $url;
     protected string $title;
-    protected string $content;
+    protected string $html;
+    protected string $css;
     protected string $meta_description;
     protected string $created_at;
     protected string $id_creator;
@@ -48,14 +49,24 @@ Class Page extends DB
         $this->title = $title;
     }
 
-    public function getContent(): string
+    public function getHtml(): string
     {
-        return $this->content;
+        return $this->html;
     }
 
-    public function setContent(string $content): void
+    public function setHtml(string $html): void
     {
-        $this->content = $content;
+        $this->html = $html;
+    }
+
+    public function getCss(): string
+    {
+        return $this->html;
+    }
+
+    public function setCss(string $css): void
+    {
+        $this->css = $css;
     }
 
     public function getMetaDescription(): string

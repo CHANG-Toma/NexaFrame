@@ -3,12 +3,12 @@ import grapesjs from "grapesjs";
 import "grapesjs/dist/css/grapes.min.css";
 import gjsPresetWebpage from "grapesjs-preset-webpage";
 
-import template1 from '../../app/Views/front-office/templates/template1.json';
-import template2 from '../../app/Views/front-office/templates/template2.json';
+import template1 from "../../app/Views/front-office/templates/template1.json";
+import template2 from "../../app/Views/front-office/templates/template2.json";
 
 const templates = {
-  'template1': template1,
-  'template2': template2,
+  template1: template1,
+  template2: template2,
 };
 
 const editor = grapesjs.init({
@@ -22,7 +22,6 @@ const editor = grapesjs.init({
     [gjsPresetWebpage]: {},
   },
 });
-
 
 editor.Panels.addButton("options", [
   {
@@ -57,20 +56,25 @@ editor.on("load", () => {
   panelEl.style.backgroundColor = "#fff";
 });
 
-
 editor.Commands.add("save-db", {
   run: function (editor, sender) {
     sender && sender.set("active", false); // Désactiver le bouton après l'avoir cliqué
-    // Code pour collecter les données de l'éditeur
+    
+    const url = "/leuia"; // TODO: Get this value from your UI    
+    const title = "Leuia page"; // TODO: Get this value from your UI
     const html = editor.getHtml();
     const css = editor.getCss();
-    // Créer un FormData avec les données de l'éditeur
+    const meta_description = "euurre mahore"; // TODO: Get this value from your UI
+
+    // Create a FormData with the editor data
     const formData = new FormData();
+    formData.append("url", url);
+    formData.append("title", title);
     formData.append("html", html);
     formData.append("css", css);
+    formData.append("meta_description", meta_description);
 
-    // Envoyer les données au serveur via fetch API ou XMLHttpRequest
-    fetch("chemin/vers/votre/controller.php", {
+    fetch("/dashboard/page-builder/create-page/save", {
       method: "POST",
       body: formData,
     })
@@ -83,40 +87,36 @@ editor.Commands.add("save-db", {
       });
   },
 });
-editor.Commands.add('load-project', {
-  run: function(editor) {
-    editor.runCommand('open-templates');
-  }
+
+editor.Commands.add("load-project", {
+  run: function (editor) {
+    editor.runCommand("open-templates");
+  },
 });
-editor.Commands.add('open-templates', {
-  run: function(editor) {
+editor.Commands.add("open-templates", {
+  run: function (editor) {
     const modal = editor.Modal;
-    const container = document.createElement('div');
+    const container = document.createElement("div");
 
     for (const templateName in templates) {
       const template = templates[templateName];
-      const btn = document.createElement('button');
+      const btn = document.createElement("button");
       btn.innerHTML = templateName;
-      btn.addEventListener('click', () => loadTemplate(editor, template));
+      btn.addEventListener("click", () => loadTemplate(editor, template));
       container.appendChild(btn);
     }
 
-    modal.setTitle('Select a Template');
+    modal.setTitle("Select a Template");
     modal.setContent(container);
     modal.open();
-  }
+  },
 });
-
 
 function loadTemplate(editor, template) {
   editor.setComponents(template.html);
   editor.setStyle(template.css);
   editor.Modal.close();
 }
-
-
-
-
 
 /* Fonction Js */
 
@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Écouter les entrées dans le champ de recherche
   searchInput.addEventListener("keyup", filterRows);
 });
+
 /* Sidebar */
 document.addEventListener("DOMContentLoaded", function () {
   var sidebarToggle = document.querySelector(".sidebar_toggle");

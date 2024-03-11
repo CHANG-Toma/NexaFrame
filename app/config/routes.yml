@@ -48,6 +48,10 @@
   controller: dashboard
   action: index
 
+/dashboard/page-builder/create-page/save:
+  controller: PageBuilder
+  action: savePage
+
 /dashboard/template:
   controller: Dashboard
   action: index
