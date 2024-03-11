@@ -1,5 +1,4 @@
 <body id="body" class="sidebar">
-
     <nav class="l-sidebar">
         <div id="menu-toggle" class="sidebar_toggle">
             <span class="menu-icon">&#9776;</span>
@@ -14,8 +13,8 @@
 
         <div class="side-item">
             <a href="/dashboard/template" class="side-link">
-                <span class="side-icon">&#128194;</span>
-                <span class="side-text">Template</span>
+                <span class="side-icon">&#128202;</span>
+                <span class="side-text">Mes analyse</span>
             </a>
         </div>
 

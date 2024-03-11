@@ -33,7 +33,6 @@ class PageBuilder
             $css = $_POST["css"];
             $meta_description = $_POST["meta_description"];
 
-            // Use your Page model to save the data
             $Page = new Page();
             $Page->setUrl('/' . $url);
             $Page->setTitle(htmlspecialchars($title));
@@ -43,18 +42,20 @@ class PageBuilder
             $Page->setMetaDescription($meta_description);
             $Page->save();
 
-            // Send a JSON response back
             header('Content-Type: application/json');
             echo json_encode(["success" => true, "message" => "Page saved successfully"]);
         } else {
             // Send a JSON response back
             header('Content-Type: application/json');
-            http_response_code(400); // Bad request
+            http_response_code(400); 
             echo json_encode(["success" => false, "message" => "Missing required fields"]);
         }
     }
 
-
+    public function updatePage() :void
+    {
+        
+    }
 
     public function deletePage(): void
     {

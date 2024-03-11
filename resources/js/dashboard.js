@@ -64,7 +64,7 @@ editor.Commands.add("save-db", {
     const modalContent = `
   <div style="margin-bottom: 15px;">
     <label for="page-url" style="display: block; margin-bottom: 5px;">URL de la page :</label>
-    <input required type="text" id="page-url" name="url" style="width: 100%;" required/>
+    <input required type="text" id="page-url" name="url" style="width: 100%;"/>
   </div>
   <div style="margin-bottom: 15px;">
     <label for="page-title" style="display: block; margin-bottom: 5px;">Titre de la page :</label>
