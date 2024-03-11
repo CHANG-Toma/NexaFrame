@@ -25,12 +25,11 @@
     </div>
 
     <div class="page-list-search">
-        <input type="text" placeholder="Page name">
-        <button type="submit">Rechercher</button>
+        <input id="searchInput" type="text" placeholder="Nom de votre page">
     </div>
 
     <div class="page-list-table">
-        <table>
+        <table id="pageTable">
             <thead>
                 <tr>
                     <th>Nom</th>

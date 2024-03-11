@@ -3,12 +3,12 @@
     height: auto;
     @include flexbox(column, nowrap, unset, center, rem(64));
   
-    .content {
+    &.content {
       width: 100%;
       height: auto;
       @include flexbox(unset, nowrap, flex-start, flex-start, rem(64));
   
-      .column {
+      &.column {
         width: rem(1312);
         height: rem(244);
         justify-content: flex-start;
@@ -21,7 +21,7 @@
           width: rem(864);
           align-items: flex-start;
   
-          .content-info {
+          &.content-info {
             align-self: stretch;
             display: inline-flex;
             flex-direction: column;
@@ -29,7 +29,7 @@
             gap: rem(24);
           }
   
-          .logo {
+          &.logo {
             width: rem(60);
             height: rem(65);
             position: relative;
@@ -42,7 +42,7 @@
           justify-content: flex-end;
           flex-direction: row;
   
-          .link-list {
+          &.link-list {
             display: flex;
             flex-direction: column;
             gap: rem(12);

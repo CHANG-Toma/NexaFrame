@@ -1,5 +1,3 @@
-
-
 <body id="body" class="sidebar">
 
     <nav class="l-sidebar">
@@ -43,19 +41,4 @@
             </a>
         </div>
     </nav>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var sidebarToggle = document.querySelector('.sidebar_toggle');
-            var body = document.querySelector('body');
-
-            sidebarToggle.addEventListener('click', function () {
-                document.querySelector('.l-sidebar').classList.toggle('active');
-                body.classList.toggle('sidebar-active');
-            });
-        });
-    </script>
-
 </body>
-
-</html>
