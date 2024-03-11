@@ -32,6 +32,10 @@
 
 # dashboard routes
 
+/dashboard:
+  controller: Dashboard
+  action: index
+
 /dashboard/page-builder:
   controller: Dashboard
   action: index

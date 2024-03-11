@@ -37,6 +37,8 @@ class Dashboard
                 break;
             default:
                 $components[] = 'dashboard-page-builder.php';
+                $pageBuilder = new PageBuilder();
+                $data = $pageBuilder->pageList();
                 break;
         } 
         if (!isset($_SESSION['user'])) {
