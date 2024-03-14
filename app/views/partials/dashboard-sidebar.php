@@ -14,7 +14,7 @@
         <div class="side-item">
             <a href="/dashboard/template" class="side-link">
                 <span class="side-icon">&#128202;</span>
-                <span class="side-text">Mes analyse</span>
+                <span class="side-text">Mes analyses</span>
             </a>
         </div>
 

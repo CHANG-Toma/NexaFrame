@@ -5,7 +5,8 @@
   "scripts": {
     "watch-sass": "sass --watch scss/main.scss ../public/assets/dist/css/main.css",
     "watch-sass-dashboard": "sass --watch scss/dashboard.scss ../public/assets/dist/css/dashboard.css",
-    "dev": "webpack --mode development --watch"
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production"
   },
   "author": "",
   "license": "ISC",

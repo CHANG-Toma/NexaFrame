@@ -56,10 +56,14 @@
                             <?php echo $data[$i]['created_at']; ?>
                         </td>
                         <td class="container">
-                            <form method="POST" Action="/dashboard/page-builder/update-page">
-                                <input type="hidden" name="id-page" value="<?php echo $data[$i]['id']; ?>">
-                                <button class="Button-sm update" type="submit">Modifier</button>
-                            </form>
+                            <button class="Button-sm update" 
+                                data-id="<?php echo $data[$i]['id']; ?>"
+                                data-html="<?php echo htmlspecialchars($data[$i]['html']); ?>"
+                                data-css="<?php echo htmlspecialchars($data[$i]['css']); ?>">
+                                Modifier
+                            </button>
+
+
                             <form method="POST" Action="/dashboard/page-builder/delete-page">
                                 <input type="hidden" name="id-page" value="<?php echo $data[$i]['id']; ?>">
                                 <button class="Button-sm delete" type="submit">Supprimer</button>

@@ -52,11 +52,15 @@
   controller: PageBuilder
   action: savePage
 
+/dashboard/page-builder/update-page:
+  controller: PageBuilder
+  action: updatePage
+
 /dashboard/template:
   controller: Dashboard
   action: index
 
-/dashboard/comment :
+/dashboard/comment:
   controller: Dashboard
   action: index
 

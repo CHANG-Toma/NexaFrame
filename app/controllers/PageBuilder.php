@@ -25,7 +25,7 @@ class PageBuilder
     {
         session_start();
 
-        if (!empty($_POST["url"]) && !empty($_POST["title"]) && !empty($_POST["html"]) && !empty($_POST["css"]) && !empty($_POST["meta_description"])){
+        if (!empty($_POST["url"]) && !empty($_POST["title"]) && !empty($_POST["html"]) && !empty($_POST["css"]) && !empty($_POST["meta_description"])) {
 
             $url = $_POST["url"];
             $title = $_POST["title"];
@@ -47,14 +47,9 @@ class PageBuilder
         } else {
             // Send a JSON response back
             header('Content-Type: application/json');
-            http_response_code(400); 
+            http_response_code(400);
             echo json_encode(["success" => false, "message" => "Missing required fields"]);
         }
-    }
-
-    public function updatePage() :void
-    {
-        
     }
 
     public function deletePage(): void

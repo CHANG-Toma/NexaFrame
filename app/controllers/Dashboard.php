@@ -16,11 +16,11 @@ class Dashboard
         $components = [
             'dashboard-sidebar.php',
         ];
+        $pageBuilder = new PageBuilder();
 
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
                 $components[] = 'dashboard-page-builder.php';
-                $pageBuilder = new PageBuilder();
                 $data = $pageBuilder->pageList();
                 break;
             case '/dashboard/page-builder/create-page':
@@ -37,7 +37,6 @@ class Dashboard
                 break;
             default:
                 $components[] = 'dashboard-page-builder.php';
-                $pageBuilder = new PageBuilder();
                 $data = $pageBuilder->pageList();
                 break;
         } 
