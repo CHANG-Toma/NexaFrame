@@ -19,6 +19,13 @@
         </div>
 
         <div class="side-item">
+            <a href="/dashboard/users" class="side-link">
+                <span class="side-icon">&#129485;</span>
+                <span class="side-text">Mes utilisateurs</span>
+            </a>
+        </div>
+
+        <div class="side-item">
             <a href="/dashboard/comment" class="side-link">
                 <span class="side-icon">&#128203;</span>
                 <span class="side-text">Commentaires</span>

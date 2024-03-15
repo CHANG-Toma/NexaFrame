@@ -20,7 +20,7 @@
             ?>
         </div>
         <form method="POST" Action="/dashboard/page-builder/create-page">
-            <button class="Button-back-office btn-create-page" type="submit">Create page</button>
+            <button class="Button-back-office btn-create-page" type="submit">Nouvelle page</button>
         </form>
     </div>
 
@@ -60,6 +60,11 @@
                             <?php echo $data[$i]['created_at'] ? date('d F Y H:i:s', strtotime($data[$i]['created_at'])) : ''; ?>
                         </td>
                         <td class="container">
+                            <form method="POST" Action="<?php echo $data[$i]['url']; ?>">
+                                <button class="Button-sm see" type="submit">
+                                    Voir
+                                </button>
+                            </form>
 
                             <button class="Button-sm update" data-id="<?php echo $data[$i]['id']; ?>"
                                 data-html="<?php echo htmlspecialchars($data[$i]['html']); ?>"

@@ -3,7 +3,7 @@
 namespace App;
 
 spl_autoload_register("App\myAutoloader");
-require("../app/vendor/autoload.php");
+require ("../app/vendor/autoload.php");
 
 function myAutoloader($class): void
 {
@@ -13,7 +13,7 @@ function myAutoloader($class): void
     if (file_exists("../app/" . $file)) {
         include "../app/" . $file;
     } else {
-        print("Le fichier " . $file . " n'existe pas" . "<br>");
+        print ("Le fichier " . $file . " n'existe pas" . "<br>");
     }
 }
 
@@ -26,12 +26,12 @@ $fileRoute = __DIR__ . '/../app/config/routes.yml';
 if (file_exists($fileRoute)) {
     $listOfRoutes = yaml_parse_file($fileRoute);
 } else {
-    die("Le fichier de routing n'existe pas");
+    die ("Le fichier de routing n'existe pas");
 }
 
-if (!empty($listOfRoutes[$uri])) {
-    if (!empty($listOfRoutes[$uri]["controller"])) {
-        if (!empty($listOfRoutes[$uri]["action"])) {
+if (!empty ($listOfRoutes[$uri])) {
+    if (!empty ($listOfRoutes[$uri]["controller"])) {
+        if (!empty ($listOfRoutes[$uri]["action"])) {
 
             $controller = $listOfRoutes[$uri]["controller"];
             $action = $listOfRoutes[$uri]["action"];
@@ -44,27 +44,31 @@ if (!empty($listOfRoutes[$uri])) {
                     if (method_exists($object, $action)) {
                         $object->$action();
                     } else {
-                        die("L'action' " . $action . " n'existe pas");
+                        die ("L'action' " . $action . " n'existe pas");
                     }
                 } else {
-                    die("Le class controller " . $controller . " n'existe pas");
+                    die ("Le class controller " . $controller . " n'existe pas");
                 }
             } else {
-                die("Le fichier controller " . $controller . " n'existe pas");
+                die ("Le fichier controller " . $controller . " n'existe pas");
             }
         } else {
-            die("La route " . $uri . " ne possède pas d'action dans le ficher " . $fileRoute);
+            die ("La route " . $uri . " ne possède pas d'action dans le ficher " . $fileRoute);
         }
     } else {
-        die("La route " . $uri . " ne possède pas de controller dans le ficher " . $fileRoute);
+        die ("La route " . $uri . " ne possède pas de controller dans le ficher " . $fileRoute);
     }
 } else {
-    if (empty($listOfRoutes[$uri]) && $uri != "/") { // si la route n'existe pas
+    $myPage = new Controllers\home();
+    if($myPage->mypage($uri)){
+        return;
+    }
+    else if (empty ($listOfRoutes[$uri]) && $uri != '/') { // si la route n'existe pas
         include "../app/controllers/Error.php";
         $object = new Controllers\Error();
         $object->error404();
     } 
-    else if (empty($listOfRoutes[$uri]) && $uri == "/") { // si la route n'existe pas et que l'url est "/"
+    else {
         include "../app/Views/front-office/main/home.php";
     }
 }
