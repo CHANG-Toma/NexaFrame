@@ -3,12 +3,11 @@ import grapesjs from "grapesjs";
 import "grapesjs/dist/css/grapes.min.css";
 import gjsPresetWebpage from "grapesjs-preset-webpage";
 
-import template1 from "../../app/Views/front-office/templates/template1.json";
-import template2 from "../../app/Views/front-office/templates/template2.json";
-
 const templates = {
-  template1: template1,
-  template2: template2,
+  template1: () =>
+    import("../../app/Views/front-office/templates/template1.json"),
+  template2: () =>
+    import("../../app/Views/front-office/templates/template2.json"),
 };
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -173,7 +172,8 @@ document.querySelectorAll(".Button-sm.update").forEach((button) => {
 });
 
 document
-  .querySelectorAll(".Button-back-office.btn-create-page").forEach((button) => {
+  .querySelectorAll(".Button-back-office.btn-create-page")
+  .forEach((button) => {
     button.addEventListener("click", function () {
       localStorage.removeItem("currentEditingId");
       localStorage.removeItem("currentEditingHtml");
@@ -181,10 +181,12 @@ document
     });
   });
 
-function loadTemplate(editor, template) {
-  editor.setComponents(template.html);
-  editor.setStyle(template.css);
-  editor.Modal.close();
+function loadTemplate(editor, templatePromise) {
+  templatePromise().then((template) => {
+    editor.setComponents(template.default.html);
+    editor.setStyle(template.default.css);
+    editor.Modal.close();
+  });
 }
 
 /* Fonction Js */
