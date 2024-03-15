@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   });
 
+  // bouton de sauvegarde personnalisé
   editor.Panels.addButton("options", [
     {
       id: "save-db",
@@ -32,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
       attributes: { title: "Save DB" },
     },
   ]);
+  // bouton de chargement des templates
   editor.Panels.addButton("options", [
     {
       id: "load-project",
@@ -41,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ]);
 
-  // Ajouter un bloc d'image personnalisé
+  // bloc d'image personnalisé
   editor.Blocks.add("image", {
     label: "Image",
     attributes: { class: "fa fa-image" }, // classe d'icône grapesJs
@@ -52,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     category: "Image",
   });
+  // bloc de texte personnalisé
   editor.on("load", () => {
     const panelEl = editor.Panels.getPanel("views-container").el;
     panelEl.style.backgroundColor = "#fff";
@@ -87,6 +90,13 @@ document.addEventListener("DOMContentLoaded", function () {
       document
         .getElementById("save-page-info")
         .addEventListener("click", function () {
+          const formData = new FormData();
+
+          if (localStorage.getItem("currentEditingId")) {
+            const id = localStorage.getItem("currentEditingId");
+            formData.append("id", id);
+          }
+
           const url = document.getElementById("page-url").value;
           const title = document.getElementById("page-title").value;
           const meta_description =
@@ -94,7 +104,6 @@ document.addEventListener("DOMContentLoaded", function () {
           const html = editor.getHtml();
           const css = editor.getCss();
 
-          const formData = new FormData();
           formData.append("url", url);
           formData.append("title", title);
           formData.append("html", html);
@@ -108,11 +117,10 @@ document.addEventListener("DOMContentLoaded", function () {
           })
             .then((response) => response.json())
             .then((data) => {
-              console.log("Sauvegarde réussie", data);
-              modal.close(); // Fermer la modale après la sauvegarde
+              modal.close();
             })
             .catch((err) => {
-              console.error("Erreur lors de la sauvegarde", err);
+              modal.close();
             });
         });
     },
@@ -153,7 +161,7 @@ document.querySelectorAll(".Button-sm.update").forEach((button) => {
     const html = this.getAttribute("data-html");
     const css = this.getAttribute("data-css");
 
-    //localStorage est une variable qui permet de 
+    //localStorage est une variable qui permet de
     // stocker des données dans le navigateur
 
     localStorage.setItem("currentEditingId", id);
@@ -165,8 +173,7 @@ document.querySelectorAll(".Button-sm.update").forEach((button) => {
 });
 
 document
-  .querySelectorAll(".Button-back-office.btn-create-page")
-  .forEach((button) => {
+  .querySelectorAll(".Button-back-office.btn-create-page").forEach((button) => {
     button.addEventListener("click", function () {
       localStorage.removeItem("currentEditingId");
       localStorage.removeItem("currentEditingHtml");

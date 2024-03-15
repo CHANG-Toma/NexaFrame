@@ -35,6 +35,7 @@
                     <th>Nom</th>
                     <th>Lien</th>
                     <th>Description</th>
+                    <th>Modifié le</th>
                     <th>Créer le</th>
                     <th>Action</th>
                 </tr>
@@ -53,11 +54,15 @@
                             <?php echo $data[$i]['meta_description']; ?>
                         </td>
                         <td>
-                            <?php echo $data[$i]['created_at']; ?>
+                            <?php echo $data[$i]['updated_at'] ? date('d F Y H:i:s', strtotime($data[$i]['updated_at'])) : ''; ?>
+                        </td>
+                        <td>
+                            <?php echo $data[$i]['created_at'] ? date('d F Y H:i:s', strtotime($data[$i]['created_at'])) : ''; ?>
                         </td>
                         <td class="container">
-                            <button class="Button-sm update" 
-                                data-id="<?php echo $data[$i]['id']; ?>"
+                            <button type="submit" class="Button-sm see">Voir</button>
+
+                            <button class="Button-sm update" data-id="<?php echo $data[$i]['id']; ?>"
                                 data-html="<?php echo htmlspecialchars($data[$i]['html']); ?>"
                                 data-css="<?php echo htmlspecialchars($data[$i]['css']); ?>">
                                 Modifier

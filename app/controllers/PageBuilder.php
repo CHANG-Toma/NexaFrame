@@ -18,7 +18,6 @@ class PageBuilder
     {
         $page = new Page();
         return $page->getAllBy(['id_creator' => $_SESSION['user']['id']]);
-        ;
     }
 
     public function savePage(): void
@@ -34,6 +33,14 @@ class PageBuilder
             $meta_description = $_POST["meta_description"];
 
             $Page = new Page();
+
+            // update page 
+            if ($_POST["id"]) {
+                $id = $_POST["id"];
+                $Page->setId($id);
+                $Page->setUpdatedAt(date('Y-m-d H:i:s'));
+            }
+
             $Page->setUrl('/' . $url);
             $Page->setTitle(htmlspecialchars($title));
             $Page->setHtml($html);
@@ -45,7 +52,6 @@ class PageBuilder
             header('Content-Type: application/json');
             echo json_encode(["success" => true, "message" => "Page saved successfully"]);
         } else {
-            // Send a JSON response back
             header('Content-Type: application/json');
             http_response_code(400);
             echo json_encode(["success" => false, "message" => "Missing required fields"]);

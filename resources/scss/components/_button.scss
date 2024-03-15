@@ -61,6 +61,18 @@
       transition: 0.3s ease-in-out;
     }
   }
+
+  &.see {
+    background: var(--reverse-bg-color);
+    background-color: var(--create-button);
+    color: white;
+
+    &:hover {
+      background-color: var(--create-button-hover);
+      transition: 0.3s ease-in-out;
+    }
+  }
+  
 }
 
 .Button-back-office {
