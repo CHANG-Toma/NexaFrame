@@ -163,6 +163,8 @@ document.querySelectorAll(".Button-sm.update").forEach((button) => {
     //localStorage est une variable qui permet de
     // stocker des données dans le navigateur
 
+    localStorage.clear();
+
     localStorage.setItem("currentEditingId", id);
     localStorage.setItem("currentEditingHtml", html);
     localStorage.setItem("currentEditingCss", css);
@@ -175,9 +177,7 @@ document
   .querySelectorAll(".Button-back-office.btn-create-page")
   .forEach((button) => {
     button.addEventListener("click", function () {
-      localStorage.removeItem("currentEditingId");
-      localStorage.removeItem("currentEditingHtml");
-      localStorage.removeItem("currentEditingCss");
+      localStorage.clear();
     });
   });
 

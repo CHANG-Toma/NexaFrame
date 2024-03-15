@@ -60,7 +60,7 @@
                             <?php echo $data[$i]['created_at'] ? date('d F Y H:i:s', strtotime($data[$i]['created_at'])) : ''; ?>
                         </td>
                         <td class="container">
-                            <form method="POST" Action="<?php echo $data[$i]['url']; ?>">
+                            <form Action="<?php echo $data[$i]['url']; ?>">
                                 <button class="Button-sm see" type="submit">
                                     Voir
                                 </button>
