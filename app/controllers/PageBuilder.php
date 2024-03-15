@@ -2,10 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
-use App\Models\Article;
 use App\Models\Page;
-use App\Models\Setting;
 
 class PageBuilder
 {
@@ -24,24 +21,23 @@ class PageBuilder
     {
         session_start();
 
-        if (!empty($_POST["url"]) && !empty($_POST["title"]) && !empty($_POST["html"]) && !empty($_POST["css"]) && !empty($_POST["meta_description"])) {
+        $url = $_POST["url"] ?? '';
+        $title = $_POST["title"] ?? '';
+        $html = $_POST["html"] ?? '';
+        $css = $_POST["css"] ?? '';
+        $meta_description = $_POST["meta_description"] ?? '';
 
-            $url = $_POST["url"];
-            $title = $_POST["title"];
-            $html = $_POST["html"];
-            $css = $_POST["css"];
-            $meta_description = $_POST["meta_description"];
-
+        if (!empty($url) && !empty($title) && !empty($html) && !empty($css) && !empty($meta_description)) {
             $Page = new Page();
 
             // update page 
-            if ($_POST["id"]) {
+            if (!empty($_POST["id"])) {
                 $id = $_POST["id"];
                 $Page->setId($id);
                 $Page->setUpdatedAt(date('Y-m-d H:i:s'));
             }
 
-            $Page->setUrl('/' . $url);
+            $Page->setUrl('/' . htmlspecialchars($url));
             $Page->setTitle(htmlspecialchars($title));
             $Page->setHtml($html);
             $Page->setCss($css);

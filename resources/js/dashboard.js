@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
   editor.Panels.addButton("options", [
     {
       id: "load-project",
-      className: "fa fa-download",
+      className: "fa fa-download", // classe d'icône grapesJs (PageBuilder)
       command: "load-project",
       attributes: { title: "Load Project" },
     },
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // bloc d'image personnalisé
   editor.Blocks.add("image", {
     label: "Image",
-    attributes: { class: "fa fa-image" }, // classe d'icône grapesJs
+    attributes: { class: "fa fa-image" }, // classe d'icône grapesJs (PageBuilder)
     content: {
       type: "image",
       style: { color: "black" },
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   editor.Commands.add("save-db", {
     run: function (editor, sender) {
-      sender && sender.set("active", false); // Désactiver le bouton après l'avoir cliqué
+      sender && sender.set("active", false); // Désactive le bouton après l'avoir cliqué
 
       // Ouvrir une modale pour demander les informations supplémentaires
       const modalContent = `
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.setContent(modalContent);
       modal.open();
 
-      // Ajouter un gestionnaire d'événement pour le bouton de sauvegarde
+      // Ajoute un gestionnaire d'événement pour le bouton de sauvegarde
       document
         .getElementById("save-page-info")
         .addEventListener("click", function () {
@@ -199,16 +199,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let searchText = searchInput.value.toLowerCase();
     let rows = table.getElementsByTagName("tr");
 
-    // Itérer sur chaque ligne de la table
+    // Itére sur chaque ligne de la table
     for (let i = 1; i < rows.length; i++) {
       // Commence à 1 pour ignorer l'en-tête de la table
       let firstCellText = rows[i].cells[0].textContent.toLowerCase(); // Prendre le texte de la première cellule (Nom de la page)
-      let isVisible = firstCellText.indexOf(searchText) > -1; // Vérifier si le texte de recherche est présent
+      let isVisible = firstCellText.indexOf(searchText) > -1; // Vérifie si le texte de recherche est présent
       rows[i].style.display = isVisible ? "" : "none"; // Afficher ou cacher la ligne
     }
   }
 
-  // Écouter les entrées dans le champ de recherche
+  // Écoute les entrées dans le champ de recherche
   searchInput.addEventListener("keyup", filterRows);
 });
 

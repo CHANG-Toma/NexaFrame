@@ -60,7 +60,6 @@
                             <?php echo $data[$i]['created_at'] ? date('d F Y H:i:s', strtotime($data[$i]['created_at'])) : ''; ?>
                         </td>
                         <td class="container">
-                            <button type="submit" class="Button-sm see">Voir</button>
 
                             <button class="Button-sm update" data-id="<?php echo $data[$i]['id']; ?>"
                                 data-html="<?php echo htmlspecialchars($data[$i]['html']); ?>"
