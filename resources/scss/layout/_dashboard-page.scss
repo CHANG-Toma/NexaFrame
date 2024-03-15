@@ -1,0 +1,31 @@
+#gjs {
+  border: rem(3) solid var(--back-office-primary);
+  background-color: rgb(28, 27, 59);
+}
+
+#gjs-editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--back-office-primary); /* Couleur de fond du conteneur de l'éditeur */
+} 
+
+.gjs-one-bg {
+  background-color: var(--back-office-primary) !important; /* Couleur de fond de l'éditeur */
+}
+
+.gjs-pn-buttons .gjs-pn-btn {
+  background-color: var(--back-office-primary) !important;
+  color: var(--white) !important;
+}
+
+.gjs-block-category .gjs-block-category-title {
+  background-color: var(--back-office) !important;
+  color: var(--white) !important;
+}
+
+.gjs-block {
+  background-color: var(--back-office-primary) !important;
+  border-color: none !important;
+  color: var(--white) !important;
+}

@@ -35,11 +35,11 @@ class Security
                         session_start();
                         $_SESSION['user'] = $loggedInUser[0];
                         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
-                            header('Location: /dashboard');
+                            header('Location: /dashboard/page-builder');
                         } else {
                             header('Location: /home'); // a changer
                         }
-                        header('Location: /dashboard');
+                        header('Location: /dashboard/page-builder');
                     } else {
                         $error = "Compte non validé, veuillez vérifier votre boîte mail pour valider votre compte.";
                     }

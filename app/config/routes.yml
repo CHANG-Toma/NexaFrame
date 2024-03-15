@@ -1,4 +1,3 @@
-
 # Home route
 
 /home:
@@ -41,11 +40,27 @@
   controller: Dashboard
   action: index
 
+/dashboard/page-builder/delete-page:
+  controller: PageBuilder
+  action: deletePage
+
+/dashboard/page-builder/create-page:
+  controller: dashboard
+  action: index
+
+/dashboard/page-builder/create-page/save:
+  controller: PageBuilder
+  action: savePage
+
+/dashboard/page-builder/update-page:
+  controller: PageBuilder
+  action: updatePage
+
 /dashboard/template:
   controller: Dashboard
   action: index
 
-/dashboard/comment :
+/dashboard/comment:
   controller: Dashboard
   action: index
 

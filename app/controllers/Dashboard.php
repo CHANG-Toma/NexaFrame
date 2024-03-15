@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Controllers\PageBuilder;
+
 class Dashboard
 {
 
@@ -9,14 +11,20 @@ class Dashboard
 
     public function index()
     {
+        session_start(); 
 
         $components = [
             'dashboard-sidebar.php',
         ];
+        $pageBuilder = new PageBuilder();
 
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
                 $components[] = 'dashboard-page-builder.php';
+                $data = $pageBuilder->pageList();
+                break;
+            case '/dashboard/page-builder/create-page':
+                $components[] = 'dashboard-page.php';
                 break;
             case '/dashboard/template':
                 $components[] = 'dashboard-template.php';
@@ -29,9 +37,9 @@ class Dashboard
                 break;
             default:
                 $components[] = 'dashboard-page-builder.php';
+                $data = $pageBuilder->pageList();
                 break;
-        }
-        session_start();  
+        } 
         if (!isset($_SESSION['user'])) {
             header('Location: /installer/login');
             exit;

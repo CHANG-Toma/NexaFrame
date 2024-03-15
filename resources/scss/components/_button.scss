@@ -1,73 +1,103 @@
-.btn{
-    padding: var(--pm-md);
-    text-decoration: none;
-    color: var(--white);
-    background-color: var(--btn-bg-color);
-    font-family: 'Lato';
-    font-size: var(--main-size);
-    line-height: rem(18);
-    text-align: center;
-    align-items: center;
+.Button {
+  padding: rem(12) rem(24);
+  font-size: var(--main-size);
+  font-family: var(--website-font-family);
+  font-weight: 400;
+  line-height: var(--line-height);
+  @include flexbox(unset, nowrap, center, center, rem(8));
+  border: rem(1) solid var(--reverse-bg-color);
+  text-decoration: none;
+  border-radius: var(--main-radius);
+  cursor: pointer;
 
-    &-lg{
-        padding: var(--pm-lg);
-    }
-    &-sm{
-        padding: var(--pm-sm);
-    }
+  &.Primary {
+    background: var(--reverse-bg-color);
+    color: var(--website-bg-color);
 
-    &-primary{
-        background-color: var(--primary-color);
+    &:hover {
+      background-color: var(--website-bg-color);
+      color: var(--reverse-bg-color);
+      transition: 0.3s ease-in-out;
     }
-    &-secondary{
-        background-color: var(--secondary-color);
-    }
-    &-danger{
-        background-color: var(--btn-bg-color);
-    }
-    &-transparent{
-        background-color: transparent;
-        border: 1px solid var(--text-color);
-        color: var(--text-color);
+  }
 
-        &:hover {
-            background-color: var(--reverse-bg-color);
-            color: var(--website-bg-color);
-            transition: var( --transition-duration) ease-in-out;
-          }
+  &.Secondary {
+    color: var(--reverse-bg-color);
+
+    &:hover {
+      color: var(--website-bg-color);
+      background-color: var(--reverse-bg-color);
+      transition: 0.3s ease-in-out;
     }
+  }
 }
 
-.Button {
-    padding: rem(12) rem(24);
-    font-size: var(--main-size);
-    font-family: var(--website-font-family);
-    font-weight: 400;
-    line-height: var(--line-height);
-    @include flexbox(unset, nowrap, center, center, rem(8));
-    border: rem(1) solid var(--reverse-bg-color);
-    text-decoration: none;
-    border-radius: var(--main-radius);
-    cursor: pointer;
+.Button-sm {
+  padding: rem(2) rem(4);
+  border: rem(1) solid var(--reverse-bg-color);
+  text-decoration: none;
+  border-radius: var(--main-radius);
+  cursor: pointer;
+  border: none;
 
-    &.Primary {
-        background: var(--reverse-bg-color);
-        color: var(--website-bg-color);
+  &.update {
+    background: var(--reverse-bg-color);
+    background-color: var(--update-button);
+    color: white;
 
-        &:hover {
-            background-color: var(--website-bg-color);
-            color: var(--reverse-bg-color);
-            transition: 0.3s ease-in-out;
-        }
+    &:hover {
+      background-color: var(--update-button-hover);
+      transition: 0.3s ease-in-out;
     }
+  }
 
-    &.Secondary {
-        color: var(--reverse-bg-color);
+  &.delete {
+    background: var(--reverse-bg-color);
+    background-color: var(--delete);
+    color: white;
 
-        &:hover {
-            color: var(--website-bg-color);
-            background-color: var(--reverse-bg-color);
-            transition: 0.3s ease-in-out;
-        }
+    &:hover {
+      background-color: var(--delete-hover);
+      transition: 0.3s ease-in-out;
     }
+  }
+
+  &.see {
+    background: var(--reverse-bg-color);
+    background-color: var(--create-button);
+    color: white;
+
+    &:hover {
+      background-color: var(--create-button-hover);
+      transition: 0.3s ease-in-out;
+    }
+  }
+  
+}
+
+.Button-back-office {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--main-radius);
+  color: var(--white);
+  font-size: 1rem;
+  cursor: pointer;
+
+  &.btn-create-page {
+    background-color: var(--create-button);
+    &:hover {
+      background-color: var(--create-button-hover);
+      transition: background-color 0.2s ease-in-out;
+    }
+  }
+
+  &.main-btn {
+    background-color: var(--back-office);
+    &:hover {
+      background-color: var(--back-office-hover);
+      transition: background-color 0.2s ease-in-out;
+    }
+  }
+
+    
 }
