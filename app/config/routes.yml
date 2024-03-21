@@ -1,8 +1,3 @@
-# Home route
-
-/home:
-  controller: home
-  action: index
 
 # Installer routes
 
@@ -73,9 +68,21 @@
   action: logout
 
 /dashboard/update-password:
-  controller: User
+  controller: Security
   action: changePassword
 
 /dashboard/update-user:
   controller: User
   action: editUser
+
+/user/login:
+  controller: Security
+  action: login
+
+/user/register:
+  controller: Security
+  action: register
+
+/user/validate:
+  controller: Security
+  action: validate
