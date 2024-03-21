@@ -94,6 +94,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <input type="password" id="password" name="password" required>
         <br>
         <button type="submit">Login</button>
+        <a href="/user/forgot-password">Forgot password ?</a>
+        <a href="/user/register">Register</a>
       </form>
     `,
     category: "User",

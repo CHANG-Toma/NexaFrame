@@ -68,10 +68,11 @@ class Security
                 } else {
                     $message = "Un compte existe déjà avec cette adresse e-mail.";
                 }
-                print ($message);
-                //header('Location: /register?message='.$message); 
+                //print ($message);
+                header('Location: /register?message='.$message); 
             }
         }
+        header('Location: /register');
     }
 
     public function login(): void
