@@ -8,9 +8,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Security
 {
 
-    public function __construct()
-    {
-    }
+    public function __construct(){}
 
     public function register(): void
     {
@@ -124,6 +122,18 @@ class Security
         }
     }
 
+    public function logout(): void
+    {
+        session_start();
+        unset($_SESSION["user"]);
+        session_destroy();
+        if ($_SERVER['REQUEST_URI'] === '/dashboard/logout') {
+            header("Location: /installer/login");
+        } else {
+            header("Location: /login");
+        }
+    }
+
     public function forgotPassword(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -229,18 +239,6 @@ class Security
             } else {
                 header('Location: /user/login');
             }
-        }
-    }
-
-    public function logout(): void
-    {
-        session_start();
-        unset($_SESSION["user"]);
-        session_destroy();
-        if ($_SERVER['REQUEST_URI'] === '/dashboard/logout') {
-            header("Location: /installer/login");
-        } else {
-            header("Location: /login");
         }
     }
 
