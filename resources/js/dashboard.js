@@ -120,20 +120,22 @@ document.addEventListener("DOMContentLoaded", function () {
     attributes: { class: "fa fa-key" }, // classe d'icône grapesJs (PageBuilder)
     content: `
       <form method="post" action="/user/reset-password" >
-        <label for"currentPassword">Current Password:</label>
+        <label for="currentPassword">Mot de passe actuel :</label>
         <input type="password" id="currentPassword" name="currentPassword" required>
         <br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <label for="newPassword">Nouveau mot de passe:</label>
+        <input type="password" id="newPassword" name="newPassword" required>
         <br>
-        <label for="confirmPassword">Password Confirmation:</label>
+        <label for="confirmPassword">confirmer votre mot de passe :</label>
         <input type="password" id="confirmPassword" name="confirmPassword" required>
         <br>
-        <button type="submit">Reset password</button>
+        <button type="submit">Réinitialiser</button>
       </form>
     `,
     category: "User",
   });
+
+
 
   editor.Commands.add("save-db", {
     run: function (editor, sender) {

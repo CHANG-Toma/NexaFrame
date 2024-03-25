@@ -105,10 +105,14 @@ class Security
                     } else if ($user->getRole() == "user" && $user->isValidate() == true) {
                         session_start();
                         $_SESSION['user'] = $loggedInUser[0];
-                        header('Location: /home');
+                        header('Location: /user/home');
                     }
                 } else {
-                    header('Location: /login');
+                    if ($_SERVER["REQUEST_URI"] == "/installer/login") {
+                        header('Location: /installer/login');
+                    } else {
+                        header('Location: /login');
+                    }
                 }
             }
         }
@@ -220,10 +224,10 @@ class Security
             } else {
                 $_SESSION['error_message2'] = "Mot de passe actuel incorrect";
             }
-            if($_SERVER['REQUEST_URI'] === '/dashboard/user'){
+            if ($_SERVER['REQUEST_URI'] === '/dashboard/update-password') {
                 header('Location: /dashboard/user');
             } else {
-                header('Location: /user/reset-password');
+                header('Location: /user/login');
             }
         }
     }
