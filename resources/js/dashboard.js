@@ -59,6 +59,84 @@ document.addEventListener("DOMContentLoaded", function () {
     panelEl.style.backgroundColor = "#fff";
   });
 
+  editor.Blocks.add("register", {
+    label: "Register",
+    attributes: { class: "fa fa-user-plus" }, // classe d'icône grapesJs (PageBuilder)
+    content: `
+      <form method="post" action="/user/register" >
+        <label for="login">Login:</label>
+        <input type="text" id="login" name="login" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <label for="confirmPassword">Password Confirmation:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <br>
+        <button type="submit">Register</button>
+      </form>
+    `,
+    category: "User",
+  });
+
+  editor.Blocks.add("login", {
+    label: "Login",
+    attributes: { class: "fa fa-sign-in" }, // classe d'icône grapesJs (PageBuilder)
+    content: `
+      <form method="post" action="/user/login" >
+        <label for="login">Login:</label>
+        <input type="text" id="login" name="login" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <button type="submit">Login</button>
+        <a href="/user/forgot-password">Forgot password ?</a>
+        <a href="/user/register">Register</a>
+      </form>
+    `,
+    category: "User",
+  });
+
+  editor.Blocks.add("forgotpwd", {
+    label: "Forgot Password",
+    attributes: { class: "fa fa-key" }, // classe d'icône grapesJs (PageBuilder)
+    content: `
+      <form method="post" action="/user/forgot-password" >
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <button type="submit">Send email</button>
+      </form>
+    `,
+    category: "User",
+  });
+
+  editor.Blocks.add("resetpwd", {
+    label: "Reset Password",
+    attributes: { class: "fa fa-key" }, // classe d'icône grapesJs (PageBuilder)
+    content: `
+      <form method="post" action="/user/reset-password" >
+        <label for="currentPassword">Mot de passe actuel :</label>
+        <input type="password" id="currentPassword" name="currentPassword" required>
+        <br>
+        <label for="newPassword">Nouveau mot de passe:</label>
+        <input type="password" id="newPassword" name="newPassword" required>
+        <br>
+        <label for="confirmPassword">confirmer votre mot de passe :</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <br>
+        <button type="submit">Réinitialiser</button>
+      </form>
+    `,
+    category: "User",
+  });
+
+
+
   editor.Commands.add("save-db", {
     run: function (editor, sender) {
       sender && sender.set("active", false); // Désactive le bouton après l'avoir cliqué

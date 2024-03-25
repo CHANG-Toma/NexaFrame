@@ -8,25 +8,85 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Security
 {
 
-    public function __construct()
+    public function __construct(){}
+
+    public function register(): void
     {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+            $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $confirmPassword = filter_input(INPUT_POST, "confirmPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            if ($login && $email && $password && $confirmPassword) {
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $user = new User();
+                    $dataUser = $user->getOneBy(["email" => $email]);
+                    if (!empty ($dataUser)) {
+                        $message = "Un compte existe déjà avec cette adresse e-mail.";
+                    } else {
+                        if ($password === $confirmPassword) {
+                            if (strlen($password) >= 8) {
+                                $user->setLogin($login);
+                                $user->setEmail($email);
+                                $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
+                                $user->setRole('user');
+                                $user->setValidation_token(md5(uniqid()));
+
+                                $user->save();
+                                try {
+                                    $mailConfig = include __DIR__ . "/../config/MailConfig.php";
+                                    $mail = new PHPMailer(true);
+
+                                    $mail->isSMTP();
+                                    $mail->Host = $mailConfig['host'];
+                                    $mail->SMTPAuth = true;
+                                    $mail->Username = $mailConfig['username'];
+                                    $mail->Password = $mailConfig['password'];
+                                    $mail->SMTPSecure = $mailConfig['encryption'];
+                                    $mail->Port = $mailConfig['port'];
+
+                                    $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
+                                    $mail->addAddress($email);
+                                    $mail->Subject = "Validation de votre compte Nexaframe";
+                                    $mail->isHTML(true);
+                                    $mail->Body = "Bonjour,
+                                    <br>Merci de vous être inscrit sur Nexaframe. Veuillez cliquer sur le lien suivant pour valider votre compte : <a href='http://localhost/user/validate?token=" . $user->getValidation_token() . "'>Valider mon compte</a>";
+                                    $mail->send();
+                                } catch (\Exception $e) {
+                                    $message = "Erreur lors de l'envoi du mail de validation. Veuillez réessayer.";
+                                }
+                            } else {
+                                $message = "Les mots de passe ne correspondent pas ou sont inférieurs à 8 caractères.";
+                            }
+                        } else {
+                            $message = "Les mots de passe ne correspondent pas ou sont inférieurs à 8 caractères.";
+                        }
+                    }
+                } else {
+                    $message = "Un compte existe déjà avec cette adresse e-mail.";
+                }
+                //print ($message);
+                header('Location: /register?message=' . $message);
+            }
+        }
+        header('Location: /register');
     }
 
     public function login(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
             $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            if (empty($login) || empty($password)) {
+            if (empty ($login) || empty ($password)) {
                 $error = "Champs vides. Veuillez remplir tous les champs.";
             }
 
             $user = new User();
             $loggedInUser = $user->getOneBy(["login" => $login]);
 
-            if (empty($loggedInUser)) {
+            if (empty ($loggedInUser)) {
                 $error = "Nom d'utilisateur ou mot de passe incorrect";
             } else {
                 if ($loggedInUser && password_verify($password, $loggedInUser[0]['password'])) {
@@ -37,21 +97,40 @@ class Security
                         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
                             header('Location: /dashboard/page-builder');
                         } else {
-                            header('Location: /home'); // a changer
+                            header('Location: /');
                         }
                         header('Location: /dashboard/page-builder');
-                    } else {
-                        $error = "Compte non validé, veuillez vérifier votre boîte mail pour valider votre compte.";
+                    } else if ($user->getRole() == "user" && $user->isValidate() == true) {
+                        session_start();
+                        $_SESSION['user'] = $loggedInUser[0];
+                        header('Location: /user/home');
                     }
                 } else {
-                    $error = "Nom d'utilisateur ou mot de passe incorrect";
+                    if ($_SERVER["REQUEST_URI"] == "/installer/login") {
+                        header('Location: /installer/login');
+                    } else {
+                        header('Location: /login');
+                    }
                 }
             }
         }
+
         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
             include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
+        } else if ($_SERVER['REQUEST_URI'] === '/user/login' && isset ($_SESSION['user'])) {
+            header('Location: /home');
+        }
+    }
+
+    public function logout(): void
+    {
+        session_start();
+        unset($_SESSION["user"]);
+        session_destroy();
+        if ($_SERVER['REQUEST_URI'] === '/dashboard/logout') {
+            header("Location: /installer/login");
         } else {
-            include __DIR__ . '/../Views/front-office/security/login.php';
+            header("Location: /login");
         }
     }
 
@@ -113,19 +192,53 @@ class Security
         if ($_SERVER['REQUEST_URI'] === '/installer/forgot-password') {
             include __DIR__ . '/../Views/back-office/installer/installer_ForgotPwdAdmin.php';
         } else {
-            include __DIR__ . '/../Views/front-office/security/forgot_password.php';
+            header('Location: /forgot-password');
         }
     }
 
-    public function logout(): void
+    public function changePassword(): void
     {
-        session_start();
-        unset($_SESSION["user"]);
-        session_destroy();
-        if ($_SERVER['REQUEST_URI'] === '/dashboard/logout') {
-            header("Location: /installer/login");
-        } else {
-            header("Location: /login");
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $currentPassword = filter_input(INPUT_POST, "currentPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $newPassword = filter_input(INPUT_POST, "newPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $confirmPassword = filter_input(INPUT_POST, "confirmPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            session_start();
+
+            if (empty ($currentPassword) || empty ($newPassword) || empty ($confirmPassword)) {
+                $_SESSION['error_message2'] = "Veuillez remplir tous les champs";
+                if ($_SERVER['REQUEST_URI'] === '/dashboard/user') {
+                    header('Location: /dashboard/user');
+                } else {
+                    header('Location: /user/reset-password');
+                }
+            }
+
+            if (password_verify($currentPassword, $_SESSION['user']['password'])) {
+                if ($newPassword === $confirmPassword && strlen($newPassword) >= 8) {
+                    $user = new User();
+                    $userdata = $user->getOneBy(["email" => $_SESSION['user']['email']]);
+                    if (empty ($userdata)) {
+                        $_SESSION['error_message2'] = "Utilisateur introuvable";
+                        header('Location: /dashboard/user');
+                    } else {
+                        $user->populate($userdata);
+                        $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+                        $user->save();
+
+                        $_SESSION['success_message2'] = "Mot de passe modifié avec succès";
+                    }
+                } else {
+                    $_SESSION['error_message2'] = "Les mots de passe ne correspondent pas ou sont inférieurs à 8 caractères";
+                }
+            } else {
+                $_SESSION['error_message2'] = "Mot de passe actuel incorrect";
+            }
+            if ($_SERVER['REQUEST_URI'] === '/dashboard/update-password') {
+                header('Location: /dashboard/user');
+            } else {
+                header('Location: /user/login');
+            }
         }
     }
 
@@ -150,9 +263,12 @@ class Security
         }
         if ($_SERVER['REQUEST_URI'] === '/installer/validate?token=' . $token) {
             include __DIR__ . "/../Views/back-office/installer/installer_loginAdmin.php";
+        } else if ($_SERVER['REQUEST_URI'] === '/user/validate?token=' . $token) {
+            header('Location: /login');
         } else {
             include __DIR__ . "/../Views/front-office/main/home.php";
         }
+
     }
 
 }
