@@ -86,3 +86,11 @@
 /user/validate:
   controller: Security
   action: validate
+
+/user/forgot-password:
+  controller: Security
+  action: forgotPassword
+
+/user/reset-password:
+  controller : Security
+  action: changePassword

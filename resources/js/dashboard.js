@@ -101,6 +101,40 @@ document.addEventListener("DOMContentLoaded", function () {
     category: "User",
   });
 
+  editor.Blocks.add("forgotpwd", {
+    label: "Forgot Password",
+    attributes: { class: "fa fa-key" }, // classe d'icône grapesJs (PageBuilder)
+    content: `
+      <form method="post" action="/user/forgot-password" >
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <button type="submit">Send email</button>
+      </form>
+    `,
+    category: "User",
+  });
+
+  editor.Blocks.add("resetpwd", {
+    label: "Reset Password",
+    attributes: { class: "fa fa-key" }, // classe d'icône grapesJs (PageBuilder)
+    content: `
+      <form method="post" action="/user/reset-password" >
+        <label for"currentPassword">Current Password:</label>
+        <input type="password" id="currentPassword" name="currentPassword" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <label for="confirmPassword">Password Confirmation:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <br>
+        <button type="submit">Reset password</button>
+      </form>
+    `,
+    category: "User",
+  });
+
   editor.Commands.add("save-db", {
     run: function (editor, sender) {
       sender && sender.set("active", false); // Désactive le bouton après l'avoir cliqué

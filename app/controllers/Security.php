@@ -69,7 +69,7 @@ class Security
                     $message = "Un compte existe déjà avec cette adresse e-mail.";
                 }
                 //print ($message);
-                header('Location: /register?message='.$message); 
+                header('Location: /register?message=' . $message);
             }
         }
         header('Location: /register');
@@ -115,7 +115,7 @@ class Security
 
         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
             include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
-        } else if ($_SERVER['REQUEST_URI'] === '/user/login' && isset($_SESSION['user'])) {
+        } else if ($_SERVER['REQUEST_URI'] === '/user/login' && isset ($_SESSION['user'])) {
             header('Location: /home');
         }
     }
@@ -178,7 +178,7 @@ class Security
         if ($_SERVER['REQUEST_URI'] === '/installer/forgot-password') {
             include __DIR__ . '/../Views/back-office/installer/installer_ForgotPwdAdmin.php';
         } else {
-            include __DIR__ . '/../Views/front-office/security/forgot_password.php';
+            header('Location: /forgot-password');
         }
     }
 
@@ -193,7 +193,11 @@ class Security
 
             if (empty ($currentPassword) || empty ($newPassword) || empty ($confirmPassword)) {
                 $_SESSION['error_message2'] = "Veuillez remplir tous les champs";
-                header('Location: /dashboard/user');
+                if ($_SERVER['REQUEST_URI'] === '/dashboard/user') {
+                    header('Location: /dashboard/user');
+                } else {
+                    header('Location: /user/reset-password');
+                }
             }
 
             if (password_verify($currentPassword, $_SESSION['user']['password'])) {
@@ -216,7 +220,11 @@ class Security
             } else {
                 $_SESSION['error_message2'] = "Mot de passe actuel incorrect";
             }
-            header('Location: /dashboard/user');
+            if($_SERVER['REQUEST_URI'] === '/dashboard/user'){
+                header('Location: /dashboard/user');
+            } else {
+                header('Location: /user/reset-password');
+            }
         }
     }
 
