@@ -94,3 +94,7 @@
 /user/reset-password:
   controller : Security
   action: changePassword
+
+/user/comment:
+  controller: Comment
+  action: create

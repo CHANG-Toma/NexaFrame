@@ -15,6 +15,7 @@ class DB
         'User' => 'users',
         'Page' => 'pages',
         'Setting' => 'settings',
+        'Comment' => 'comments',
     ];
     private string $tableName = '';
     private static ?self $instance = null;
@@ -114,7 +115,12 @@ class DB
     {
         $className = basename(str_replace('\\', '/', get_class($this)));
         $tableName = $this->getTableNameByClassName($className);
-        return $this->exec("SELECT * FROM $tableName;");
+        $data = $this->exec("SELECT * FROM $tableName;");
+        if ($data) {
+            return $data;
+        } else {
+            return [];
+        }
     }
 
     public function getAllBy(array $conditions): array

@@ -19,8 +19,7 @@ function myAutoloader($class): void
 
 $uri = strtolower($_SERVER["REQUEST_URI"]);
 $uri = strtok($uri, "?");
-if (strlen($uri) > 1)
-    $uri = rtrim($uri, "/");
+if (strlen($uri) > 1) $uri = rtrim($uri, "/");
 
 $fileRoute = __DIR__ . '/../app/config/routes.yml';
 if (file_exists($fileRoute)) {

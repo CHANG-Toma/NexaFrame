@@ -42,17 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ]);
 
-  // bloc d'image personnalisé
-  editor.Blocks.add("image", {
-    label: "Image",
-    attributes: { class: "fa fa-image" }, // classe d'icône grapesJs (PageBuilder)
-    content: {
-      type: "image",
-      style: { color: "black" },
-      activeOnRender: 1,
-    },
-    category: "Image",
-  });
   // bloc de texte personnalisé
   editor.on("load", () => {
     const panelEl = editor.Panels.getPanel("views-container").el;
@@ -60,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   editor.Blocks.add("register", {
-    label: "Register",
+    label: "S'inscrire",
     attributes: { class: "fa fa-user-plus" }, // classe d'icône grapesJs (PageBuilder)
     content: `
       <form method="post" action="/user/register" >
@@ -79,11 +68,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <button type="submit">Register</button>
       </form>
     `,
-    category: "User",
+    category: "Utilisateur",
   });
 
   editor.Blocks.add("login", {
-    label: "Login",
+    label: "Se connecter",
     attributes: { class: "fa fa-sign-in" }, // classe d'icône grapesJs (PageBuilder)
     content: `
       <form method="post" action="/user/login" >
@@ -98,11 +87,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="/user/register">Register</a>
       </form>
     `,
-    category: "User",
+    category: "Utilisateur",
   });
 
   editor.Blocks.add("forgotpwd", {
-    label: "Forgot Password",
+    label: "Mot de passe oublié",
     attributes: { class: "fa fa-key" }, // classe d'icône grapesJs (PageBuilder)
     content: `
       <form method="post" action="/user/forgot-password" >
@@ -112,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <button type="submit">Send email</button>
       </form>
     `,
-    category: "User",
+    category: "Utilisateur",
   });
 
   editor.Blocks.add("resetpwd", {
@@ -132,10 +121,32 @@ document.addEventListener("DOMContentLoaded", function () {
         <button type="submit">Réinitialiser</button>
       </form>
     `,
-    category: "User",
+    category: "Utilisateur",
   });
-
-
+  // bloc d'image personnalisé
+  editor.Blocks.add("image", {
+    label: "Image",
+    attributes: { class: "fa fa-image" }, // classe d'icône grapesJs (PageBuilder)
+    content: {
+      type: "image",
+      style: { color: "black" },
+      activeOnRender: 1,
+    },
+    category: "Autres",
+  });
+  editor.Blocks.add("commentaire", {
+    label: "Commentaire",
+    attributes: { class: "fa fa-comment" }, // classe d'icône grapesJs (PageBuilder)
+    content: `
+      <form method="post" action="/user/comment" >
+      <label for="commentaire">Commentaire:</label>
+      <input type="text" id="commentaire" name="comment" required></input>
+      <br>
+      <button type="submit">Commenter</button>
+      </form>
+    `,
+    category: "Autres",
+  });
 
   editor.Commands.add("save-db", {
     run: function (editor, sender) {

@@ -16,18 +16,7 @@ class Comment extends DB{
     private $validatorId;
     private $updatedAt;
 
-    public function __construct($id, $articleId, $commentResponseId, $userId, $content, $createdAt, $valid, $validateAt, $validatorId, $updatedAt) {
-        $this->id = $id;
-        $this->articleId = $articleId;
-        $this->commentResponseId = $commentResponseId;
-        $this->userId = $userId;
-        $this->content = $content;
-        $this->createdAt = $createdAt;
-        $this->valid = $valid;
-        $this->validateAt = $validateAt;
-        $this->validatorId = $validatorId;
-        $this->updatedAt = $updatedAt;
-    }
+    public function __construct() {}
 
     public function getId() {
         return $this->id;

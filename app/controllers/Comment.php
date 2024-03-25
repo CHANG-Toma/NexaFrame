@@ -2,12 +2,29 @@
 
 namespace App\Controllers;
 
+use App\Models\Comment as CommentModel;
+
 class Comment
 {
 
     public function create()
     {
-        // Code to create a new comment
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (!empty($_SESSION["user"])) {
+        $comment = $_POST["comment"];
+
+        $commentModel = new CommentModel();
+        $commentModel->setContent($comment);
+        $commentModel->setUserId($_SESSION["user"]["id"]);
+        $commentModel->setValid(0);
+        $commentModel->save();
+        
+        header("Location: /home");
+    }
+    
     }
 
     public function show($id)
