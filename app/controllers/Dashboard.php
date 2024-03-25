@@ -3,15 +3,18 @@
 namespace App\Controllers;
 
 use App\Controllers\PageBuilder;
+use App\Controllers\Error;
 
 class Dashboard
 {
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function index()
     {
-        session_start(); 
+        session_start();
 
         $components = [
             'dashboard-sidebar.php',
@@ -39,13 +42,13 @@ class Dashboard
                 $components[] = 'dashboard-page-builder.php';
                 $data = $pageBuilder->pageList();
                 break;
-        } 
-        if (!isset($_SESSION['user'])) {
-            header('Location: /installer/login');
-            exit;
         }
-        else {
+        if ($_SESSION['user']['role'] != "admin") {
+            $object = new Error();
+            $object->error403();
+        } else {
             include __DIR__ . '/../Views/back-office/dashboard/index.php';
         }
+
     }
 }
