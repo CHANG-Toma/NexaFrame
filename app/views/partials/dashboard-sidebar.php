@@ -12,6 +12,13 @@
         </div>
 
         <div class="side-item">
+            <a href="/dashboard/article" class="side-link">
+                <span class="side-icon"> &#128218; </span>
+                <span class="side-text">Mes articles</span>
+            </a>
+        </div>
+
+        <div class="side-item">
             <a href="/dashboard/template" class="side-link">
                 <span class="side-icon">&#128202;</span>
                 <span class="side-text">Mes analyses</span>

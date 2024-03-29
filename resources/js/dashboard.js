@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
     `,
     category: "Autres",
   });
-
+  
   editor.Commands.add("save-db", {
     run: function (editor, sender) {
       sender && sender.set("active", false); // Désactive le bouton après l'avoir cliqué

@@ -215,6 +215,15 @@ img {
   background-color: var(--delete-hover);
   transition: 0.3s ease-in-out;
 }
+.Button-sm.see {
+  background: var(--reverse-bg-color);
+  background-color: var(--create-button);
+  color: white;
+}
+.Button-sm.see:hover {
+  background-color: var(--create-button-hover);
+  transition: 0.3s ease-in-out;
+}
 
 .Button-back-office {
   padding: 0.5rem 1rem;

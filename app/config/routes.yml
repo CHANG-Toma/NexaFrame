@@ -35,13 +35,25 @@
   controller: Dashboard
   action: index
 
+/dashboard/article:
+  controller: Dashboard
+  action: index
+
 /dashboard/page-builder/delete-page:
   controller: PageBuilder
   action: deletePage
 
-/dashboard/page-builder/create-page:
-  controller: dashboard
+/dashboard/page-builder/create-article:
+  controller: Dashboard
   action: index
+
+/dashboard/page-builder/create-page:
+  controller: Dashboard
+  action: index
+
+/dashboard/page-builder/save-article:
+  controller: Article
+  action: save
 
 /dashboard/page-builder/create-page/save:
   controller: PageBuilder
@@ -74,6 +86,8 @@
 /dashboard/update-user:
   controller: User
   action: editUser
+
+
 
 /user/login:
   controller: Security

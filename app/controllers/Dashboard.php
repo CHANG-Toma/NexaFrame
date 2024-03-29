@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\PageBuilder;
 use App\Controllers\Error;
+use App\Controllers\Article;
 
 class Dashboard
 {
@@ -20,6 +21,7 @@ class Dashboard
             'dashboard-sidebar.php',
         ];
         $pageBuilder = new PageBuilder();
+        $article = new Article();
 
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
@@ -28,6 +30,13 @@ class Dashboard
                 break;
             case '/dashboard/page-builder/create-page':
                 $components[] = 'dashboard-page.php';
+                break;
+            case '/dashboard/page-builder/create-article':
+                $components[] = 'dashboard-create-article.php';
+                break;
+            case '/dashboard/article':
+                $components[] = 'dashboard-article-management.php';
+                $data = $article->articleList();
                 break;
             case '/dashboard/template':
                 $components[] = 'dashboard-template.php';
