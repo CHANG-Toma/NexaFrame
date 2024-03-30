@@ -31,7 +31,7 @@ class Dashboard
             case '/dashboard/page-builder/create-page':
                 $components[] = 'dashboard-page.php';
                 break;
-            case '/dashboard/page-builder/create-article':
+            case '/dashboard/create-article':
                 $components[] = 'dashboard-create-article.php';
                 break;
             case '/dashboard/article':

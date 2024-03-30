@@ -10,18 +10,20 @@ class Article
     public function save()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset ($_POST['title']) && isset ($_POST['content']) && isset ($_POST['keywords']) && isset ($_POST['picture_url'])) {
-                $title = $_POST['title'];
-                $content = $_POST['content'];
-                $keywords = $_POST['keywords'];
-                $picture_url = $_POST['picture_url'];
+            if (isset ($_POST['title']) && isset ($_POST['content']) && isset ($_POST['keywords']) && isset ($_POST['picture_url']) && isset ($_POST['category'])) {
+                if(!isset($_SESSION)) { session_start(); }
 
                 $article = new ArticleModel();
-                $article->setTitle($title);
-                $article->setContent($content);
-                $article->setKeywords($keywords);
-                $article->setPictureUrl($picture_url);
+                $article->setTitle($_POST['title']);
+                $article->setContent($_POST['content']);
+                $article->setKeywords($_POST['keywords']);
+                $article->setPictureUrl($_POST['picture_url']);
+                $article->setCategoryId($_POST['category']);
+                $article->setCreatorId($_SESSION['user']['id']);
+                
                 $article->save();
+
+                header('Location: /dashboard/article');
             }
         }
     }

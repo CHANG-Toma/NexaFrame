@@ -96,7 +96,9 @@ class Security
                 if ($loggedInUser && password_verify($password, $loggedInUser[0]['password'])) {
                     $user->populate($loggedInUser);
                     if ($user->getRole() == "admin" && $user->isValidate() == true) {
-                        session_start();
+                        if(!isset($_SESSION)) {
+                            session_start();
+                        }
                         $_SESSION['user'] = $loggedInUser[0];
                         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
                             header('Location: /dashboard/page-builder');

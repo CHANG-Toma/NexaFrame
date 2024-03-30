@@ -3,7 +3,7 @@
     <div class="user-info-container">
         <h2>Créer un article</h2>
         <div class="user-info-form">
-        <form action="/dashboard/create-article" method="post">
+        <form action="/dashboard/article/create" method="post">
                 <div class="form-group">
                     <label for="title">Titre</label>
                     <input type="text" id="title" name="title" required>

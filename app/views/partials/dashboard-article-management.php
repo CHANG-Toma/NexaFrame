@@ -19,7 +19,7 @@
             }
             ?>
         </div>
-        <form method="POST" Action="/dashboard/page-builder/create-article">
+        <form method="POST" Action="/dashboard/create-article">
             <button class="Button-back-office btn-create-page" type="submit">Créer un article</button>
         </form>
     </div>
@@ -33,8 +33,8 @@
             <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Lien</th>
-                    <th>Description</th>
+                    <th>Contenue</th>
+                    <th>Mot clés</th>
                     <th>Modifié le</th>
                     <th>Créer le</th>
                     <th>Action</th>
@@ -48,10 +48,10 @@
                             <?php echo $data[$i]['title']; ?>
                         </td>
                         <td>
-                            <?php echo $data[$i]['url']; ?>
+                            <?php echo $data[$i]['content']; ?>
                         </td>
                         <td>
-                            <?php echo $data[$i]['meta_description']; ?>
+                            <?php echo $data[$i]['keywords']; ?>
                         </td>
                         <td>
                             <?php echo $data[$i]['updated_at'] ? date('d F Y H:i:s', strtotime($data[$i]['updated_at'])) : ''; ?>
@@ -60,18 +60,6 @@
                             <?php echo $data[$i]['created_at'] ? date('d F Y H:i:s', strtotime($data[$i]['created_at'])) : ''; ?>
                         </td>
                         <td class="container">
-                            <form Action="<?php echo $data[$i]['url']; ?>">
-                                <button class="Button-sm see" type="submit">
-                                    Voir
-                                </button>
-                            </form>
-
-                            <button class="Button-sm update" data-id="<?php echo $data[$i]['id']; ?>"
-                                data-html="<?php echo htmlspecialchars($data[$i]['html']); ?>"
-                                data-css="<?php echo htmlspecialchars($data[$i]['css']); ?>">
-                                Modifier
-                            </button>
-
 
                             <form method="POST" Action="/dashboard/page-builder/delete-page">
                                 <input type="hidden" name="id-page" value="<?php echo $data[$i]['id']; ?>">

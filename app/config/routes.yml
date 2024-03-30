@@ -43,17 +43,17 @@
   controller: PageBuilder
   action: deletePage
 
-/dashboard/page-builder/create-article:
+/dashboard/create-article:
   controller: Dashboard
   action: index
+
+/dashboard/article/create:
+  controller: Article
+  action: save
 
 /dashboard/page-builder/create-page:
   controller: Dashboard
   action: index
-
-/dashboard/page-builder/save-article:
-  controller: Article
-  action: save
 
 /dashboard/page-builder/create-page/save:
   controller: PageBuilder
