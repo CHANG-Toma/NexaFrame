@@ -60,6 +60,10 @@
                             <?php echo $data[$i]['created_at'] ? date('d F Y H:i:s', strtotime($data[$i]['created_at'])) : ''; ?>
                         </td>
                         <td class="container">
+                            <form method="POST" Action="/dashboard/update-article">
+                                <input type="hidden" name="id-article" value="<?php echo $data[$i]['id']; ?>">
+                                <button class="Button-sm update" type="submit">Modifier</button>
+                            </form>
                             <form method="POST" Action="/dashboard/delete-article">
                                 <input type="hidden" name="id-article" value="<?php echo $data[$i]['id']; ?>">
                                 <button class="Button-sm delete" type="submit">Supprimer</button>

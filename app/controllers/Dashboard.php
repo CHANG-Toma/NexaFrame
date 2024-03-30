@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Controllers\PageBuilder;
 use App\Controllers\Error;
 use App\Controllers\Article;
+
+use App\Models\Article as ArticleModel;
 use App\Models\Category;
 
 class Dashboard
@@ -24,6 +26,7 @@ class Dashboard
         $pageBuilder = new PageBuilder();
         $article = new Article();
         $Category = new Category();
+        $articleModel = new ArticleModel();
 
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
@@ -36,6 +39,11 @@ class Dashboard
             case '/dashboard/create-article':
                 $components[] = 'dashboard-create-article.php';
                 $data = $Category->getAll();
+                break;
+            case '/dashboard/update-article':
+                $components[] = 'dashboard-create-article.php';
+                $data = $Category->getAll();
+                $dataArticle = $articleModel->getOneBy(['id' => $_POST['id-article']]);
                 break;
             case '/dashboard/article':
                 $components[] = 'dashboard-article-management.php';

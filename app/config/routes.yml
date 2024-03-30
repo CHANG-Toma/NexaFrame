@@ -55,6 +55,10 @@
   controller: Article
   action: delete
 
+/dashboard/update-article:
+  controller: Dashboard
+  action: index
+
 /dashboard/page-builder/create-page:
   controller: Dashboard
   action: index
