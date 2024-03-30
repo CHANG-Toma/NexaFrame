@@ -8,25 +8,28 @@ use App\Models\Category as CategoryModel;
 class Article
 {
 
-    public function save() : void
+    public function save(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset ($_POST['title']) && isset ($_POST['content']) && isset ($_POST['keywords']) && isset ($_POST['picture_url']) && isset ($_POST['category'])) {
-                if(!isset($_SESSION)) { session_start(); }
+            if (isset($_POST['title'], $_POST['content'], $_POST['keywords'], $_POST['picture_url'], $_POST['category'])) {
+                if (!isset($_SESSION)) {
+                    session_start();
+                }
 
                 $article = new ArticleModel();
 
-                if(isset($_POST['id-article']) && $_POST['id-article'] != ''){
-                    $article->setId($_POST['id-article']);
+                if (isset($_POST['id-article']) && $_POST['id-article'] !== '') {
+                    $article->setId((int) $_POST['id-article']);
+                    $article->setUpdatedAt(date('Y-m-d H:i:s'));
                 }
 
-                $article->setTitle($_POST['title']);
-                $article->setContent($_POST['content']);
-                $article->setKeywords($_POST['keywords']);
-                $article->setPictureUrl($_POST['picture_url']);
-                $article->setCategoryId($_POST['category']);
-                $article->setCreatorId($_SESSION['user']['id']);
-                
+                $article->setTitle(htmlspecialchars($_POST['title'], ENT_QUOTES, 'UTF-8'));
+                $article->setContent(htmlspecialchars($_POST['content'], ENT_QUOTES, 'UTF-8'));
+                $article->setKeywords(htmlspecialchars($_POST['keywords'], ENT_QUOTES, 'UTF-8'));
+                $article->setPictureUrl(htmlspecialchars($_POST['picture_url'], ENT_QUOTES, 'UTF-8'));
+                $article->setCategoryId((int) $_POST['category']);
+                $article->setCreatorId((int) $_SESSION['user']['id']);
+
                 $article->save();
 
                 header('Location: /dashboard/article');
@@ -34,30 +37,33 @@ class Article
         }
     }
 
-    public function delete() : void
+    public function delete(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset ($_POST['id-article'])) {
+            if (isset($_POST['id-article'])) {
                 $article = new ArticleModel();
                 $article->delete($_POST['id-article']);
 
-                if(!isset($_SESSION)) { session_start(); }
-
-                if(!empty($article->getOneBy(['id' => $_POST['id-article']]))){
-                    $_SESSION['error_message'] = "L'article n'a pas pu être supprimé";
+                if (!isset($_SESSION)) {
+                    session_start();
                 }
-                else{
+
+                if (!empty($article->getOneBy(['id' => $_POST['id-article']]))) {
+                    $_SESSION['error_message'] = "L'article n'a pas pu être supprimé";
+                } else {
                     $_SESSION['success_message'] = "L'article a bien été supprimé";
                 }
-            
+
                 header('Location: /dashboard/article');
             }
         }
     }
 
-    public function articleList()
+    public function articleList() : array
     {
-        if(!isset($_SESSION)) { session_start(); }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
 
         $article = new ArticleModel();
         $articles = $article->getAllby(['id_creator' => $_SESSION['user']['id']]);

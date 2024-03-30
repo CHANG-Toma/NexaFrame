@@ -6,32 +6,18 @@ use App\Core\DB;
 
 class Article extends DB
 {
-    private ?int $id;
+    private ?int $id = null;
     protected string $title;
     protected string $content;
     protected string $keywords;
     protected string $picture_url;
     protected int $id_category;
-    protected $created_at;
+    protected string $created_at;
     protected int $id_creator;
-    protected $updated_at;
+    protected ?string $updated_at;
     protected ?int $id_updator;
-    protected $published_at;
+    protected ?string $published_at;
 
-    public function __construct()
-    {
-        $this->id = null;
-        $this->title = '';
-        $this->content = '';
-        $this->keywords = '';
-        $this->picture_url = '';
-        $this->id_category = 0;
-        $this->created_at = null;
-        $this->id_creator = 0;
-        $this->updated_at = null;
-        $this->id_updator = null;
-        $this->published_at = null;
-    }
     public function setId($id)
     {
         $this->id = $id;
