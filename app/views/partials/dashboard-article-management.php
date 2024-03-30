@@ -35,6 +35,7 @@
                     <th>Nom</th>
                     <th>Contenue</th>
                     <th>Mot clés</th>
+                    <th>Catégorie</th>
                     <th>Modifié le</th>
                     <th>Créer le</th>
                     <th>Action</th>
@@ -53,6 +54,8 @@
                         <td>
                             <?php echo $data[$i]['keywords']; ?>
                         </td>
+                        <td>
+                            <?php echo $data[$i]['category']; ?>
                         <td>
                             <?php echo $data[$i]['updated_at'] ? date('d F Y H:i:s', strtotime($data[$i]['updated_at'])) : ''; ?>
                         </td>

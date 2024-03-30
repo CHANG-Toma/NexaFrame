@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Article as ArticleModel;
+use App\Models\Category as CategoryModel;
 
 class Article
 {
@@ -15,7 +16,7 @@ class Article
 
                 $article = new ArticleModel();
 
-                if(isset($_POST['id-article'])){
+                if(isset($_POST['id-article']) && $_POST['id-article'] != ''){
                     $article->setId($_POST['id-article']);
                 }
 
@@ -56,7 +57,29 @@ class Article
 
     public function articleList()
     {
+        if(!isset($_SESSION)) { session_start(); }
+
         $article = new ArticleModel();
-        return $article->getAllby(['id_creator' => $_SESSION['user']['id']]);
+        $articles = $article->getAllby(['id_creator' => $_SESSION['user']['id']]);
+
+        $categoryModel = new CategoryModel();
+        $categories = $categoryModel->getAll();
+
+        $articleList = [];
+        foreach ($articles as $article) {
+            $categoryId = $article['id_category'];
+            $categoryName = '';
+            foreach ($categories as $category) {
+                if ($category['id'] == $categoryId) {
+                    $categoryName = $category['label'];
+                    break;
+                }
+            }
+
+            $article['category'] = $categoryName;
+            $articleList[] = $article;
+        }
+
+        return $articleList;
     }
 }
