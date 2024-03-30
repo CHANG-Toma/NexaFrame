@@ -23,9 +23,9 @@
                 <div class="form-group">
                     <label for="category">Catégorie</label>
                     <select id="category" name="category">
-                        <option value="1">Catégorie 1</option>
-                        <option value="2">Catégorie 2</option>
-                        <option value="3">Catégorie 3</option>
+                        <?php foreach ($data as $category): ?>
+                            <option value="<?php echo $category['id']; ?>"><?php echo $category['label']; ?></option>
+                        <?php endforeach; ?>
                     </select>   
                 </div>
                 <button type="submit" class="btn-update">Créer l'Article</button>

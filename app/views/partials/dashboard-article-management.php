@@ -60,9 +60,8 @@
                             <?php echo $data[$i]['created_at'] ? date('d F Y H:i:s', strtotime($data[$i]['created_at'])) : ''; ?>
                         </td>
                         <td class="container">
-
-                            <form method="POST" Action="/dashboard/page-builder/delete-page">
-                                <input type="hidden" name="id-page" value="<?php echo $data[$i]['id']; ?>">
+                            <form method="POST" Action="/dashboard/delete-article">
+                                <input type="hidden" name="id-article" value="<?php echo $data[$i]['id']; ?>">
                                 <button class="Button-sm delete" type="submit">Supprimer</button>
                             </form>
                         </td>

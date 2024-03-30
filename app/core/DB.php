@@ -17,6 +17,7 @@ class DB
         'Setting' => 'settings',
         'Comment' => 'comments',
         'Article' => 'articles',
+        'Category' => 'categories',
     ];
     private string $tableName = '';
     private static ?self $instance = null;

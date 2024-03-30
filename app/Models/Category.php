@@ -7,12 +7,9 @@ use App\Core\DB;
 class Category extends DB
 {
     private $id;
-    private $label;
+    protected string $label;
 
-    public function __construct($id, $label) {
-        $this->id = $id;
-        $this->label = $label;
-    }
+    public function __construct() {}
 
     public function getId() {
         return $this->id;
