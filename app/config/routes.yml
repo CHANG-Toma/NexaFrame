@@ -55,6 +55,10 @@
   controller: Article
   action: delete
 
+/dashboard/article/block:
+  controller: Article
+  action: getArticlesJson
+
 /dashboard/update-article:
   controller: Dashboard
   action: index

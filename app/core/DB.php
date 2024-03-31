@@ -87,8 +87,17 @@ class DB
         $params = [];
 
         foreach ($conditions as $column => $value) {
-            $sql .= "$column = :$column AND ";
-            $params[":$column"] = $value;
+            if (is_array($value) && isset($value['operator'])) { //ne pas oublier de vérifier si l'opérateur est défini et doit etre un tableau
+                $sql .= "$column {$value['operator']} AND ";
+                if ($value['operator'] != 'IS NULL' && $value['operator'] != 'IS NOT NULL') {
+                    $params[":$column"] = $value['value']; // Si l'opérateur nécessite une valeur (ex : '=', '!='), ajoutez-la aux paramètres
+
+                }
+            } else {
+                // Traitement normal
+                $sql .= "$column = :$column AND ";
+                $params[":$column"] = $value;
+            }
         }
         $sql = rtrim($sql, 'AND ');
 

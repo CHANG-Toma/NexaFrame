@@ -23,6 +23,13 @@ class Article
                     $article->setUpdatedAt(date('Y-m-d H:i:s'));
                 }
 
+                if(isset($_POST['published_at']) && $_POST['published_at'] !== '') {
+                    $article->setPublishedAt(date('Y-m-d H:i:s'));
+                }
+                else{
+                    $article->setPublishedAt(null);
+                }
+
                 $article->setTitle(htmlspecialchars($_POST['title'], ENT_QUOTES, 'UTF-8'));
                 $article->setContent(htmlspecialchars($_POST['content'], ENT_QUOTES, 'UTF-8'));
                 $article->setKeywords(htmlspecialchars($_POST['keywords'], ENT_QUOTES, 'UTF-8'));
@@ -87,5 +94,17 @@ class Article
         }
 
         return $articleList;
+    }
+
+    public function getArticlesJson(): void
+    {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+
+        $article = new ArticleModel();
+        $articles = $article->getAllby(['id_creator' => $_SESSION['user']['id'], 'published_at' => ['operator' => 'IS NOT NULL']]);
+
+        echo json_encode($articles);
     }
 }

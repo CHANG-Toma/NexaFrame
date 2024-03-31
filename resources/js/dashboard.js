@@ -148,25 +148,30 @@ document.addEventListener("DOMContentLoaded", function () {
     category: "Autres",
   });
 
-  editor.Blocks.add("article-with-comment", {
-    label: "Article avec Commentaire",
-    attributes: { class: "fa fa-comments" }, // classe d'icône grapesJs (PageBuilder)
-    content: `
-      <div class="article-container">
-        <article>
-          <h2>Titre de l'Article</h2>
-          <p>Contenu de l'article. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula, elit vel condimentum porta, purus mauris sollicitudin erat, ut mollis enim velit at est. Curabitur egestas, est quis lacinia sodales, tortor eros ultricies lorem, eget iaculis orci magna ac nisi.</p>
-        </article>
-        <form method="post" action="/user/comment">
-          <label for="commentaire">Votre commentaire:</label>
-          <textarea id="commentaire" name="comment" required></textarea>
-          <br>
-          <button type="submit">Poster le commentaire</button>
-        </form>
-      </div>
-    `,
-    category: "Autres",
+  editor.Blocks.add('articlesBlock', {
+    label: 'Articles',
+    attributes: { class: 'fa fa-newspaper-o' },
+    content: {
+      type: 'articles', // Type personnalisé
+      tagName: 'div',
+      style: { padding: '10px' },
+      script: function () {
+        fetch('/dashboard/article/block')
+          .then(response => response.json())
+          .then(articles => {
+            this.innerHTML = articles.map(article => `
+              <div class="article">
+                <h3>${article.title}</h3>
+                <p>${article.summary}</p>
+              </div>
+            `).join('');
+          });
+      }
+    },
+    category: 'Autres',
   });
+  
+  
 
   editor.Commands.add("save-db", {
     run: function (editor, sender) {

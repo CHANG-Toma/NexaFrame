@@ -33,9 +33,18 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div>
+                    <label for='published'>Publié </label>
+                    <input type='checkbox' id='published' name='published_at'
+                        <?php echo !empty($dataArticle) && !empty($dataArticle[0]['published_at']) ? 'checked' : ''; ?>
+                    >
+                </div>
+                <br>
                 <button type="submit" name="id-article"
                     value="<?php echo !empty($dataArticle) ? $dataArticle[0]['id'] : ''; ?>"
-                    class="btn-update">Enregistrer</button>
+                    class="btn-update">
+                    Enregistrer
+                </button>
             </form>
         </div>
     </div>
