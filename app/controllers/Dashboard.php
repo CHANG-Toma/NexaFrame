@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\PageBuilder;
 use App\Controllers\Error;
 use App\Controllers\Article;
+use App\Controllers\Comment;
 
 use App\Models\Article as ArticleModel;
 use App\Models\Category;
@@ -27,6 +28,7 @@ class Dashboard
         $article = new Article();
         $Category = new Category();
         $articleModel = new ArticleModel();
+        $Comment = new Comment();
 
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
@@ -47,13 +49,14 @@ class Dashboard
                 break;
             case '/dashboard/article':
                 $components[] = 'dashboard-article-management.php';
-                $data = $article->articleList();
+                $data = $article->showAll();
                 break;
             case '/dashboard/template':
                 $components[] = 'dashboard-template.php';
                 break;
             case '/dashboard/comment':
                 $components[] = 'dashboard-comment.php';
+                $comments = $Comment->showAll();
                 break;
             case '/dashboard/user':
                 $components[] = 'dashboard-user-data.php';

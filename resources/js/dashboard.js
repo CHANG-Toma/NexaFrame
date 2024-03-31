@@ -134,44 +134,43 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     category: "Autres",
   });
-  editor.Blocks.add("commentaire", {
-    label: "Commentaire",
-    attributes: { class: "fa fa-comment" }, // classe d'icône grapesJs (PageBuilder)
-    content: `
-      <form method="post" action="/user/comment" >
-      <label for="commentaire">Commentaire:</label>
-      <input type="text" id="commentaire" name="comment" required></input>
-      <br>
-      <button type="submit">Commenter</button>
-      </form>
-    `,
+
+  editor.Blocks.add("articlesBlock", {
+    label: "Articles",
+    attributes: { class: "fa fa-newspaper-o" },
+    content: {
+      type: "articles",
+      tagName: "div",
+      style: { padding: "10px" },
+      script: function () {
+        fetch("/dashboard/article/block")
+          .then((response) => response.json())
+          .then((articles) => {
+            if (articles.length > 0) {
+              this.innerHTML = articles
+                .map(
+                  (article) => `
+                  <div class="article">
+                    <h1>${article.title}</h1>
+                    <p>Publié le : ${article.published_at}</p>
+                    <p>Catégorie : ${article.category}</p>
+                    ${article.image ? `<img src="${article.image}" style="width: 100%; height: auto;">` : ''}
+                    <h4>Contenue : ${article.content}</h4>
+                    <text>${article.keywords}</text><br>
+                    <form action="/dashboard/article/save-comment" method="POST">
+                      <input type="hidden" name="articleId" value="${article.id}">
+                      <input name="commentContent" placeholder="Votre commentaire"></input>
+                      <br>
+                      <button type="submit">Commenter</button>
+                    </form>
+                  </div>`
+                ).join("");
+            }
+          });
+      },
+    },
     category: "Autres",
   });
-
-  editor.Blocks.add('articlesBlock', {
-    label: 'Articles',
-    attributes: { class: 'fa fa-newspaper-o' },
-    content: {
-      type: 'articles', // Type personnalisé
-      tagName: 'div',
-      style: { padding: '10px' },
-      script: function () {
-        fetch('/dashboard/article/block')
-          .then(response => response.json())
-          .then(articles => {
-            this.innerHTML = articles.map(article => `
-              <div class="article">
-                <h3>${article.title}</h3>
-                <p>${article.summary}</p>
-              </div>
-            `).join('');
-          });
-      }
-    },
-    category: 'Autres',
-  });
-  
-  
 
   editor.Commands.add("save-db", {
     run: function (editor, sender) {

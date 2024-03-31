@@ -66,7 +66,7 @@ class Article
         }
     }
 
-    public function articleList() : array
+    public function showAll() : array
     {
         if (!isset($_SESSION)) {
             session_start();
@@ -105,6 +105,24 @@ class Article
         $article = new ArticleModel();
         $articles = $article->getAllby(['id_creator' => $_SESSION['user']['id'], 'published_at' => ['operator' => 'IS NOT NULL']]);
 
-        echo json_encode($articles);
+        $categoryModel = new CategoryModel();
+        $categories = $categoryModel->getAll();
+
+        $articleList = [];
+        foreach ($articles as $article) {
+            $categoryId = $article['id_category'];
+            $categoryName = '';
+            foreach ($categories as $category) {
+                if ($category['id'] == $categoryId) {
+                    $categoryName = $category['label'];
+                    break;
+                }
+            }
+
+            $article['category'] = $categoryName;
+            $articleList[] = $article;
+        }
+
+        echo json_encode($articleList);
     }
 }

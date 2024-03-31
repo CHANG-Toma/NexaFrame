@@ -59,6 +59,10 @@
   controller: Article
   action: getArticlesJson
 
+/dashboard/article/save-comment:
+  controller: Comment
+  action: save
+
 /dashboard/update-article:
   controller: Dashboard
   action: index

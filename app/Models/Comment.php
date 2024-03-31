@@ -5,45 +5,43 @@ namespace App\Models;
 use App\Core\DB;
 
 class Comment extends DB{
-    private $id;
-    private $articleId;
-    private $commentResponseId;
-    private $userId;
-    private $content;
-    private $createdAt;
-    private $valid;
-    private $validateAt;
-    private $validatorId;
-    private $updatedAt;
-
-    public function __construct() {}
+    private ?int $id = null;
+    protected int $id_article;
+    protected ?int $id_comment_response;
+    protected int $id_user;
+    protected string $content;
+    protected string $created_at;
+    protected bool $valid;
+    protected string $validate_at;
+    protected ?int $id_validator;
+    protected string $updated_at;
 
     public function getId() {
         return $this->id;
     }
 
     public function getArticleId() {
-        return $this->articleId;
+        return $this->id_article;
     }
 
     public function setArticleId($articleId) {
-        $this->articleId = $articleId;
+        $this->id_article = $articleId;
     }
 
     public function getCommentResponseId() {
-        return $this->commentResponseId;
+        return $this->id_comment_response;
     }
 
     public function setCommentResponseId($commentResponseId) {
-        $this->commentResponseId = $commentResponseId;
+        $this->id_comment_response = $commentResponseId;
     }
 
     public function getUserId() {
-        return $this->userId;
+        return $this->id_user;
     }
 
     public function setUserId($userId) {
-        $this->userId = $userId;
+        $this->id_user = $userId;
     }
 
     public function getContent() {
@@ -55,11 +53,11 @@ class Comment extends DB{
     }
 
     public function getCreatedAt() {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     public function setCreatedAt($createdAt) {
-        $this->createdAt = $createdAt;
+        $this->created_at = $createdAt;
     }
 
     public function isValid() {
@@ -71,26 +69,26 @@ class Comment extends DB{
     }
 
     public function getValidateAt() {
-        return $this->validateAt;
+        return $this->validate_at;
     }
 
     public function setValidateAt($validateAt) {
-        $this->validateAt = $validateAt;
+        $this->validate_at = $validateAt;
     }
 
     public function getValidatorId() {
-        return $this->validatorId;
+        return $this->id_validator;
     }
 
     public function setValidatorId($validatorId) {
-        $this->validatorId = $validatorId;
+        $this->id_validator = $validatorId;
     }
 
     public function getUpdatedAt() {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
     public function setUpdatedAt($updatedAt) {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updatedAt;
     }
 }
