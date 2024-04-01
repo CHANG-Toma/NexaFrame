@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Article as ArticleModel;
 use App\Models\Category as CategoryModel;
+use App\Models\Comment as CommentModel;
 
 class Article
 {
@@ -120,6 +121,15 @@ class Article
             }
 
             $article['category'] = $categoryName;
+
+            $commentModel = new CommentModel();
+            $comments = $commentModel->getAll();
+
+            foreach ($comments as $comment) {
+                if ($comment['id_article'] == $article['id'] && $comment['valid'] == 1) {
+                    $article['comments'][] = $comment;
+                }
+            }
             $articleList[] = $article;
         }
 

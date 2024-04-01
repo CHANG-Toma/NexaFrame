@@ -163,6 +163,15 @@ document.addEventListener("DOMContentLoaded", function () {
                       <br>
                       <button type="submit">Commenter</button>
                     </form>
+                    <div class="comments">
+                      ${article.comments && article.comments.length > 0 ? article.comments.map(
+                        (comment) => `
+                        <div class="comment">
+                          <p>${comment.content}</p>
+                          <p>Publié le : ${comment.created_at}</p>
+                        </div>
+                      `).join("") : "Aucun commentaire pour cet article"}
+                    </div>
                   </div>`
                 ).join("");
             }
@@ -171,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     category: "Autres",
   });
+
 
   editor.Commands.add("save-db", {
     run: function (editor, sender) {
