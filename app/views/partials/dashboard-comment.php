@@ -1,7 +1,26 @@
 <section class="comments-management-container">
     <h2>Gestion des Commentaires</h2>
+
+    <div class="error <?php session_start();
+        echo isset($_SESSION["error_message"]) ? '' : 'hidden'; ?>">
+            <?php
+            if (isset($_SESSION['error_message'])) {
+                echo $_SESSION['error_message'];
+                unset($_SESSION['error_message']);
+            }
+            ?>
+        </div>
+        <div class="success <?php session_start();
+        echo isset($_SESSION["success_message"]) ? '' : 'hidden'; ?>">
+            <?php
+            if (isset($_SESSION['success_message'])) {
+                echo $_SESSION['success_message'];
+                unset($_SESSION['success_message']);
+            }
+            ?>
+        </div>
+
     <div class="comments-list">
-        
         <?php    
         foreach ($comments as $comment) {
             ?>
@@ -15,8 +34,15 @@
                     </div>
                 </div>
                 <div class="comment-actions">
-                    <button class="btn approve-comment">Approuver</button>
-                    <button class="btn delete-comment">Supprimer</button>
+                    <form action="/dashboard/comment/approve" method="post">
+                        <input type="hidden" name="comment_id" value="<?= $comment['id']; ?>">
+                        <button type="submit" class="btn approve-comment">Approuver</button>
+                    </form>
+
+                    <form action="/dashboard/comment/delete" method="post">
+                        <input type="hidden" name="comment_id" value="<?= $comment['id']; ?>">
+                        <button type="submit" class="btn delete-comment">Supprimer</button>
+                    </form>
                 </div>
             </div>
             <?php

@@ -87,6 +87,14 @@
   controller: Dashboard
   action: index
 
+/dashboard/comment/delete:
+  controller: Comment
+  action: delete
+
+/dashboard/comment/approve:
+  controller: Comment
+  action: approve
+
 /dashboard/user:
   controller: Dashboard
   action: index

@@ -42,7 +42,7 @@ class Comment
 
         $comments = $comment->getAll();
         $commentList = [];
-        
+
         foreach ($comments as $comment) {
 
             $login = $user->getOneBy(["id" => $comment["id_user"]]);
@@ -64,13 +64,60 @@ class Comment
         return $commentList;
     }
 
-    public function delete($id)
+    public function delete()
     {
-        // Code to delete a specific comment by ID
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER['REQUEST_URI'] === '/dashboard/comment/delete') {
+            if (isset($_POST['comment_id'])) {
+                if (!isset($_SESSION)) {
+                    session_start();
+
+                }
+                $comment = new CommentModel();
+                $comment->delete($_POST['comment_id']);
+
+                if (!$comment->getOneBy(["id" => $_POST['comment_id']])) {
+                    $_SESSION["success_message"] = "Commentaire supprimé avec succès";
+                } else {
+                    $_SESSION["error_message"] = "Erreur lors de la suppression du commentaire";
+                }
+            } else {
+                $_SESSION["error_message"] = "Données manquantes";
+            }
+        } else {
+            $_SESSION["error_message"] = "Requete invalide";
+        }
+        header('Location: /dashboard/comment');
     }
 
-    public function approve($id)
+    public function approve()
     {
-        // Code to approve a specific comment by ID
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER['REQUEST_URI'] === '/dashboard/comment/approve') {
+            if (isset($_POST['comment_id'])) {
+                if (!isset($_SESSION)) {
+                    session_start();
+                }
+
+                $comment = new CommentModel();
+
+                $comment->setId($_POST['comment_id']);
+                $comment->setValid(true);
+                $comment->setValidateAt(date("Y-m-d H:i:s"));
+                $comment->setValidatorId($_SESSION["user"]["id"]);
+                $comment->save();
+                
+                $approved = $comment->getOneBy(["id" => $_POST['comment_id']]);
+
+                if ($approved[0]["valid"] === true) {
+                    $_SESSION["success_message"] = "Commentaire approuvé avec succès";
+                } else {
+                    $_SESSION["error_message"] = "Erreur lors de l'approbation du commentaire";
+                }
+            } else {
+                $_SESSION["error_message"] = "Données manquantes";
+            }
+        } else {
+            $_SESSION["error_message"] = "Requete invalide";
+        }
+        header('Location: /dashboard/comment');
     }
 }

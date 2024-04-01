@@ -20,6 +20,10 @@ class Comment extends DB{
         return $this->id;
     }
 
+    public function setId($id) {
+        $this->id = $id;
+    }
+
     public function getArticleId() {
         return $this->id_article;
     }
