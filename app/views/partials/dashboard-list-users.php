@@ -58,12 +58,17 @@
                         </td>
                         <td class="container">
                             <form method="POST" Action="#">
-                                <input type="hidden" name="id-article" value="<?php echo $data[$i]['id']; ?>">
+                                <input type="hidden" name="id-user" value="<?php echo $data[$i]['id']; ?>">
                                 <button class="Button-sm update" type="submit">Modifier</button>
                             </form>
                             <form method="POST" Action="#">
-                                <input type="hidden" name="id-article" value="<?php echo $data[$i]['id']; ?>">
-                                <button class="Button-sm delete" type="submit">Supprimer</button>
+                                <input type="hidden" name="id-user" value="<?php echo $data[$i]['id']; ?>">
+                                <button class="Button-sm delete" type="submit">Soft Delete</button>
+                            </form>
+
+                            <form method="POST" Action="/dashboard/hard-delete">
+                                <input type="hidden" name="id-user" value="<?php echo $data[$i]['id']; ?>">
+                                <button class="Button-sm delete" type="submit">Hard Delete</button>
                             </form>
                         </td>
                     </tr>

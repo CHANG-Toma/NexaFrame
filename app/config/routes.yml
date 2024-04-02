@@ -115,6 +115,13 @@
   controller: Dashboard
   action: index
 
+/dashboard/hard-delete:
+  controller: User
+  action: hardDelete
+
+/dashboard/delete-user:
+  controller: User
+  action: delete
 
 
 /user/login:

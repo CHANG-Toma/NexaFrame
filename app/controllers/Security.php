@@ -8,7 +8,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Security
 {
 
-    public function __construct(){}
+    public function __construct()
+    {
+    }
 
     public function register(): void
     {
@@ -22,7 +24,7 @@ class Security
                 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $user = new User();
                     $dataUser = $user->getOneBy(["email" => $email]);
-                    if (!empty ($dataUser)) {
+                    if (!empty($dataUser)) {
                         $message = "Un compte existe déjà avec cette adresse e-mail.";
                     } else {
                         if ($password === $confirmPassword) {
@@ -67,6 +69,11 @@ class Security
                     $message = "Un compte existe déjà avec cette adresse e-mail.";
                 }
                 //print ($message);
+                if ($message !== null) {
+                    header('Location: /register?message=' . $message);
+                }
+            } else {
+                $message = "Champs vides. Veuillez remplir tous les champs.";
                 header('Location: /register?message=' . $message);
             }
         }
@@ -75,30 +82,27 @@ class Security
 
     public function login(): void
     {
-        if (!isset($_SESSION['user'])) {
+        if (!isset($_SESSION)) {
             session_start();
-        } 
+        }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            if (empty ($login) || empty ($password)) {
+            if (empty($login) || empty($password)) {
                 $error = "Champs vides. Veuillez remplir tous les champs.";
             }
 
             $user = new User();
             $loggedInUser = $user->getOneBy(["login" => $login]);
 
-            if (empty ($loggedInUser)) {
+            if (empty($loggedInUser)) {
                 $error = "Nom d'utilisateur ou mot de passe incorrect";
             } else {
                 if ($loggedInUser && password_verify($password, $loggedInUser[0]['password'])) {
                     $user->populate($loggedInUser);
                     if ($user->getRole() == "admin" && $user->isValidate() == true) {
-                        if(!isset($_SESSION)) {
-                            session_start();
-                        }
                         $_SESSION['user'] = $loggedInUser[0];
                         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
                             header('Location: /dashboard/page-builder');
@@ -107,7 +111,6 @@ class Security
                         }
                         header('Location: /dashboard/page-builder');
                     } else if ($user->getRole() == "user" && $user->isValidate() == true) {
-                        session_start();
                         $_SESSION['user'] = $loggedInUser[0];
                         header('Location: /home');
                     }
@@ -174,7 +177,7 @@ class Security
 
                     $mail->setFrom($mailConfig['from']['address'], $mailConfig['from']['name']);
                     $mail->addAddress($email);
-                    $mail->Subject = "Nouveau mot de passe pour votre compte Nexaframe";
+                    $mail->Subject = "Nouveau mot de passe pour votre compte";
                     $mail->isHTML(true);
                     $mail->Body = "Bonjour,
                 <br>Un nouveau mot de passe a été généré pour votre compte.<br>
@@ -210,7 +213,7 @@ class Security
 
             session_start();
 
-            if (empty ($currentPassword) || empty ($newPassword) || empty ($confirmPassword)) {
+            if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
                 $_SESSION['error_message2'] = "Veuillez remplir tous les champs";
                 if ($_SERVER['REQUEST_URI'] === '/dashboard/user') {
                     header('Location: /dashboard/user');
@@ -223,7 +226,7 @@ class Security
                 if ($newPassword === $confirmPassword && strlen($newPassword) >= 8) {
                     $user = new User();
                     $userdata = $user->getOneBy(["email" => $_SESSION['user']['email']]);
-                    if (empty ($userdata)) {
+                    if (empty($userdata)) {
                         $_SESSION['error_message2'] = "Utilisateur introuvable";
                         header('Location: /dashboard/user');
                     } else {
