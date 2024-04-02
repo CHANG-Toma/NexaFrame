@@ -19,23 +19,23 @@
         </div>
 
         <div class="side-item">
-            <a href="/dashboard/template" class="side-link">
-                <span class="side-icon">&#128202;</span>
-                <span class="side-text">Mes analyses</span>
+            <a href="/dashboard/comment" class="side-link">
+                <span class="side-icon">&#128203;</span>
+                <span class="side-text">Commentaires</span>
             </a>
         </div>
 
         <div class="side-item">
-            <a href="/dashboard/users" class="side-link">
+            <a href="/dashboard/list-users" class="side-link">
                 <span class="side-icon">&#129485;</span>
                 <span class="side-text">Mes utilisateurs</span>
             </a>
         </div>
 
         <div class="side-item">
-            <a href="/dashboard/comment" class="side-link">
-                <span class="side-icon">&#128203;</span>
-                <span class="side-text">Commentaires</span>
+            <a href="/dashboard/template" class="side-link">
+                <span class="side-icon">&#128202;</span>
+                <span class="side-text">Mes analyses</span>
             </a>
         </div>
 

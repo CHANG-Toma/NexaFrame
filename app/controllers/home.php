@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Core\DB;
 use App\Models\Page;
 
-Class home
+class home
 {
     public function __construct()
     {

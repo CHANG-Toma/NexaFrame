@@ -111,6 +111,10 @@
   controller: User
   action: editUser
 
+/dashboard/list-users:
+  controller: Dashboard
+  action: index
+
 
 
 /user/login:

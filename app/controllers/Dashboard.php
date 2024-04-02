@@ -6,6 +6,7 @@ use App\Controllers\PageBuilder;
 use App\Controllers\Error;
 use App\Controllers\Article;
 use App\Controllers\Comment;
+use App\Controllers\User;
 
 use App\Models\Article as ArticleModel;
 use App\Models\Category;
@@ -29,6 +30,7 @@ class Dashboard
         $Category = new Category();
         $articleModel = new ArticleModel();
         $Comment = new Comment();
+        $User = new User();
 
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
@@ -51,15 +53,21 @@ class Dashboard
                 $components[] = 'dashboard-article-management.php';
                 $data = $article->showAll();
                 break;
-            case '/dashboard/template':
+                
+            case '/dashboard/template':// a supprimer
                 $components[] = 'dashboard-template.php';
                 break;
+
             case '/dashboard/comment':
                 $components[] = 'dashboard-comment.php';
                 $comments = $Comment->showAll();
                 break;
             case '/dashboard/user':
                 $components[] = 'dashboard-user-data.php';
+                break;
+            case '/dashboard/list-users':
+                $components[] = 'dashboard-list-users.php';
+                $data = $User->showAll();
                 break;
             default:
                 $components[] = 'dashboard-page-builder.php';

@@ -229,6 +229,7 @@ class Security
                     } else {
                         $user->populate($userdata);
                         $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+                        $user->setUpdated_at(date('Y-m-d H:i:s'));
                         $user->save();
 
                         $_SESSION['success_message2'] = "Mot de passe modifié avec succès";
