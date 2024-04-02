@@ -6,15 +6,21 @@ use App\Models\User as UserModel;
 use PHPMailer\PHPMailer\PHPMailer;
 
 
-Class User
+class User
 {
     public function __construct()
     {
     }
 
-    public function showUser(): void
+    public function showAll() : array
     {
-        // Code to retrieve and display user information
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+
+        $userModel = new userModel();
+
+        return $userModel->getAll();
     }
 
     public function editUser(): void
@@ -38,6 +44,7 @@ Class User
                 else{
                     $user->setEmail($email);
                 }
+                $user->setUpdated_at(date('Y-m-d H:i:s'));
                 $user->save();
                 $_SESSION['success_message'] = "Vos informations ont été mises à jour avec succès";
             }
@@ -48,10 +55,5 @@ Class User
     public function deleteUser(): void
     {
         // Code to delete user
-    }
-    
-    public function listUser(): void
-    {
-        // Code to list all users
     }
 }

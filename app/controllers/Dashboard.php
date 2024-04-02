@@ -4,6 +4,12 @@ namespace App\Controllers;
 
 use App\Controllers\PageBuilder;
 use App\Controllers\Error;
+use App\Controllers\Article;
+use App\Controllers\Comment;
+use App\Controllers\User;
+
+use App\Models\Article as ArticleModel;
+use App\Models\Category;
 
 class Dashboard
 {
@@ -20,6 +26,11 @@ class Dashboard
             'dashboard-sidebar.php',
         ];
         $pageBuilder = new PageBuilder();
+        $article = new Article();
+        $Category = new Category();
+        $articleModel = new ArticleModel();
+        $Comment = new Comment();
+        $User = new User();
 
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
@@ -29,14 +40,34 @@ class Dashboard
             case '/dashboard/page-builder/create-page':
                 $components[] = 'dashboard-page.php';
                 break;
-            case '/dashboard/template':
+            case '/dashboard/create-article':
+                $components[] = 'dashboard-create-article.php';
+                $data = $Category->getAll();
+                break;
+            case '/dashboard/update-article':
+                $components[] = 'dashboard-create-article.php';
+                $data = $Category->getAll();
+                $dataArticle = $articleModel->getOneBy(['id' => $_POST['id-article']]);
+                break;
+            case '/dashboard/article':
+                $components[] = 'dashboard-article-management.php';
+                $data = $article->showAll();
+                break;
+                
+            case '/dashboard/template':// a supprimer
                 $components[] = 'dashboard-template.php';
                 break;
+
             case '/dashboard/comment':
                 $components[] = 'dashboard-comment.php';
+                $comments = $Comment->showAll();
                 break;
             case '/dashboard/user':
                 $components[] = 'dashboard-user-data.php';
+                break;
+            case '/dashboard/list-users':
+                $components[] = 'dashboard-list-users.php';
+                $data = $User->showAll();
                 break;
             default:
                 $components[] = 'dashboard-page-builder.php';

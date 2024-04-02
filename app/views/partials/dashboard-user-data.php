@@ -28,7 +28,6 @@
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" value="<?= $email = "" ?>">
                 </div>
-                <!-- Autres champs si nécessaire -->
                 <button type="submit" class="btn-update">Mettre à jour</button>
             </form>
         </div>

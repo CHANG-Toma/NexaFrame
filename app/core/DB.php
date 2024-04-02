@@ -15,6 +15,9 @@ class DB
         'User' => 'users',
         'Page' => 'pages',
         'Setting' => 'settings',
+        'Comment' => 'comments',
+        'Article' => 'articles',
+        'Category' => 'categories',
     ];
     private string $tableName = '';
     private static ?self $instance = null;
@@ -84,8 +87,17 @@ class DB
         $params = [];
 
         foreach ($conditions as $column => $value) {
-            $sql .= "$column = :$column AND ";
-            $params[":$column"] = $value;
+            if (is_array($value) && isset($value['operator'])) { //ne pas oublier de vérifier si l'opérateur est défini et doit etre un tableau
+                $sql .= "$column {$value['operator']} AND ";
+                if ($value['operator'] != 'IS NULL' && $value['operator'] != 'IS NOT NULL') {
+                    $params[":$column"] = $value['value']; // Si l'opérateur nécessite une valeur (ex : '=', '!='), ajoutez-la aux paramètres
+
+                }
+            } else {
+                // Traitement normal
+                $sql .= "$column = :$column AND ";
+                $params[":$column"] = $value;
+            }
         }
         $sql = rtrim($sql, 'AND ');
 
@@ -114,7 +126,12 @@ class DB
     {
         $className = basename(str_replace('\\', '/', get_class($this)));
         $tableName = $this->getTableNameByClassName($className);
-        return $this->exec("SELECT * FROM $tableName;");
+        $data = $this->exec("SELECT * FROM $tableName;");
+        if ($data) {
+            return $data;
+        } else {
+            return [];
+        }
     }
 
     public function getAllBy(array $conditions): array

@@ -42,17 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ]);
 
-  // bloc d'image personnalisé
-  editor.Blocks.add("image", {
-    label: "Image",
-    attributes: { class: "fa fa-image" }, // classe d'icône grapesJs (PageBuilder)
-    content: {
-      type: "image",
-      style: { color: "black" },
-      activeOnRender: 1,
-    },
-    category: "Image",
-  });
   // bloc de texte personnalisé
   editor.on("load", () => {
     const panelEl = editor.Panels.getPanel("views-container").el;
@@ -60,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   editor.Blocks.add("register", {
-    label: "Register",
+    label: "S'inscrire",
     attributes: { class: "fa fa-user-plus" }, // classe d'icône grapesJs (PageBuilder)
     content: `
       <form method="post" action="/user/register" >
@@ -79,11 +68,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <button type="submit">Register</button>
       </form>
     `,
-    category: "User",
+    category: "Utilisateur",
   });
 
   editor.Blocks.add("login", {
-    label: "Login",
+    label: "Se connecter",
     attributes: { class: "fa fa-sign-in" }, // classe d'icône grapesJs (PageBuilder)
     content: `
       <form method="post" action="/user/login" >
@@ -98,11 +87,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="/user/register">Register</a>
       </form>
     `,
-    category: "User",
+    category: "Utilisateur",
   });
 
   editor.Blocks.add("forgotpwd", {
-    label: "Forgot Password",
+    label: "Mot de passe oublié",
     attributes: { class: "fa fa-key" }, // classe d'icône grapesJs (PageBuilder)
     content: `
       <form method="post" action="/user/forgot-password" >
@@ -112,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <button type="submit">Send email</button>
       </form>
     `,
-    category: "User",
+    category: "Utilisateur",
   });
 
   editor.Blocks.add("resetpwd", {
@@ -132,9 +121,65 @@ document.addEventListener("DOMContentLoaded", function () {
         <button type="submit">Réinitialiser</button>
       </form>
     `,
-    category: "User",
+    category: "Utilisateur",
+  });
+  // bloc d'image personnalisé
+  editor.Blocks.add("image", {
+    label: "Image",
+    attributes: { class: "fa fa-image" }, // classe d'icône grapesJs (PageBuilder)
+    content: {
+      type: "image",
+      style: { color: "black" },
+      activeOnRender: 1,
+    },
+    category: "Autres",
   });
 
+  editor.Blocks.add("articlesBlock", {
+    label: "Articles",
+    attributes: { class: "fa fa-newspaper-o" },
+    content: {
+      type: "articles",
+      tagName: "div",
+      style: { padding: "10px" },
+      script: function () {
+        fetch("/dashboard/article/block")
+          .then((response) => response.json())
+          .then((articles) => {
+            if (articles.length > 0) {
+              this.innerHTML = articles
+                .map(
+                  (article) => `
+                  <div class="article">
+                    <h1>${article.title}</h1>
+                    <p>Publié le : ${article.published_at}</p>
+                    <p>Catégorie : ${article.category}</p>
+                    ${article.image ? `<img src="${article.image}" style="width: 100%; height: auto;">` : ''}
+                    <h4>Contenue : ${article.content}</h4>
+                    <text>${article.keywords}</text><br>
+                    <form action="/dashboard/article/save-comment" method="POST">
+                      <input type="hidden" name="articleId" value="${article.id}">
+                      <input name="commentContent" placeholder="Votre commentaire"></input>
+                      <br>
+                      <button type="submit">Commenter</button>
+                    </form>
+                    <div class="comments">
+                      ${article.comments && article.comments.length > 0 ? article.comments.map(
+                        (comment) => `
+                        <div class="comment">
+                          <p>${comment.content}</p>
+                          <p>Publié le : ${comment.created_at}</p>
+                        </div>
+                      `).join("") : "Aucun commentaire pour cet article"}
+                    </div>
+                  </div>`
+                ).join("");
+            }
+          });
+      },
+    },
+    category: "Autres",
+  });
 
 
   editor.Commands.add("save-db", {

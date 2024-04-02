@@ -35,12 +35,40 @@
   controller: Dashboard
   action: index
 
+/dashboard/article:
+  controller: Dashboard
+  action: index
+
 /dashboard/page-builder/delete-page:
   controller: PageBuilder
   action: deletePage
 
+/dashboard/create-article:
+  controller: Dashboard
+  action: index
+
+/dashboard/article/create:
+  controller: Article
+  action: save
+
+/dashboard/delete-article:
+  controller: Article
+  action: delete
+
+/dashboard/article/block:
+  controller: Article
+  action: getArticlesJson
+
+/dashboard/article/save-comment:
+  controller: Comment
+  action: save
+
+/dashboard/update-article:
+  controller: Dashboard
+  action: index
+
 /dashboard/page-builder/create-page:
-  controller: dashboard
+  controller: Dashboard
   action: index
 
 /dashboard/page-builder/create-page/save:
@@ -59,6 +87,14 @@
   controller: Dashboard
   action: index
 
+/dashboard/comment/delete:
+  controller: Comment
+  action: delete
+
+/dashboard/comment/approve:
+  controller: Comment
+  action: approve
+
 /dashboard/user:
   controller: Dashboard
   action: index
@@ -74,6 +110,12 @@
 /dashboard/update-user:
   controller: User
   action: editUser
+
+/dashboard/list-users:
+  controller: Dashboard
+  action: index
+
+
 
 /user/login:
   controller: Security
@@ -94,3 +136,7 @@
 /user/reset-password:
   controller : Security
   action: changePassword
+
+/user/comment:
+  controller: Comment
+  action: create

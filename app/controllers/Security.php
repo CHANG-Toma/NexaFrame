@@ -75,6 +75,10 @@ class Security
 
     public function login(): void
     {
+        if (!isset($_SESSION['user'])) {
+            session_start();
+        } 
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -92,7 +96,9 @@ class Security
                 if ($loggedInUser && password_verify($password, $loggedInUser[0]['password'])) {
                     $user->populate($loggedInUser);
                     if ($user->getRole() == "admin" && $user->isValidate() == true) {
-                        session_start();
+                        if(!isset($_SESSION)) {
+                            session_start();
+                        }
                         $_SESSION['user'] = $loggedInUser[0];
                         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
                             header('Location: /dashboard/page-builder');
@@ -103,7 +109,7 @@ class Security
                     } else if ($user->getRole() == "user" && $user->isValidate() == true) {
                         session_start();
                         $_SESSION['user'] = $loggedInUser[0];
-                        header('Location: /user/home');
+                        header('Location: /home');
                     }
                 } else {
                     if ($_SERVER["REQUEST_URI"] == "/installer/login") {
@@ -117,11 +123,10 @@ class Security
 
         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
             include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
-        } else if ($_SERVER['REQUEST_URI'] === '/user/login' && isset ($_SESSION['user'])) {
+        } else if ($_SERVER['REQUEST_URI'] === '/user/login' && isset($_SESSION['user'])) {
             header('Location: /home');
         }
     }
-
     public function logout(): void
     {
         session_start();
@@ -224,6 +229,7 @@ class Security
                     } else {
                         $user->populate($userdata);
                         $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+                        $user->setUpdated_at(date('Y-m-d H:i:s'));
                         $user->save();
 
                         $_SESSION['success_message2'] = "Mot de passe modifié avec succès";

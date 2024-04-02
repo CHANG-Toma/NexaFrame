@@ -56,15 +56,22 @@ class PageBuilder
 
     public function deletePage(): void
     {
-        $id = $_POST["id-page"];
-        $Page = new Page();
-        $Page->delete($id);
-        session_start();
-        if (!empty($Page->getOneBy(["id" => $id]))) {
-            $_SESSION['error_message'] = "La page n'a pas été supprimée";
-        } else {
-            $_SESSION['success_message'] = "La page a été supprimée";
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST["id-page"])) {
+                $id = $_POST["id-page"];
+                $Page = new Page();
+                $Page->delete($id);
+                
+                if(!isset($_SESSION)) { session_start(); }
+
+                if (!empty($Page->getOneBy(["id" => $id]))) {
+                    $_SESSION['error_message'] = "La page n'a pas été supprimée";
+                } else {
+                    $_SESSION['success_message'] = "La page a été supprimée";
+                }
+            }
+            header('Location: /dashboard/page-builder');
         }
-        header('Location: /dashboard/page-builder');
     }
+
 }
