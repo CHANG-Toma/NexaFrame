@@ -57,13 +57,17 @@
                             <?php echo $data[$i]['deleted_at']; ?>
                         </td>
                         <td class="container">
-                            <form method="POST" Action="#">
+                            <form method="POST" Action="/dashboard/update-role">
                                 <input type="hidden" name="id-user" value="<?php echo $data[$i]['id']; ?>">
-                                <button class="Button-sm update" type="submit">Modifier</button>
+                                <select class="border" name="role" onchange="this.form.submit()">
+                                    <option value="superadmin" <?php echo $data[$i]['role'] === 'superadmin' ? 'selected' : ''; ?>>Super Admin</option>
+                                    <option value="admin" <?php echo $data[$i]['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
+                                    <option value="user" <?php echo $data[$i]['role'] === 'user' ? 'selected' : ''; ?>>User</option>
+                                </select>
                             </form>
                             <form method="POST" Action="/dashboard/soft-delete">
                                 <input type="hidden" name="id-user" value="<?php echo $data[$i]['id']; ?>">
-                                <button class="Button-sm delete" type="submit">Soft Delete</button>
+                                <button class="Button-sm update" type="submit">Soft Delete</button>
                             </form>
 
                             <form method="POST" Action="/dashboard/hard-delete">

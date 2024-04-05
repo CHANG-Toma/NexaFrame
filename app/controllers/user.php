@@ -61,8 +61,8 @@ class User
             if (empty($userdata)) {
                 $_SESSION['error_message'] = "Utilisateur introuvable";
             } else {
-                if ($userdata[0]['role'] == 'admin') {
-                    $_SESSION['error_message'] = "Vous ne pouvez pas supprimer un administrateur";
+                if ($userdata[0]['role'] == 'superadmin' || $userdata[0]['role'] == 'admin') {
+                    $_SESSION['error_message'] = "Vous ne pouvez pas supprimer un " . $userdata[0]['role'];
                 } else {
                     $user->populate($userdata);
                     $user->setDeleted_at(date('Y-m-d H:i:s') + 30 * 24 * 60 * 60); // 30 jours
@@ -87,8 +87,8 @@ class User
             if (empty($userdata)) {
                 $_SESSION['error_message'] = "Utilisateur introuvable";
             } else {
-                if ($userdata[0]['role'] == 'admin') {
-                    $_SESSION['error_message'] = "Vous ne pouvez pas supprimer un administrateur";
+                if ($userdata[0]['role'] == 'admin' || $userdata[0]['role'] == 'superadmin') {
+                    $_SESSION['error_message'] = "Vous ne pouvez pas supprimer un ". $userdata[0]['role'];
                 } else {
                     //envoyer un mail de confirmation de suppression à l'utilisateur
                     $mailConfig = include __DIR__ . "/../config/MailConfig.php";
@@ -121,22 +121,6 @@ class User
             header('Location: /dashboard/list-users');
         }
     }
-
-    public function purge(): void
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $user = new UserModel();
-            $user->purge();
-
-            if (!isset($_SESSION)) {
-                session_start();
-            }
-
-            $_SESSION['success_message'] = "La base de données a été purgée avec succès";
-            header('Location: /dashboard/list-users');
-        }
-    }
-
     public function delete(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -156,6 +140,33 @@ class User
             }
 
             header('Location: /home?');
+        }
+    }
+
+    public function updateRole()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $id = filter_input(INPUT_POST, "id-user", FILTER_SANITIZE_NUMBER_INT);
+            $role = filter_input(INPUT_POST, "role", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            session_start();
+
+            $user = new UserModel();
+            $userdata = $user->getOneBy(["id" => $id]);
+            if (empty($userdata)) {
+                $_SESSION['error_message'] = "Utilisateur introuvable";
+            } else {
+                if ($userdata[0]['role'] == 'superadmin') {
+                    $_SESSION['error_message'] = "Vous ne pouvez pas changer le rôle d'un superadmin";
+                } else {
+                    $user->populate($userdata);
+                    $user->setRole($role);
+                    $user->setUpdated_at(date('Y-m-d H:i:s'));
+                    $user->save();
+                    $_SESSION['success_message'] = "Le rôle de l'utilisateur a été mis à jour avec succès";
+                }
+            }
+            header('Location: /dashboard/list-users');
         }
     }
 }

@@ -118,6 +118,10 @@
   controller: Dashboard
   action: index
 
+/dashboard/update-role:
+  controller: User
+  action: updateRole
+
 /dashboard/soft-delete:
   controller: User
   action: softDelete

@@ -68,7 +68,7 @@ class Security
                 } else {
                     $message = "Un compte existe déjà avec cette adresse e-mail.";
                 }
-                if ($message !== null && !empty($message)) {
+                if (!empty($message)) {
                     header('Location: /register?message=' . $message);
                 }
             } else {

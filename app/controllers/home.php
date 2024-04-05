@@ -28,12 +28,7 @@ class home
         $Page = new Page();
 
         $Data = $Page->getAll();
-        $pageExist = $Page->getOneBy(['url' => $uri]);
 
-        if (!$Data || !$pageExist) {
-            $Error = new Error();
-            $Error->error404();
-        }
         $pageData = null;
 
         foreach ($Data as $page) {
