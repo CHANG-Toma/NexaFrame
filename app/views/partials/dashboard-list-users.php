@@ -32,8 +32,8 @@
                     <th>Login</th>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>Modifié le</th>
                     <th>Créer le</th>
+                    <th>Sera supprimé le</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -51,17 +51,17 @@
                             <?php echo $data[$i]['role']; ?>
                         </td>
                         <td>
-                            <?php echo $data[$i]['updated_at'] ? date('d F Y H:i:s', strtotime($data[$i]['updated_at'])) : ''; ?>
+                            <?php echo $data[$i]['created_at'] ? date('d F Y H:i:s', strtotime($data[$i]['created_at'])) : ''; ?>
                         </td>
                         <td>
-                            <?php echo $data[$i]['created_at'] ? date('d F Y H:i:s', strtotime($data[$i]['created_at'])) : ''; ?>
+                            <?php echo $data[$i]['deleted_at']; ?>
                         </td>
                         <td class="container">
                             <form method="POST" Action="#">
                                 <input type="hidden" name="id-user" value="<?php echo $data[$i]['id']; ?>">
                                 <button class="Button-sm update" type="submit">Modifier</button>
                             </form>
-                            <form method="POST" Action="#">
+                            <form method="POST" Action="/dashboard/soft-delete">
                                 <input type="hidden" name="id-user" value="<?php echo $data[$i]['id']; ?>">
                                 <button class="Button-sm delete" type="submit">Soft Delete</button>
                             </form>

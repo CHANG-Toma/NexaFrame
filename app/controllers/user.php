@@ -52,7 +52,7 @@ class User
     public function softDelete(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+            $id = filter_input(INPUT_POST, "id-user", FILTER_SANITIZE_NUMBER_INT);
 
             session_start();
 
@@ -61,13 +61,17 @@ class User
             if (empty($userdata)) {
                 $_SESSION['error_message'] = "Utilisateur introuvable";
             } else {
-                $user->populate($userdata);
-                $user->setStatus(1); // Soft delete en définissant le statut à 1
-                $user->setUpdated_at(date('Y-m-d H:i:s'));
-                $user->save();
-                $_SESSION['success_message'] = "L'utilisateur sera supprimé lors de la prochaine purge de la base de données";
+                if ($userdata[0]['role'] == 'admin') {
+                    $_SESSION['error_message'] = "Vous ne pouvez pas supprimer un administrateur";
+                } else {
+                    $user->populate($userdata);
+                    $user->setDeleted_at(date('Y-m-d H:i:s') + 30 * 24 * 60 * 60); // 30 jours
+                    $user->setUpdated_at(date('Y-m-d H:i:s'));
+                    $user->save();
+                    $_SESSION['success_message'] = "L'utilisateur sera supprimé lors de la prochaine purge de la base de données";
+                }
+                header('Location: /dashboard/list-users');
             }
-            header('Location: /dashboard/list-users');
         }
     }
 
@@ -107,7 +111,7 @@ class User
                     $mail->Body = "Votre sera supprimé si vous le confirmez en cliquant sur le lien suivant : <a href='" . $url . "'>Supprimer</a>";
                     $mail->send();
 
-                    if($mail->ErrorInfo){
+                    if ($mail->ErrorInfo) {
                         $_SESSION['error_message'] = "Une erreur s'est produite lors de l'envoi du mail de confirmation";
                     } else {
                         $_SESSION['success_message'] = "L'utilisateur sera supprimé après confirmation de sa part";
@@ -123,8 +127,8 @@ class User
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user = new UserModel();
             $user->purge();
-            
-            if(!isset($_SESSION)){
+
+            if (!isset($_SESSION)) {
                 session_start();
             }
 
@@ -138,7 +142,7 @@ class User
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
-            if(!isset($_SESSION)){
+            if (!isset($_SESSION)) {
                 session_start();
             }
 

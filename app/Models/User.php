@@ -12,6 +12,7 @@ class User extends DB
     protected string $password;
     protected string $role;
     protected $updated_at;
+    protected $deleted_at;
     protected $status;
     protected $validate;
     protected $validation_token;
@@ -88,6 +89,16 @@ class User extends DB
     public function setUpdated_at(?string $updatedAt): void
     {
         $this->updated_at = $updatedAt;
+    }
+
+    public function getDeleted_at(): ?string
+    {
+        return $this->deleted_at;
+    }
+
+    public function setDeleted_at(?string $deletedAt): void
+    {
+        $this->deleted_at = $deletedAt;
     }
 
     public function getStatus(): int

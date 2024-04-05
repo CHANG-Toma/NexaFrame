@@ -68,8 +68,7 @@ class Security
                 } else {
                     $message = "Un compte existe déjà avec cette adresse e-mail.";
                 }
-                //print ($message);
-                if ($message !== null) {
+                if ($message !== null && !empty($message)) {
                     header('Location: /register?message=' . $message);
                 }
             } else {
@@ -102,7 +101,7 @@ class Security
             } else {
                 if ($loggedInUser && password_verify($password, $loggedInUser[0]['password'])) {
                     $user->populate($loggedInUser);
-                    if ($user->getRole() == "admin" && $user->isValidate() == true) {
+                    if ($user->getRole() == "admin" || $user->getRole() == "superadmin" && $user->isValidate() == true) {
                         $_SESSION['user'] = $loggedInUser[0];
                         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
                             header('Location: /dashboard/page-builder');

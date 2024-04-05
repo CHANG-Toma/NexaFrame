@@ -1,6 +1,9 @@
 
-# Installer routes
+/:
+  controller: Home
+  action: index
 
+# Installer routes
 /installer:
   controller: Installer
   action: index
@@ -114,6 +117,10 @@
 /dashboard/list-users:
   controller: Dashboard
   action: index
+
+/dashboard/soft-delete:
+  controller: User
+  action: softDelete
 
 /dashboard/hard-delete:
   controller: User

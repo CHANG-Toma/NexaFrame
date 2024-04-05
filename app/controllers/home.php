@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\DB;
 use App\Models\Page;
+use App\Controllers\Error;
 
 class home
 {
@@ -14,16 +15,27 @@ class home
 
     public function index(): void
     {
-        include __DIR__ . '/../Views/front-office/main/home.php';
+        if ($_SERVER["REQUEST_URI"] === "/") {
+            include __DIR__ . '/../Views/front-office/main/home.php';
+        } else {
+            $Error = new Error();
+            $Error->error404();
+        }
     }
 
-    public function mypage($uri = '') : bool
+    public function mypage($uri = ''): bool
     {
         $Page = new Page();
-        
+
         $Data = $Page->getAll();
+        $pageExist = $Page->getOneBy(['url' => $uri]);
+
+        if (!$Data || !$pageExist) {
+            $Error = new Error();
+            $Error->error404();
+        }
         $pageData = null;
-        
+
         foreach ($Data as $page) {
             if ($page['url'] === $uri) {
                 $pageData = $page;

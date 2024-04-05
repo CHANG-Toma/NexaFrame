@@ -1,0 +1,17 @@
+<?php
+
+use App\Models\User;
+
+// Instancier UserModel pour accéder à la base de données
+$userModel = new User();
+
+// On supprime les utilisateurs qui ont été 'supprimés' il y a plus de 30 jours
+$userModel->softDelete();
+
+// on ajoute au log le nombre d'utilisateurs supprimés
+
+if ($affectedRows > 0) {
+    $log = fopen('./Purge.log', 'a');
+    fwrite($log, date('Y-m-d H:i:s') . ' : ' . $affectedRows . ' utilisateurs supprimés' . PHP_EOL);
+    fclose($log);
+}

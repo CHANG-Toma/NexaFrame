@@ -74,11 +74,11 @@ class Dashboard
                 $data = $pageBuilder->pageList();
                 break;
         }
-        if ($_SESSION['user']['role'] != "admin") {
+        if ($_SESSION['user']['role'] == "admin" || $_SESSION['user']['role'] == 'superadmin') {
+            include __DIR__ . '/../Views/back-office/dashboard/index.php';
+        } else {
             $object = new Error();
             $object->error403();
-        } else {
-            include __DIR__ . '/../Views/back-office/dashboard/index.php';
         }
 
     }
