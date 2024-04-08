@@ -80,6 +80,5 @@ function makeSeries(name, fieldName) {
 }
 
 makeSeries("Nombre de commentaire", "totalComments");
-makeSeries("Nombre de visite", "siteVisits");
 
 chart.appear(1000, 100);
