@@ -7,17 +7,13 @@ use App\Controllers\Error;
 use App\Controllers\Article;
 use App\Controllers\Comment;
 use App\Controllers\User;
+use App\Controllers\Dataviz;
 
 use App\Models\Article as ArticleModel;
 use App\Models\Category;
 
 class Dashboard
 {
-
-    public function __construct()
-    {
-    }
-
     public function index()
     {
         session_start();
@@ -31,6 +27,7 @@ class Dashboard
         $articleModel = new ArticleModel();
         $Comment = new Comment();
         $User = new User();
+        $Dataviz = new Dataviz();
 
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
@@ -56,6 +53,7 @@ class Dashboard
                 
             case '/dashboard/chart':
                 $components[] = 'dashboard-chart.php';
+                $Dataviz->fetchData();
                 break;
 
             case '/dashboard/comment':
