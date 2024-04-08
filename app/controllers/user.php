@@ -65,7 +65,7 @@ class User
                     $_SESSION['error_message'] = "Vous ne pouvez pas supprimer un " . $userdata[0]['role'];
                 } else {
                     $user->populate($userdata);
-                    $user->setDeleted_at(date('Y-m-d H:i:s') + 30 * 24 * 60 * 60); // 30 jours
+                    $user->setDeleted_at(date('Y-m-d H:i:s', strtotime("+30 days"))); // 30 jours
                     $user->setUpdated_at(date('Y-m-d H:i:s'));
                     $user->save();
                     $_SESSION['success_message'] = "L'utilisateur sera supprimé lors de la prochaine purge de la base de données";
