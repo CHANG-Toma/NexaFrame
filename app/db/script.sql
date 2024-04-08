@@ -47,14 +47,6 @@ CREATE TABLE articles (
     FOREIGN KEY (id_updator) REFERENCES users(id)
 );
 
-CREATE TABLE likes_users_articles (
-   id_article INT NOT NULL,
-   id_user INT NOT NULL,
-   PRIMARY KEY (id_article, id_user),
-   FOREIGN KEY (id_article) REFERENCES articles(id),
-   FOREIGN KEY (id_user) REFERENCES users(id)
-);
-
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     id_article INT,
@@ -89,5 +81,12 @@ CREATE TABLE pages (
 
 INSERT INTO categories (label) VALUES
 ('Musique'),
-('Sport'),
-('Art');
+('Peinture'),
+('Sculpture'),
+('Photographie'),
+('Dessin'),
+('Cinéma'),
+('Littérature'),
+('Danse'),
+('Théâtre'),
+('Autre');

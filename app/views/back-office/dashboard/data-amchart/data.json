@@ -1,0 +1,27 @@
+[
+    {
+        "date": "2024-01-01",
+        "totalComments": 20,
+        "siteVisits": 200
+    },
+    {
+        "date": "2024-02-01",
+        "totalComments": 25,
+        "siteVisits": 240
+    },
+    {
+        "date": "2024-03-01",
+        "totalComments": 30,
+        "siteVisits": 300
+    },
+    {
+        "date": "2024-04-01",
+        "totalComments": 45,
+        "siteVisits": 350
+    },
+    {
+        "date": "2024-05-01",
+        "totalComments": 50,
+        "siteVisits": 400
+    }
+]

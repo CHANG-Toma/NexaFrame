@@ -82,7 +82,7 @@
   controller: PageBuilder
   action: updatePage
 
-/dashboard/template:
+/dashboard/chart:
   controller: Dashboard
   action: index
 

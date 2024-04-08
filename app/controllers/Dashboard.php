@@ -54,8 +54,8 @@ class Dashboard
                 $data = $article->showAll();
                 break;
                 
-            case '/dashboard/template':// a supprimer
-                $components[] = 'dashboard-template.php';
+            case '/dashboard/chart':
+                $components[] = 'dashboard-chart.php';
                 break;
 
             case '/dashboard/comment':
