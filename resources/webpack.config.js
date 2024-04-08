@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   // Mode de développement
   mode: 'development', 
-  entry: './js/dashboard.js', 
+  entry: './js/dashboard.js',
   output: {
     path: path.resolve('../public/assets/dist/js/'),
     filename: 'bundle.js',

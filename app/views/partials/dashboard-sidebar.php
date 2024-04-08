@@ -33,7 +33,7 @@
         </div>
 
         <div class="side-item">
-            <a href="/dashboard/template" class="side-link">
+            <a href="/dashboard/chart" class="side-link">
                 <span class="side-icon">&#128202;</span>
                 <span class="side-text">Mes analyses</span>
             </a>

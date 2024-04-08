@@ -11,3 +11,7 @@ Thumbs.db
 
 # Fichiers de logs
 *.log
+
+#fichiers compilés
+
+public/assets/dist/js/

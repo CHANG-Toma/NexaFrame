@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@amcharts/amcharts5": "^5.8.7",
     "grapesjs": "^0.21.9",
     "grapesjs-preset-webpage": "^1.0.3"
   },
