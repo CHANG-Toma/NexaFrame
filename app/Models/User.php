@@ -10,34 +10,26 @@ class User extends DB
     protected string $login;
     protected string $email;
     protected string $password;
-    protected string $role;
-    protected $updated_at;
-    protected $status;
-    protected $validate;
-    protected $validation_token;
+    protected string $role = '';
+    protected string $created_at;
+    protected ?string $updated_at;
+    protected ?string $deleted_at;
+    protected ?int $status = 0;
+    protected ?bool $validate = false;
+    protected ?string $validation_token;
 
     public function __construct()
     {
-        $this->id = 0;
-        $this->login = '';
-        $this->email = '';
-        $this->password = '';
-        $this->role = '';
-        $this->updated_at = null;
-        $this->status = 0;
-        $this->validate = false;
-        $this->validation_token = null;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(int $id): void
     {
         $this->id = $id;
-        return $this;
     }
 
     public function getLogin(): string
@@ -69,12 +61,12 @@ class User extends DB
     {
         $this->password = $password;
     }
-
+    
     public function getRole(): string
     {
         return $this->role;
     }
-
+    
     public function setRole(string $role): void
     {
         $this->role = $role;
@@ -88,6 +80,16 @@ class User extends DB
     public function setUpdated_at(?string $updatedAt): void
     {
         $this->updated_at = $updatedAt;
+    }
+
+    public function getDeleted_at(): ?string
+    {
+        return $this->deleted_at;
+    }
+
+    public function setDeleted_at(?string $deletedAt): void
+    {
+        $this->deleted_at = $deletedAt;
     }
 
     public function getStatus(): int

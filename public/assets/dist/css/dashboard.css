@@ -101,6 +101,10 @@ img {
   color: var(--success-message);
 }
 
+.border {
+  border-radius: var(--main-radius);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --text-color: var(--black);

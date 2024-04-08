@@ -6,6 +6,7 @@ use PDO;
 use PDOException;
 
 use App\Controllers\Installer;
+use App\Controllers\Error;
 
 class DB
 {
@@ -29,8 +30,9 @@ class DB
         try {
             include_once '../app/config/config.php'; //on inclut le fichier de configuration
             $this->pdo = new PDO($dsn->getDsnFromDbType(DB_TYPE), DB_USER, DB_PASSWORD);
+            
         } catch (PDOException $e) {
-            echo "Erreur SQL : " . $e->getMessage();
+            header('Location: /installer?'.$error = "Connexion à la base de données échouée.");
             die();
         }
     }
@@ -114,7 +116,7 @@ class DB
     {
         for ($i = 0; $i < count($data); $i++) {
             foreach ($data[$i] as $key => $value) {
-                $methodName = "set" . ucfirst($key); 
+                $methodName = "set" . ucfirst($key);
                 if (method_exists($this, $methodName)) {
                     $this->$methodName($value);
                 }
@@ -137,7 +139,7 @@ class DB
     public function getAllBy(array $conditions): array
     {
         $data = $this->getOneBy($conditions);
-        if(!empty($data)) {
+        if (!empty($data)) {
             return $data;
         } else {
             return [];
@@ -173,11 +175,18 @@ class DB
         }
     }
 
-    public function delete (int $id): void
+    public function delete(int $id): void
     {
         $className = basename(str_replace('\\', '/', get_class($this)));
         $tableName = $this->getTableNameByClassName($className);
         $this->exec("DELETE FROM $tableName WHERE id = $id;");
+    }
+
+    public function softDelete(): void
+    {
+        $className = basename(str_replace('\\', '/', get_class($this)));
+        $tableName = $this->getTableNameByClassName($className);
+        $this->exec("DELETE FROM $tableName WHERE deleted_at IS NOT NULL AND deleted_at < NOW()");
     }
 
     // ---------------------------------------------------------------

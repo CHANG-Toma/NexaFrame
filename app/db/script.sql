@@ -24,6 +24,7 @@ CREATE TABLE users (
     role VARCHAR(20) DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL,
+    deleted_at TIMESTAMP NULL,
     status SMALLINT DEFAULT 0,
     validate BOOLEAN DEFAULT FALSE,
     validation_token VARCHAR(32)
@@ -90,9 +91,3 @@ INSERT INTO categories (label) VALUES
 ('Musique'),
 ('Sport'),
 ('Art');
-
-INSERT INTO users (login, email, password, role, created_at, status, validate, validation_token) VALUES
-('admin', 'toma11chang@gmail.com', '$2y$10$', 'admin', '2020-01-01 00:00:00', 1, TRUE, '');
-
-INSERT INTO pages (url, title, html, css, meta_description, id_creator) VALUES
-('/exemple', 'Page Exemple', '<h1> Page exemple </h1>', 'h1{color : orange;}','Description de la page exemple pour le SEO.', 1);

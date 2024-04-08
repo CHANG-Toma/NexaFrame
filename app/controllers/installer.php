@@ -7,6 +7,8 @@ use App\Models\Page;
 use App\Models\User;
 use App\Models\Setting;
 
+use App\Controllers\Error;
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
@@ -19,7 +21,9 @@ class Installer
 
     public function index(): void
     {
-        include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
+        if($_SERVER["REQUEST_URI"] == "/installer") {
+            include __DIR__ . '/../Views/back-office/installer/installer_configBDD.php';
+        }
     }
 
     public function configDatabase(): void
@@ -39,7 +43,7 @@ class Installer
             $configContent .= "define('$key', '$value');\n";
         }
 
-        file_put_contents('../app/config/config.php', $configContent);
+        file_put_contents('../app/config/Config.php', $configContent);
 
         $db = DB::getInstance();
         // Teste la connexion
@@ -49,7 +53,7 @@ class Installer
             header('Location: /installer');
         } else {
             $user = new User();
-            if (!empty($user->getOneBy(["role" => "admin"]))) {
+            if (!empty($user->getOneBy(["role" => "superadmin"]))) {
                 header('Location: /installer/login');
             } else {
                 if ($this->migrateDatabase($db)) {
@@ -86,12 +90,12 @@ class Installer
                                 $adminAcc->setLogin($login);
                                 $adminAcc->setEmail($email);
                                 $adminAcc->setPassword(password_hash($password, PASSWORD_DEFAULT));
-                                $adminAcc->setRole('admin');
+                                $adminAcc->setRole('superadmin');
                                 $adminAcc->setValidation_token(md5(uniqid()));
     
                                 $adminAcc->save();
     
-                                if (!empty($adminAcc->getOneBy(["role" => "admin"]))) {
+                                if (!empty($adminAcc->getOneBy(["role" => "superadmin"]))) {
                                     try {
                                         $mailConfig = include __DIR__ . "/../config/MailConfig.php";
                                         $mail = new PHPMailer(true);
@@ -168,8 +172,8 @@ class Installer
 
         foreach ($queries as $query) {
             $result = $db->exec($query);
+            
             if ($result === false) {
-                echo "Database migration failed.";
                 return false;
             }
         }

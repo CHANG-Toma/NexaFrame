@@ -59,15 +59,16 @@ if (!empty ($listOfRoutes[$uri])) {
     }
 } else {
     $myPage = new Controllers\home();
-    if($myPage->mypage($uri)){
+    if ($myPage->mypage($uri)) {
         return;
     }
-    else if (empty ($listOfRoutes[$uri]) && $uri != '/') { // si la route n'existe pas
+    else if (empty($listOfRoutes[$uri])) { // si la route n'existe pas
         include "../app/controllers/Error.php";
         $object = new Controllers\Error();
         $object->error404();
-    } 
-    else {
+        return;
+    }
+     else {
         include "../app/Views/front-office/main/home.php";
     }
 }
