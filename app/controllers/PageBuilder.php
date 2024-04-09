@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Page;
+use App\Controllers\Error;
 
 class PageBuilder
 {
@@ -11,10 +12,17 @@ class PageBuilder
     {
     }
 
-    public function pageList(): array
+    public function pageList()
     {
         $page = new Page();
-        return $page->getAllBy(['id_creator' => $_SESSION['user']['id']]);
+        if (isset($_SESSION['user'])) {
+            if ($_SESSION['user']['role'] == 'admin' || $_SESSION['user']['role'] == 'superadmin') {
+                return $page->getAllBy(['id_creator' => $_SESSION['user']['id']]);
+            }
+        } else {
+            $error = new Error();
+            $error->error403();
+        }
     }
 
     public function savePage(): void
@@ -61,8 +69,10 @@ class PageBuilder
                 $id = $_POST["id-page"];
                 $Page = new Page();
                 $Page->delete($id);
-                
-                if(!isset($_SESSION)) { session_start(); }
+
+                if (!isset($_SESSION)) {
+                    session_start();
+                }
 
                 if (!empty($Page->getOneBy(["id" => $id]))) {
                     $_SESSION['error_message'] = "La page n'a pas été supprimée";

@@ -23,6 +23,7 @@ var legend = chart.children.push(
   })
 );
 
+// importation des données depuis le fichier data.json
 const response = await import("../../app/Views/back-office/dashboard/data-amchart/data.json");
 var data = response.default;
 

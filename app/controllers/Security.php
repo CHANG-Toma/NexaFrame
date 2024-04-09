@@ -8,10 +8,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Security
 {
 
-    public function __construct()
-    {
-    }
-
     public function register(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {

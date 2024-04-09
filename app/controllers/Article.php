@@ -6,6 +6,8 @@ use App\Models\Article as ArticleModel;
 use App\Models\Category as CategoryModel;
 use App\Models\Comment as CommentModel;
 
+use App\Controllers\Error;
+
 class Article
 {
 
@@ -24,10 +26,9 @@ class Article
                     $article->setUpdatedAt(date('Y-m-d H:i:s'));
                 }
 
-                if(isset($_POST['published_at']) && $_POST['published_at'] !== '') {
+                if (isset($_POST['published_at']) && $_POST['published_at'] !== '') {
                     $article->setPublishedAt(date('Y-m-d H:i:s'));
-                }
-                else{
+                } else {
                     $article->setPublishedAt(null);
                 }
 
@@ -67,14 +68,23 @@ class Article
         }
     }
 
-    public function showAll() : array
+    public function showAll(): array
     {
         if (!isset($_SESSION)) {
             session_start();
         }
 
         $article = new ArticleModel();
-        $articles = $article->getAllby(['id_creator' => $_SESSION['user']['id']]);
+        if (isset($_SESSION['user'])) {
+            if ($_SESSION['user']['role'] == 'admin' || $_SESSION['user']['role'] == 'superadmin') {
+                $articles = $article->getAllby(['id_creator' => $_SESSION['user']['id']]);
+            }
+        }
+        else{
+            $error = new Error();
+            $error->error403();
+            die();
+        }
 
         $categoryModel = new CategoryModel();
         $categories = $categoryModel->getAll();

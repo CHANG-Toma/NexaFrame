@@ -10,11 +10,11 @@ Ce projet vise à fournir un outil complet pour la création et la gestion de si
 - **Gestion Dynamique des Menus**.
 - **Système de Routing Avancé**: Configuration via fichier YAML.
 - **Panel d'Administration**: Dashboard, gestion des utilisateurs, des commentaires, des pages, et optimisation SEO.
-- **Datavisualisation**: Intégration avec des solutions comme amchart pour des visualisations riches.
+- **Datavisualisation**: Intégration avec des solutions amchart pour des visualisations riches.
 - **Et plus**: SiteMap XML, ORM lite, multi-templating, et intégration CLI.
 
 ## Technologies Utilisées
-
+ 
 - PHP8
 - Docker
 - SASS

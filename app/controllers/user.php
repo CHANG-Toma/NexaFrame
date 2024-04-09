@@ -8,9 +8,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class User
 {
-    public function __construct()
-    {
-    }
 
     public function showAll(): array
     {
@@ -121,6 +118,7 @@ class User
             header('Location: /dashboard/list-users');
         }
     }
+    
     public function delete(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
