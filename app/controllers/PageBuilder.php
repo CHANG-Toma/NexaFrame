@@ -8,15 +8,12 @@ use App\Controllers\Error;
 class PageBuilder
 {
 
-    public function __construct()
-    {
-    }
-
     public function pageList()
     {
         $page = new Page();
         if (isset($_SESSION['user'])) {
             if ($_SESSION['user']['role'] == 'admin' || $_SESSION['user']['role'] == 'superadmin') {
+                $this->updateSiteMap();
                 return $page->getAllBy(['id_creator' => $_SESSION['user']['id']]);
             }
         } else {
@@ -84,4 +81,30 @@ class PageBuilder
         }
     }
 
+    private function updateSiteMap()
+    {
+        $page = new Page();
+        $pages = $page->getAll();
+        $sitemap = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+        $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL;
+
+        foreach ($pages as $page) {
+            $priority = 0.5;
+            if ($page['url'] === '/' || $page['url'] === '/home') {
+                $priority = 1.0;
+            } elseif (strpos($page['url'], '/Article/') === 0) {
+                $priority = 0.7;
+            }
+            $sitemap .= '<url>' . PHP_EOL;
+            $sitemap .= '<loc>' . $_SERVER['HTTP_HOST'] . $page['url'] . '</loc>' . PHP_EOL;
+            $sitemap .= '<lastmod>' . $page['updated_at'] . '</lastmod>' . PHP_EOL;
+            $sitemap .= '<changefreq>monthly</changefreq>' . PHP_EOL;
+            $sitemap .= '<priority>' . $priority . '</priority>' . PHP_EOL;
+            $sitemap .= '</url>' . PHP_EOL;
+        }
+
+        $sitemap .= '</urlset>';
+
+        file_put_contents('../public/sitemap.xml', $sitemap);
+    }
 }
