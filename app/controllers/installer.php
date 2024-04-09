@@ -15,10 +15,6 @@ use PHPMailer\PHPMailer\SMTP;
 
 class Installer
 {
-    public function __construct()
-    {
-    }
-
     public function index(): void
     {
         if($_SERVER["REQUEST_URI"] == "/installer") {
@@ -49,7 +45,7 @@ class Installer
         // Teste la connexion
 
         if (!$db->testConnection()) {
-            $error = "Database connection failed.";
+            $error = "Connexion échouée";
             header('Location: /installer');
         } else {
             $user = new User();

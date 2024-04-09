@@ -1,7 +1,7 @@
 <nav class="navbar">
     <div class="container">
         <div class="logo-container">
-          <a href="/home">
+          <a href="/">
           <img class="icon logo" src="/assets/img/Nexaframe.png" alt="Brand Logo">
           </a>
         </div>
@@ -10,7 +10,7 @@
                 <a href="/home">NexaFrame</a>
             </li>
         </ul>
-        <a href="/installer" class="Button Primary">Get Started</a>
+        <a href="/installer" class="Button Primary">Commencer</a>
         <div class="theme-switcher" id="themeSwitcher">
         <img id="icon-sun" class="icon icon-sun" src="/assets/svg/icon/sun.svg" alt="Sun Icon"/>
         <img id="icon-moon" class="icon icon-moon" src="/assets/svg/icon/moon.svg" alt="Moon Icon"/>

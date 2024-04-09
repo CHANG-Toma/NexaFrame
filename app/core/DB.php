@@ -32,7 +32,8 @@ class DB
             $this->pdo = new PDO($dsn->getDsnFromDbType(DB_TYPE), DB_USER, DB_PASSWORD);
             
         } catch (PDOException $e) {
-            header('Location: /installer?'.$error = "Connexion à la base de données échouée.");
+            $error = "Connexion échouée";
+            header('Location: /installer');
             die();
         }
     }

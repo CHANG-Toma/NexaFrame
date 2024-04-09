@@ -11,11 +11,6 @@ CREATE TABLE categories (
     label VARCHAR(50)
 );
 
-CREATE TABLE settings (
-    key VARCHAR(50) PRIMARY KEY,
-    value TEXT NOT NULL
-);
-
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     login VARCHAR(50) NOT NULL,

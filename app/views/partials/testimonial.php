@@ -10,8 +10,7 @@
             </div>
 
             <p class="text">
-                I absolutely love this site builder ! It's so easy to use and has all the features I need to showcase my
-                artwork.
+                J'adore vraiment ce constructeur de site ! Il est si facile à utiliser et possède toutes les fonctionnalités dont j'ai besoin pour présenter mes œuvres d'art.
             </p>
 
             <div class="avatar">

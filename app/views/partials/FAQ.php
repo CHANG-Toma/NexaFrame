@@ -2,28 +2,26 @@
     <div class="Container">
         <div class="title">
             <h2 class="heading heading-centered">FAQs</h2>
-            <p class="text">Find answers to common questions and concerns about our platform.</p>
+            <p class="text">Trouvez des réponses aux questions fréquentes et aux préoccupations concernant notre plateforme.</p>
         </div>
         <div class="Accordion">
             <div class="faq-item">
-                <button class="faq-question">How do I sign up?</button>
-                <div class="faq-answer" style="display: none;">You can sign up by clicking the "Sign Up" button on our homepage and filling out your details.</div>
+                <button class="faq-question">Comment m'inscrire ?</button>
+                <div class="faq-answer" style="display: none;">Vous pouvez vous inscrire en cliquant sur le bouton "Commencer" sur notre page d'accueil.</div>
             </div>
             <div class="faq-item">
-                <button class="faq-question">Can I cancel my subscription at any time?</button>
-                <div class="faq-answer" style="display: none;">Yes, you can cancel your subscription at any time through your account settings.</div>
+                <button class="faq-question">Comment réinitialiser mon mot de passe ?</button>
+                <div class="faq-answer" style="display: none;">En cliquant sur le lien "Mot de passe oublié" sur la page de connexion.</div>
             </div>
             <div class="faq-item">
-                <button class="faq-question">Do you offer customer support?</button>
-                <div class="faq-answer" style="display: none;">Yes, we offer 24/7 customer support through email, live chat, and phone.</div>
+                <button class="faq-question">Offrez-vous un support client ?</button>
+                <div class="faq-answer" style="display: none;">Oui, nous offrons un support client 24/7 par e-mail.</div>
             </div>
             <div class="faq-item">
-                <button class="faq-question">What payment methods do you accept?</button>
-                <div class="faq-answer" style="display: none;">We accept all major credit cards, PayPal, and various other payment methods.</div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">Is there a free trial available?</button>
-                <div class="faq-answer" style="display: none;">Yes, we offer a 7-day free trial for new users to explore our platform.</div>
+                <button class="faq-question">Cette application est-elle gratuite d'utilisation ? </button>
+                <div class="faq-answer" style="display: none;">
+                    Oui, vous pouvez profiter de toutes les fonctionnalités sans aucun frais.
+                </div>
             </div>
         </div>
     </div>

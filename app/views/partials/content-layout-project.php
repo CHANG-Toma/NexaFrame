@@ -4,25 +4,24 @@
             <div class="title">
                 <h3 class="heading heading-sub">Unique</h3>
                 <div class="Content">
-                    <h2 class="heading">Discover the Extraordinary Features of Our Project</h2>
-                    <p class="text">Our project stands out with its innovative approach and remarkable achievements. With a focus on artists, we provide a comprehensive platform that empowers photographers, musicians, and artists agencies to showcase their talent and connect with their audience.</p>
+                    <h2 class="heading">Découvrez les fonctionnalités extraordinaires de notre projet</h2>
+                    <p class="text">Notre projet se distingue par son approche innovante et ses réalisations remarquables. Avec un accent sur les artistes, nous fournissons une plateforme complète qui permet aux photographes, musiciens et agences artistiques de mettre en valeur leur talent et de se connecter avec leur public.</p>
                 </div>
             </div>
 
             <ul>
                 <li>
-                    <h3 class="heading heading-sub heading-sub-bold">Unleash Creativity</h3>
-                     <p class="text">Our project offers a range of powerful tools and customizable templates to bring your artistic vision to life.</p>
+                    <h3 class="heading heading-sub heading-sub-bold">Libérez votre créativité</h3>
+                     <p class="text">Notre projet offre une gamme d'outils puissants et de modèles personnalisables pour donner vie à votre vision artistique.</p>
                 </li>
                 <li>
-                    <h3 class="heading heading-sub heading-sub-bold">Boost Exposure</h3>
-                    <p class="text">With our project, you can expand your reach and gain recognition in the artistic community.</p>
+                    <h3 class="heading heading-sub heading-sub-bold">Augmentez votre visibilité</h3>
+                    <p class="text">Avec notre projet, vous pouvez étendre votre portée et gagner en reconnaissance dans la communauté artistique.</p>
                 </li>
                
             </ul>
             <div class="action">
-                <a href="/service" class="Button Primary">Learn More</a>
-                <a href="/register" class="Button Secondary">Sign Up</a>
+                <a href="/installer" class="Button Primary">Commencer</a>
             </div>
         </div>
         <img class="placeholder-image image-squared" src="/assets/img/layout-1.png" />

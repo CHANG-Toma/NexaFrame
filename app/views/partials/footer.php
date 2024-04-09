@@ -28,32 +28,19 @@
                 </div>
             </div>
         </div>
-        <div class="column links-column">
-            <div class="link-list">
-                <a href="/home" class="link">Home</a>
-                <a href="#" class="link">About Us</a>
-                <a href="#" class="link">Projects</a>
-                <a href="#" class="link">Contact Us</a>
-            </div>
-        </div>
     </div>
 
 
     <div class="credits">
         <div class="divider"></div>
         <div class="row">
-            <div class="copyright">© 2024 Simplify. All rights reserved.</div>
+            <div class="copyright">© 2024 Nexaframe. Tous droits réservés.</div>
             <div class="footer-links">
                 <div class="footer-link">
-                    <a href="#">Privacy Policy</a>
+                    <a href="#">Politique de confidentialité</a>
                 </div>
                 <div class="footer-link">
-                    <a href="#">Terms of Service</a>
-                </div>
-                <div class="footer-link">
-                    <div class="footer-link">
-                        <a href="#">Cookies Settings</a>
-                    </div>
+                    <a href="#">Conditions d'utilisation</a>
                 </div>
             </div>
         </div>

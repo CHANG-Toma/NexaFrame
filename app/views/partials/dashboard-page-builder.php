@@ -19,6 +19,7 @@
             }
             ?>
         </div>
+
         <form method="POST" Action="/dashboard/page-builder/create-page">
             <button class="Button-back-office btn-create-page" type="submit">Nouvelle page</button>
         </form>
