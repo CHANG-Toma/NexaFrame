@@ -24,7 +24,8 @@ Développé à partir de zéro en utilisant PHP8, ce CMF (Content Management Fra
 
 ## Bon à savoir :
 - Pour la création de page, vous devez créer une page principale avec l'URL "home"
-
+- Le sitemap est accessible depuis localhost/sitemap.xml et est généré automatiquement en fonction des pages créées.
+  
 ### Technologies Utilisées
  
 - PHP8
