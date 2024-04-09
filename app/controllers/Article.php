@@ -53,10 +53,16 @@ class Article
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['id-article'])) {
+                
+                // il faut supprimer les commentaires de l'article en premier
+                $comment = new CommentModel();
+                $comment->deleteAllBy(['id_article' => $_POST['id-article']]);
+                
+                // Puis on supprime l'article
                 $article = new ArticleModel();
                 $article->delete($_POST['id-article']);
 
-                if (!isset($_SESSION)) {
+                if (session_status() == PHP_SESSION_NONE) {
                     session_start();
                 }
 

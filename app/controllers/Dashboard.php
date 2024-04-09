@@ -17,7 +17,10 @@ class Dashboard
     // Permet la gestion du back-office en fonction de l'URL
     public function index()
     {
-        session_start();
+
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         $components = [
             'dashboard-sidebar.php',

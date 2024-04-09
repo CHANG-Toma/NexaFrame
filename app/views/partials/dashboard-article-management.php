@@ -1,7 +1,11 @@
 <section class="page-list-container">
     <div class="page-list-header">
         <h1>Mes articles</h1>
-        <div class="error <?php session_start();
+        <div class="error <?php 
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         echo isset($_SESSION["error_message"]) ? '' : 'hidden'; ?>">
             <?php
             if (isset($_SESSION['error_message'])) {
@@ -10,7 +14,10 @@
             }
             ?>
         </div>
-        <div class="success <?php session_start();
+        <div class="success <?php
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         echo isset($_SESSION["success_message"]) ? '' : 'hidden'; ?>">
             <?php
             if (isset($_SESSION['success_message'])) {

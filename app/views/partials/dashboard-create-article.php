@@ -27,7 +27,7 @@
                     <label for="category">Catégorie</label>
                     <select id="category" name="category">
                         <?php foreach ($data as $category): ?>
-                            <option value="<?php echo $category['id']; ?>">
+                            <option value="<?php echo $category['id']; ?>" <?php echo !empty($dataArticle) && $dataArticle[0]['id_category'] == $category['id'] ? 'selected' : ''; ?>>
                                 <?php echo $category['label']; ?>
                             </option>
                         <?php endforeach; ?>

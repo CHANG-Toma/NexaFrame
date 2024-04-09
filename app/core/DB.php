@@ -209,6 +209,32 @@ class DB
         $this->exec("DELETE FROM $tableName WHERE id = $id;");
     }
 
+    public function deleteAllBy(array $conditions): void
+    {
+        // Récupère le nom de la classe et le nom de la table
+        $className = basename(str_replace('\\', '/', get_class($this)));
+        $tableName = $this->getTableNameByClassName($className);
+
+        $sql = "DELETE FROM $tableName WHERE ";
+        $params = [];
+
+        // Parcours les conditions
+        foreach ($conditions as $column => $value) {
+            if (is_array($value) && isset($value['operator'])) {
+                $sql .= "$column {$value['operator']} AND ";
+                if ($value['operator'] != 'IS NULL' && $value['operator'] != 'IS NOT NULL') {
+                    $params[":$column"] = $value['value'];
+                }
+            } else {
+                $sql .= "$column = :$column AND ";
+                $params[":$column"] = $value;
+            }
+        }
+        $sql = rtrim($sql, 'AND ');
+
+        $this->exec($sql, $params);
+    }
+
     // Supprime les enregistrements marqués comme supprimés
     public function softDelete(): void
     {
