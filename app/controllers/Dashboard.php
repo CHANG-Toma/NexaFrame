@@ -14,6 +14,7 @@ use App\Models\Category;
 
 class Dashboard
 {
+    // Permet la gestion du back-office en fonction de l'URL
     public function index()
     {
         session_start();
@@ -32,46 +33,47 @@ class Dashboard
         switch ($_SERVER['REQUEST_URI']) {
             case '/dashboard/page-builder':
                 $components[] = 'dashboard-page-builder.php';
-                $data = $pageBuilder->pageList();
+                $data = $pageBuilder->pageList(); // Récupère toutes les pages
                 break;
             case '/dashboard/page-builder/create-page':
                 $components[] = 'dashboard-page.php';
                 break;
             case '/dashboard/create-article':
                 $components[] = 'dashboard-create-article.php';
-                $data = $Category->getAll();
+                $data = $Category->getAll(); // Récupère toutes les catégories
                 break;
             case '/dashboard/update-article':
                 $components[] = 'dashboard-create-article.php';
-                $data = $Category->getAll();
-                $dataArticle = $articleModel->getOneBy(['id' => $_POST['id-article']]);
+                $data = $Category->getAll(); // Récupère toutes les catégories
+                $dataArticle = $articleModel->getOneBy(['id' => $_POST['id-article']]); // Récupère l'article à modifier
                 break;
             case '/dashboard/article':
                 $components[] = 'dashboard-article-management.php';
-                $data = $article->showAll();
+                $data = $article->showAll(); // Récupère tous les articles
                 break;
 
             case '/dashboard/chart':
                 $components[] = 'dashboard-chart.php';
-                $Dataviz->fetchData();
+                $Dataviz->fetchData(); // Récupère les données pour les graphiques
                 break;
 
             case '/dashboard/comment':
                 $components[] = 'dashboard-comment.php';
-                $comments = $Comment->showAll();
+                $comments = $Comment->showAll(); // Récupère tous les commentaires
                 break;
             case '/dashboard/user':
                 $components[] = 'dashboard-user-data.php';
                 break;
             case '/dashboard/list-users':
                 $components[] = 'dashboard-list-users.php';
-                $data = $User->showAll();
+                $data = $User->showAll(); // Récupère tous les utilisateurs
                 break;
             default:
                 $components[] = 'dashboard-page-builder.php';
-                $data = $pageBuilder->pageList();
+                $data = $pageBuilder->pageList(); // Récupère toutes les pages
                 break;
         }
+        // Si l'utilisateur est connecté, on affiche le back-office sinon on affiche une erreur 403
         if (isset($_SESSION['user'])) {
             if ($_SESSION['user']['role'] == "admin" || $_SESSION['user']['role'] == 'superadmin') {
                 include __DIR__ . '/../Views/back-office/dashboard/index.php';

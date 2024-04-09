@@ -11,6 +11,7 @@ use App\Controllers\Error;
 class Article
 {
 
+    // Sauvegarde un article en base de données ou le met à jour si un id est fourni
     public function save(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,12 +21,13 @@ class Article
                 }
 
                 $article = new ArticleModel();
-
+                // Si un id est fourni, on met à jour l'article
                 if (isset($_POST['id-article']) && $_POST['id-article'] !== '') {
                     $article->setId((int) $_POST['id-article']);
                     $article->setUpdatedAt(date('Y-m-d H:i:s'));
                 }
 
+                // Si la case est cochée, on publie l'article
                 if (isset($_POST['published_at']) && $_POST['published_at'] !== '') {
                     $article->setPublishedAt(date('Y-m-d H:i:s'));
                 } else {
@@ -46,6 +48,7 @@ class Article
         }
     }
 
+    // Supprime un article en base de données
     public function delete(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -57,6 +60,7 @@ class Article
                     session_start();
                 }
 
+                // Si l'article n'a pas été supprimé, on affiche un message d'erreur
                 if (!empty($article->getOneBy(['id' => $_POST['id-article']]))) {
                     $_SESSION['error_message'] = "L'article n'a pas pu être supprimé";
                 } else {
@@ -68,14 +72,17 @@ class Article
         }
     }
 
+    // Récupère les articles en base de données et retourne un tableau
     public function showAll(): array
     {
         if (!isset($_SESSION)) {
             session_start();
         }
 
+        // Si l'utilisateur n'est pas connecté, on affiche une erreur 403
         $article = new ArticleModel();
         if (isset($_SESSION['user'])) {
+            // Si l'utilisateur est un administrateur ou un superadmin, on récupère tous les articles
             if ($_SESSION['user']['role'] == 'admin' || $_SESSION['user']['role'] == 'superadmin') {
                 $articles = $article->getAllby(['id_creator' => $_SESSION['user']['id']]);
             }
@@ -86,9 +93,11 @@ class Article
             die();
         }
 
+        // On récupère les catégories
         $categoryModel = new CategoryModel();
         $categories = $categoryModel->getAll();
 
+        // On associe chaque article à sa catégorie
         $articleList = [];
         foreach ($articles as $article) {
             $categoryId = $article['id_category'];
@@ -107,6 +116,7 @@ class Article
         return $articleList;
     }
 
+    // Récupère les article en base de données et retourne un json
     public function getArticlesJson(): void
     {
         if (!isset($_SESSION)) {

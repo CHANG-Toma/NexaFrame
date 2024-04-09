@@ -13,6 +13,7 @@ class home
         define('BASE_DIR', __DIR__ . '/..');
     }
 
+    // Affiche la page d'accueil
     public function index(): void
     {
         if ($_SERVER["REQUEST_URI"] === "/") {
@@ -23,6 +24,7 @@ class home
         }
     }
 
+    // Affiche la page de l'utilisateur
     public function mypage($uri = ''): bool
     {
         $Page = new Page();

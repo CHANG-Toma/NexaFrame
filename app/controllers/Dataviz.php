@@ -7,12 +7,13 @@ use App\Models\Comment;
 class Dataviz
 {
 
-    public function fetchData()
+    // Récupère les données pour les graphiques et les stocke dans un fichier JSON
+    public function fetchData() : void
     {
-
         $commentModel = new Comment();
         $comments = $commentModel->getAll();
         
+        // On compte le nombre de commentaires par date
         $data = [];
         foreach ($comments as $comment) {
             $date = date('Y-m-d', strtotime($comment['created_at']));
@@ -23,6 +24,7 @@ class Dataviz
             }
         }
 
+        // On transforme le tableau en JSON
         $json = [];
         foreach ($data as $date => $count) {
             $json[] = [

@@ -134,6 +134,7 @@
   controller: User
   action: delete
 
+# User routes
 
 /user/login:
   controller: Security

@@ -8,9 +8,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Security
 {
 
+    // Inscription d'un utilisateur
     public function register(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Récupération des données du formulaire
             $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
             $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -23,6 +25,7 @@ class Security
                     if (!empty($dataUser)) {
                         $message = "Un compte existe déjà avec cette adresse e-mail.";
                     } else {
+                        // Vérifie si les mots de passe correspondent et si le mot de passe contient au moins 8 caractères
                         if ($password === $confirmPassword) {
                             if (strlen($password) >= 8) {
                                 $user->setLogin($login);
@@ -32,6 +35,7 @@ class Security
                                 $user->setValidation_token(md5(uniqid()));
 
                                 $user->save();
+                                // Envoi d'un email de validation de compte à l'utilisateur
                                 try {
                                     $mailConfig = include __DIR__ . "/../config/MailConfig.php";
                                     $mail = new PHPMailer(true);
@@ -75,8 +79,10 @@ class Security
         header('Location: /register');
     }
 
+    // Connexion d'un utilisateur
     public function login(): void
     {
+        // Vérifie si la session est démarrée
         if (!isset($_SESSION)) {
             session_start();
         }
@@ -89,14 +95,17 @@ class Security
                 $error = "Champs vides. Veuillez remplir tous les champs.";
             }
 
+            // Récupère l'utilisateur en fonction de son login
             $user = new User();
             $loggedInUser = $user->getOneBy(["login" => $login]);
 
+            // Vérifie si l'utilisateur existe et si le mot de passe est correct
             if (empty($loggedInUser)) {
                 $error = "Nom d'utilisateur ou mot de passe incorrect";
             } else {
                 if ($loggedInUser && password_verify($password, $loggedInUser[0]['password'])) {
                     $user->populate($loggedInUser);
+                    // Vérifie si l'utilisateur est un administrateur ou un superadmin et si son compte est validé
                     if ($user->getRole() == "admin" || $user->getRole() == "superadmin" && $user->isValidate() == true) {
                         $_SESSION['user'] = $loggedInUser[0];
                         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
@@ -119,15 +128,19 @@ class Security
             }
         }
 
+        // Affiche la page de connexion en fonction de l'URL
         if ($_SERVER['REQUEST_URI'] === '/installer/login') {
             include __DIR__ . '/../Views/back-office/installer/installer_loginAdmin.php';
         } else if ($_SERVER['REQUEST_URI'] === '/user/login' && isset($_SESSION['user'])) {
             header('Location: /home');
         }
     }
+
+    // Déconnexion d'un utilisateur
     public function logout(): void
     {
         session_start();
+        // Détruit la session et redirige vers la page de connexion
         unset($_SESSION["user"]);
         session_destroy();
         if ($_SERVER['REQUEST_URI'] === '/dashboard/logout') {
@@ -137,6 +150,7 @@ class Security
         }
     }
 
+    // Mot de passe oublié
     public function forgotPassword(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -145,12 +159,15 @@ class Security
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
+                // Récupère l'utilisateur en fonction de son adresse e-mail
                 $user = new User();
                 $loggedInUser = $user->getOneBy(["email" => $email]);
 
+                // Vérifie si l'utilisateur existe et envoie un e-mail avec un nouveau mot de passe
                 if ($loggedInUser) {
                     $user->populate($loggedInUser);
 
+                    // Génère un nouveau mot de passe et le sauvegarde dans la base de données
                     $newPwd = bin2hex(random_bytes(16));
                     $NewRandomHashedPwd = password_hash($newPwd, PASSWORD_DEFAULT);
                     $user->setPassword($NewRandomHashedPwd);
@@ -199,15 +216,18 @@ class Security
         }
     }
 
+    // Changement de mot de passe
     public function changePassword(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Récupération des données du formulaire
             $currentPassword = filter_input(INPUT_POST, "currentPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $newPassword = filter_input(INPUT_POST, "newPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $confirmPassword = filter_input(INPUT_POST, "confirmPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             session_start();
 
+            // Vérifie si les champs sont vides
             if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
                 $_SESSION['error_message2'] = "Veuillez remplir tous les champs";
                 if ($_SERVER['REQUEST_URI'] === '/dashboard/user') {
@@ -217,14 +237,17 @@ class Security
                 }
             }
 
+            // Vérifie si le mot de passe actuel est correct
             if (password_verify($currentPassword, $_SESSION['user']['password'])) {
                 if ($newPassword === $confirmPassword && strlen($newPassword) >= 8) {
                     $user = new User();
                     $userdata = $user->getOneBy(["email" => $_SESSION['user']['email']]);
+                    // Vérifie si l'utilisateur existe
                     if (empty($userdata)) {
                         $_SESSION['error_message2'] = "Utilisateur introuvable";
                         header('Location: /dashboard/user');
                     } else {
+                        // Met à jour le mot de passe de l'utilisateur
                         $user->populate($userdata);
                         $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
                         $user->setUpdated_at(date('Y-m-d H:i:s'));
@@ -246,10 +269,12 @@ class Security
         }
     }
 
+    // Validation de compte
     public function validate(): void
     {
         $user = new User();
         $token = $_GET['token'];
+        // Récupère l'utilisateur en fonction du token de validation
         $userData = $user->getOneBy(["validation_token" => $token]);
 
         if ($userData !== false) {
@@ -265,6 +290,7 @@ class Security
         } else {
             $error = 'Token invalide ou expiré. Veuillez réessayer.';
         }
+        // Affiche la page de validation en fonction de l'URL
         if ($_SERVER['REQUEST_URI'] === '/installer/validate?token=' . $token) {
             include __DIR__ . "/../Views/back-office/installer/installer_loginAdmin.php";
         } else if ($_SERVER['REQUEST_URI'] === '/user/validate?token=' . $token) {

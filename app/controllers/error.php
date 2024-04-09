@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 class Error
 {
+    // Affiche une page d'erreur 404
     public function error404(): void
     {
         ob_start();
@@ -12,6 +13,7 @@ class Error
         ob_end_flush();
     }
 
+    // Affiche une page d'erreur 403
     public function error403(): void
     {
         ob_start();

@@ -15,6 +15,7 @@ use PHPMailer\PHPMailer\SMTP;
 
 class Installer
 {
+    // Affiche la page de configuration de la base de données
     public function index(): void
     {
         if($_SERVER["REQUEST_URI"] == "/installer") {
@@ -22,6 +23,7 @@ class Installer
         }
     }
 
+    // exécute la migration de la base de données
     public function configDatabase(): void
     {
         //sécurité à faire ici pour éviter les injections SQL (htmlspecialchars, strip_tags, etc.)
@@ -39,6 +41,7 @@ class Installer
             $configContent .= "define('$key', '$value');\n";
         }
 
+        // Crée le fichier de configuration
         file_put_contents('../app/config/Config.php', $configContent);
 
         $db = DB::getInstance();
@@ -63,6 +66,7 @@ class Installer
         }
     }
 
+    // Affiche la page d'inscription de l'administrateur
     public function createAdmin(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -80,6 +84,7 @@ class Installer
                         $message = "L'adresse email est déjà utilisée";
                     }
                     else {
+                        // Vérifie si les mots de passe correspondent et si le mot de passe contient au moins 8 caractères
                         if ($password == $confirmPassword) {
                             if (strlen($password) >= 8) {
                                 $adminAcc = new User();
@@ -91,6 +96,7 @@ class Installer
     
                                 $adminAcc->save();
     
+                                // Envoi d'un email de confirmation de compte à l'administrateur
                                 if (!empty($adminAcc->getOneBy(["role" => "superadmin"]))) {
                                     try {
                                         $mailConfig = include __DIR__ . "/../config/MailConfig.php";
@@ -141,7 +147,8 @@ class Installer
         include __DIR__ . "/../Views/back-office/installer/installer_registerAdmin.php";
     }
 
-    public function getDsnFromDbType(string $db_type): string //pour la connexion
+    // Pour la connexion à la bdd
+    public function getDsnFromDbType(string $db_type): string
     {
         $dsn = "";
         switch ($db_type) {
@@ -161,11 +168,14 @@ class Installer
         return $dsn;
     }
 
+    // Pour la migration de la base de données
     public function migrateDatabase($db): bool
     {
+        // Récupère le script SQL
         $sqlScript = file_get_contents(__DIR__ . '/../db/script.sql');
         $queries = array_filter(explode(';', $sqlScript), 'trim');
 
+        // Exécute les requêtes SQL une par une
         foreach ($queries as $query) {
             $result = $db->exec($query);
             

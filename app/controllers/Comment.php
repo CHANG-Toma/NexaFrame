@@ -9,7 +9,8 @@ use App\Models\Article;
 class Comment
 {
 
-    public function save()
+    // Sauvegarde un commentaire en base de données
+    public function save() : void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -30,6 +31,7 @@ class Comment
 
     }
 
+    // Affiche tous les commentaires et renvoie un tableau
     public function showAll(): array
     {
         if (!isset($_SESSION)) {
@@ -40,9 +42,11 @@ class Comment
         $user = new User();
         $article = new Article();
 
+        // Récupère tous les commentaires
         $comments = $comment->getAll();
         $commentList = [];
 
+        // Récupère les informations de l'auteur et de l'article associé à chaque commentaire
         foreach ($comments as $comment) {
 
             $login = $user->getOneBy(["id" => $comment["id_user"]]);
@@ -50,21 +54,18 @@ class Comment
 
             foreach ($login as $log) {
                 $comment["author"] = $log["login"];
-
                 foreach ($articleData as $art) {
                     $comment["articleTitle"] = $art["title"];
                 }
-
                 $commentList[] = $comment;
             }
-
-
         }
 
         return $commentList;
     }
 
-    public function delete()
+    // Supprime un commentaire en base de données et redirige vers la page de gestion des commentaires
+    public function delete() : void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER['REQUEST_URI'] === '/dashboard/comment/delete') {
             if (isset($_POST['comment_id'])) {
@@ -72,9 +73,11 @@ class Comment
                     session_start();
 
                 }
+                // Supprime le commentaire
                 $comment = new CommentModel();
                 $comment->delete($_POST['comment_id']);
 
+                // Si le commentaire n'a pas été supprimé, on affiche un message d'erreur
                 if (!$comment->getOneBy(["id" => $_POST['comment_id']])) {
                     $_SESSION["success_message"] = "Commentaire supprimé avec succès";
                 } else {
@@ -89,14 +92,15 @@ class Comment
         header('Location: /dashboard/comment');
     }
 
-    public function approve()
+    // Approuve un commentaire et redirige vers la page de gestion des commentaires
+    public function approve() : void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER['REQUEST_URI'] === '/dashboard/comment/approve') {
             if (isset($_POST['comment_id'])) {
                 if (!isset($_SESSION)) {
                     session_start();
                 }
-
+                // Approuve le commentaire
                 $comment = new CommentModel();
 
                 $comment->setId($_POST['comment_id']);
@@ -105,6 +109,7 @@ class Comment
                 $comment->setValidatorId($_SESSION["user"]["id"]);
                 $comment->save();
                 
+                // Si le commentaire n'a pas été approuvé, on affiche un message d'erreur
                 $approved = $comment->getOneBy(["id" => $_POST['comment_id']]);
 
                 if ($approved[0]["valid"] === true) {
