@@ -17,7 +17,7 @@ class home
     public function index(): void
     {
         if ($_SERVER["REQUEST_URI"] === "/") {
-            if (file_get_contents(__DIR__ . "/../config/Config.php") == "") {
+            if (empty(file_get_contents(__DIR__ . "/../config/Config.php"))) {
                 include __DIR__ . "/../Views/front-office/main/home.php";
             }
             else {
