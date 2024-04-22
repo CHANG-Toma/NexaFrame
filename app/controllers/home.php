@@ -17,7 +17,12 @@ class home
     public function index(): void
     {
         if ($_SERVER["REQUEST_URI"] === "/") {
-            include __DIR__ . '/../Views/front-office/main/home.php';
+            if (file_get_contents(__DIR__ . "/../config/Config.php") == "") {
+                include __DIR__ . "/../Views/front-office/main/home.php";
+            }
+            else {
+                include __DIR__ . "/../Views/back-office/installer/installer_loginAdmin.php";
+            }
         } else {
             $Error = new Error();
             $Error->error404();

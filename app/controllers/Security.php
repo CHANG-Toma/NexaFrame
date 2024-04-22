@@ -113,7 +113,6 @@ class Security
                         } else {
                             header('Location: /');
                         }
-                        header('Location: /dashboard/page-builder');
                     } else if ($user->getRole() == "user" && $user->isValidate() == true) {
                         $_SESSION['user'] = $loggedInUser[0];
                         header('Location: /home');
