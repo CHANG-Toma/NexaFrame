@@ -16,9 +16,10 @@ Développé à partir de zéro en utilisant PHP8, ce CMF (Content Management Fra
 - Exécuter dans le dossier "resources" : "npm i"
 
 #### Étapes 2 :
-- Aller sur "localhost" dans votre navigateur web
+- Exécuter le docker compose via : Docker compose up (-d pour mettre en background)
 
 #### Étapes 3 :
+- Aller sur "localhost" dans votre navigateur web
 - Vous arriverez sur la page de présentation du CMF
 - Pour utiliser le CMF, cliquez sur l'un des boutons "Commencer"
 
